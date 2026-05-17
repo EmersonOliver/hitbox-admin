@@ -1,0 +1,27 @@
+<div
+  class="rating"
+  [class.readonly]="readonly">
+
+  @for (star of stars; track star) {
+
+    <i
+      class="bi"
+
+      [class.bi-star-fill]="
+        isFilled(star)
+      "
+
+      [class.bi-star]="
+        !isFilled(star)
+      "
+
+      (click)="rate(star)"
+
+      (mouseenter)="setHover(star)"
+
+      (mouseleave)="clearHover()">
+    </i>
+
+  }
+
+</div>

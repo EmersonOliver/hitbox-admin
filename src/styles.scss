@@ -6,7 +6,7 @@
 /* =========================================================
    IMPORT BOOTSTRAP
 ========================================================= */
-
+@import "flatpickr/dist/flatpickr.min.css";
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
@@ -429,4 +429,211 @@ body {
 
   background:
     rgba(var(--bs-primary-rgb), 0.55);
+}
+
+/* =========================================================
+   FLATPICKR THEME
+========================================================= */
+
+.flatpickr-calendar {
+
+  background:
+    var(--bs-body-bg) !important;
+
+  border:
+    1px solid var(--bs-border-color) !important;
+
+  border-radius: 1.5rem !important;
+
+  overflow: hidden !important;
+
+  padding: 1rem !important;
+
+  color:
+    var(--bs-body-color) !important;
+
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, .15) !important;
+}
+
+/* =========================================================
+   MONTHS
+========================================================= */
+
+.flatpickr-months {
+
+  margin-bottom: 1rem;
+}
+
+/* =========================================================
+   MONTH TITLE
+========================================================= */
+
+.flatpickr-current-month,
+.flatpickr-current-month input.cur-year {
+
+  color:
+    var(--bs-body-color) !important;
+}
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+.flatpickr-monthDropdown-months {
+
+  color:
+    var(--bs-body-color) !important;
+
+  background:
+    transparent !important;
+}
+
+/* =========================================================
+   ARROWS
+========================================================= */
+
+.flatpickr-prev-month svg,
+.flatpickr-next-month svg {
+
+  fill:
+    var(--bs-primary) !important;
+}
+
+/* =========================================================
+   WEEKDAYS
+========================================================= */
+
+.flatpickr-weekdays {
+
+  background:
+    transparent !important;
+}
+
+.flatpickr-weekday {
+
+  color:
+    var(--bs-secondary-color) !important;
+
+  background:
+    transparent !important;
+
+  font-weight: 600;
+}
+
+/* =========================================================
+   DAYS
+========================================================= */
+
+.flatpickr-day {
+
+  color:
+    var(--bs-body-color) !important;
+
+  border-radius: 12px !important;
+
+  border: none !important;
+}
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.flatpickr-day:hover {
+
+  background:
+    rgba(var(--bs-primary-rgb), .12) !important;
+}
+
+/* =========================================================
+   TODAY
+========================================================= */
+
+.flatpickr-day.today {
+
+  border:
+    1px solid rgba(var(--bs-primary-rgb), .45) !important;
+}
+
+/* =========================================================
+   RANGE
+========================================================= */
+
+.flatpickr-day.inRange {
+
+  background:
+    rgba(var(--bs-primary-rgb), .18) !important;
+
+  box-shadow: none !important;
+}
+
+/* =========================================================
+   SELECTED
+========================================================= */
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+
+  background:
+    linear-gradient(135deg,
+      var(--bs-primary),
+      color-mix(in srgb,
+        var(--bs-primary) 80%,
+        black)) !important;
+
+  color: #fff !important;
+}
+
+/* =========================================================
+   DISABLED
+========================================================= */
+
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+
+  color:
+    var(--bs-tertiary-color) !important;
+}
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.flatpickr-input {
+
+  background:
+    var(--bs-body-bg) !important;
+
+  border:
+    1px solid rgba(var(--bs-primary-rgb), .35) !important;
+
+  color:
+    var(--bs-body-color) !important;
+}
+
+.product-image-cell {
+
+  width: 72px;
+}
+
+.product-image {
+
+  width: 48px;
+
+  height: 48px;
+
+  min-width: 48px;
+
+  object-fit: cover;
+
+  border-radius: 14px;
+
+  background:
+    rgba(var(--bs-body-color-rgb), .03);
+
+  border:
+    1px solid rgba(var(--bs-border-color-rgb), .4);
+
+  padding: .2rem;
 }

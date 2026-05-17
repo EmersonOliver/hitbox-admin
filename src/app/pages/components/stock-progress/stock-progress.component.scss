@@ -1,0 +1,156 @@
+/* =========================================================
+   WRAPPER
+========================================================= */
+
+.stock-progress-wrapper {
+
+  width: 100%;
+}
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.progress-label {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: .5rem;
+
+  font-size: .85rem;
+
+  color: var(--bs-secondary-color);
+}
+
+/* =========================================================
+   TRACK
+========================================================= */
+
+.stock-progress {
+
+  width: 100%;
+
+  background:
+    rgba(var(--bs-body-color-rgb), .06);
+
+  border-radius: 999px;
+
+  overflow: hidden;
+
+  position: relative;
+}
+
+/* =========================================================
+   BAR
+========================================================= */
+
+.stock-progress-bar {
+
+  height: 100%;
+
+  border-radius: inherit;
+
+  transition:
+    width .35s ease,
+    background .25s ease;
+
+  position: relative;
+}
+
+/* =========================================================
+   PRIMARY
+========================================================= */
+
+.stock-progress-bar.primary {
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff8a00,
+      #ff6a00
+    );
+
+  box-shadow:
+    0 0 14px rgba(255,138,0,.35);
+}
+
+/* =========================================================
+   WARNING
+========================================================= */
+
+.stock-progress-bar.warning {
+
+  background:
+    linear-gradient(
+      135deg,
+      #f59e0b,
+      #d97706
+    );
+
+  box-shadow:
+    0 0 12px rgba(245,158,11,.35);
+}
+
+/* =========================================================
+   DANGER
+========================================================= */
+
+.stock-progress-bar.danger {
+
+  background:
+    linear-gradient(
+      135deg,
+      #ef4444,
+      #dc2626
+    );
+
+  box-shadow:
+    0 0 12px rgba(239,68,68,.35);
+}
+
+/* =========================================================
+   SHINE EFFECT
+========================================================= */
+
+.stock-progress-bar::after {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.22),
+      transparent
+    );
+
+  animation:
+    shimmer 2s infinite linear;
+}
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes shimmer {
+
+  0% {
+
+    transform:
+      translateX(-100%);
+  }
+
+  100% {
+
+    transform:
+      translateX(100%);
+  }
+}

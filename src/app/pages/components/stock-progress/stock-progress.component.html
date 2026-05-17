@@ -1,0 +1,33 @@
+<div class="stock-progress-wrapper">
+
+  @if(showLabel) {
+
+    <div class="progress-label">
+
+      <span>
+        Estoque
+      </span>
+
+      <span>
+        {{ value }}%
+      </span>
+
+    </div>
+
+  }
+
+  <div
+    class="stock-progress"
+    [style.height.px]="height">
+
+    <div
+      class="stock-progress-bar"
+      [class.primary]="status === 'primary'"
+      [class.warning]="status === 'warning'"
+      [class.danger]="status === 'danger'"
+      [style.width]="progressWidth">
+    </div>
+
+  </div>
+
+</div>

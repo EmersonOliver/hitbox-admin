@@ -2,15 +2,19 @@ import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RangeDatepickerComponent } from "../components/datepicker/range-datepicker.component";
+import { RatingComponent } from '../components/rating/rating.component';
+import { StockProgressComponent } from "../components/stock-progress/stock-progress.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [ CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RangeDatepickerComponent, RatingComponent, StockProgressComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
+  rating = 0;
   cards = [
     {
       title: 'Receita Total',
@@ -33,7 +37,7 @@ export class DashboardComponent {
       icon: 'bi-percent'
     }
   ];
-  constructor(private title:Title){
+  constructor(private title: Title) {
     title.setTitle('Hitbox - Admin - Dashboard')
   }
 }
