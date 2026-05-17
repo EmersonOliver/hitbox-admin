@@ -1,0 +1,78 @@
+.app-card {
+
+  background:
+    rgba(var(--bs-body-bg-rgb), 1);
+
+  border:
+    1px solid rgba(var(--bs-border-color-rgb), .5);
+
+  border-radius: 1.5rem;
+
+  padding: 1.5rem;
+
+  height: 100%;
+}
+
+.card-header-custom {
+
+  margin-bottom: 2rem;
+}
+
+.category-icon {
+
+  width: 44px;
+
+  height: 44px;
+
+  border-radius: 1rem;
+
+  background:
+    rgba(var(--bs-primary-rgb), .15);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color:
+    var(--bs-primary);
+
+  font-size: 1.2rem;
+}
+
+.table {
+
+  margin-bottom: 0;
+}
+
+.table td,
+.table th {
+
+  vertical-align: middle;
+
+  border-color:
+    rgba(var(--bs-border-color-rgb), .3);
+}
+
+textarea.form-control {
+
+  resize: none;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 991px) {
+
+  .app-card {
+
+    padding: 1rem;
+  }
+
+  .table {
+
+    min-width: 700px;
+  }
+}

@@ -1,0 +1,140 @@
+.modal-tabs {
+
+  display: flex;
+
+  gap: 1rem;
+
+  margin-bottom: 2rem;
+
+  overflow-x: auto;
+}
+
+.tab-btn {
+
+  border: none;
+
+  background:
+    rgba(var(--bs-body-color-rgb), .04);
+
+  color:
+    var(--bs-body-color);
+
+  padding:
+    .9rem 1.25rem;
+
+  border-radius: 1rem;
+
+  transition: .2s;
+
+  white-space: nowrap;
+}
+
+.tab-btn.active {
+
+  background:
+    rgba(var(--bs-primary-rgb), .15);
+
+  color:
+    var(--bs-primary);
+}
+
+.composition-card {
+
+  background:
+    rgba(var(--bs-body-color-rgb), .03);
+
+  border:
+    1px solid rgba(var(--bs-border-color-rgb), .4);
+
+  border-radius: 1.25rem;
+
+  padding: 1rem;
+
+  margin-bottom: 1rem;
+}
+
+.pricing-card {
+
+  background:
+    rgba(var(--bs-body-color-rgb), .03);
+
+  border:
+    1px solid rgba(var(--bs-border-color-rgb), .4);
+
+  border-radius: 1.25rem;
+
+  padding: 1.5rem;
+}
+
+/* =========================================================
+   IMAGE CARD
+========================================================= */
+
+.product-image-card {
+
+  background:
+    rgba(var(--bs-body-color-rgb), .03);
+
+  border:
+    1px solid rgba(var(--bs-border-color-rgb), .4);
+
+  border-radius: 1.5rem;
+
+  padding: 1rem;
+}
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+.image-preview {
+
+  width: 100%;
+
+  aspect-ratio: 1 / 1;
+
+  border-radius: 1.25rem;
+
+  overflow: hidden;
+
+  background:
+    rgba(var(--bs-body-color-rgb), .04);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+.image-preview img {
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* =========================================================
+   EMPTY IMAGE
+========================================================= */
+
+.empty-image {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 1rem;
+
+  color:
+    var(--bs-secondary-color);
+}
+
+.empty-image i {
+  font-size: 4rem;
+  color: var(--bs-primary);
+}

@@ -1,0 +1,578 @@
+<!-- calc-pricing.component.html -->
+
+<div class="container-fluid py-4">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Motor de Cálculo
+            </h2>
+
+            <p class="text-muted mb-0">
+                Gerencie regras de precificação
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         TABS
+    ====================================================== -->
+
+    <div class="pricing-tabs mb-4">
+
+        <button class="tab-btn" [class.active]="activeTab === 'rules'" (click)="activeTab = 'rules'">
+
+            <i class="bi bi-calculator me-2"></i>
+
+            Regras
+
+        </button>
+
+        <button class="tab-btn" [class.active]="activeTab === 'simulation'" (click)="activeTab = 'simulation'">
+
+            <i class="bi bi-cpu me-2"></i>
+
+            Simulação
+
+        </button>
+
+    </div>
+
+    <!-- =====================================================
+         RULES
+    ====================================================== -->
+
+    @if(activeTab === 'rules') {
+
+    <div class="row g-4">
+
+        <!-- FORM -->
+
+        <div class="col-12 col-xl-4">
+
+            <div class="pricing-card">
+
+                <div class="mb-4">
+
+                    <h4 class="fw-bold mb-1">
+                        Nova Regra
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        Crie uma regra de precificação
+                    </p>
+
+                </div>
+
+                <form [formGroup]="form" (ngSubmit)="submit()">
+
+                    <div class="row g-3">
+
+                        <!-- NAME -->
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Nome regra
+                            </label>
+
+                            <input type="text" class="form-control" formControlName="name" placeholder="Chaveiro comum">
+
+                        </div>
+
+                        <!-- CATEGORY -->
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Categoria
+                            </label>
+
+                            <select class="form-select" formControlName="category">
+
+                                <option value="">
+                                    Selecione
+                                </option>
+
+                                @for(
+                                category of categories;
+                                track category
+                                ) {
+
+                                <option [value]="category">
+
+                                    {{ category }}
+
+                                </option>
+
+                                }
+
+                            </select>
+
+                        </div>
+
+                        <!-- TYPE -->
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Tipo cálculo
+                            </label>
+
+                            <select class="form-select" formControlName="calculationType">
+
+                                @for(
+                                type of calculationTypes;
+                                track type.value
+                                ) {
+
+                                <option [value]="type.value">
+
+                                    {{ type.label }}
+
+                                </option>
+
+                                }
+
+                            </select>
+
+                        </div>
+
+                        <!-- BASE -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Valor base
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    R$
+                                </span>
+
+                                <input type="number" class="form-control" formControlName="basePrice">
+
+                            </div>
+
+                        </div>
+
+                        <!-- GRAM -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Valor/grama
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    R$
+                                </span>
+
+                                <input type="number" class="form-control" formControlName="pricePerGram">
+
+                            </div>
+
+                        </div>
+
+                        <!-- EXTRA -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Adicional
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    R$
+                                </span>
+
+                                <input type="number" class="form-control" formControlName="additionalPrice">
+
+                            </div>
+
+                        </div>
+
+                        <!-- MIN -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Valor mínimo
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    R$
+                                </span>
+
+                                <input type="number" class="form-control" formControlName="minimumPrice">
+
+                            </div>
+
+                        </div>
+
+                        <!-- ACTIVE -->
+
+                        <div class="col-12">
+
+                            <div class="form-check form-switch">
+
+                                <input type="checkbox" class="form-check-input" formControlName="active">
+
+                                <label class="form-check-label">
+                                    Regra ativa
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                        <!-- BUTTON -->
+
+                        <div class="col-12">
+
+                            <button type="submit" class="btn btn-primary w-100">
+
+                                @if(loading) {
+
+                                <span class="spinner-border spinner-border-sm me-2">
+                                </span>
+
+                                }
+
+                                Salvar regra
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- RULES -->
+
+        <div class="col-12 col-xl-8">
+
+            <div class="pricing-card">
+
+                <div class="mb-4">
+
+                    <h4 class="fw-bold mb-1">
+                        Regras cadastradas
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        Gerencie regras do motor
+                    </p>
+
+                </div>
+
+                <div class="row g-3">
+                    <div class="d-flex flex-column flex-lg-row gap-3 mb-4">
+
+                        <!-- SEARCH -->
+
+                        <div class="flex-grow-1">
+
+                            <input type="text" class="form-control" placeholder="Buscar regra..." [(ngModel)]="search">
+
+                        </div>
+
+                        <!-- STATUS -->
+
+                        <div>
+
+                            <select class="form-select" [(ngModel)]="selectedStatus">
+
+                                <option value="ALL">
+                                    Todos
+                                </option>
+
+                                <option value="ACTIVE">
+                                    Ativos
+                                </option>
+
+                                <option value="INACTIVE">
+                                    Inativos
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+                    @for(
+                    rule of paginatedRules;
+                    track rule.id
+                    ) {
+
+                    <div class="col-12">
+
+                        <div class="rule-card">
+
+                            <div class="d-flex justify-content-between align-items-start">
+
+                                <div>
+
+                                    <h5 class="fw-bold mb-2">
+
+                                        {{ rule.name }}
+
+                                    </h5>
+
+                                    <div class="d-flex gap-2 flex-wrap">
+
+                                        <span class="badge bg-primary-subtle text-primary">
+
+                                            {{ rule.category }}
+
+                                        </span>
+
+                                        <span class="badge bg-warning-subtle text-warning">
+
+                                            {{ rule.type }}
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="text-end">
+
+                                    <h4 class="fw-bold mb-0">
+
+                                        R$
+                                        {{ rule.basePrice }}
+
+                                    </h4>
+
+                                    <small class="text-muted">
+
+                                        base
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                            <hr>
+
+                            <div class="row g-3">
+
+                                <div class="col-md-4">
+
+                                    <small class="text-muted d-block">
+
+                                        Valor/g
+
+                                    </small>
+
+                                    <strong>
+
+                                        R$
+                                        {{ rule.pricePerGram }}
+
+                                    </strong>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <small class="text-muted d-block">
+
+                                        Tipo
+
+                                    </small>
+
+                                    <strong>
+
+                                        {{ rule.type }}
+
+                                    </strong>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <small class="text-muted d-block">
+
+                                        Status
+
+                                    </small>
+
+                                    <strong class="text-success">
+
+                                        Ativa
+
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    }
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+
+                        <small class="text-muted">
+
+                            Página
+                            {{ currentPage }}
+                            de
+                            {{ totalPages }}
+
+                        </small>
+
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-primary btn-sm" (click)="changePage(currentPage - 1)">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm" (click)="changePage(currentPage + 1)">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    }
+
+    <!-- =====================================================
+         SIMULATION
+    ====================================================== -->
+
+    @if(activeTab === 'simulation') {
+
+    <div class="row g-4">
+
+        <!-- FORM -->
+
+        <div class="col-12 col-xl-4">
+
+            <div class="pricing-card">
+
+                <div class="mb-4">
+
+                    <h4 class="fw-bold mb-1">
+                        Simulação
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        Simule o cálculo do produto
+                    </p>
+
+                </div>
+
+                <form [formGroup]="simulationForm">
+
+                    <div class="row g-3">
+
+                        <!-- WEIGHT -->
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Peso (g)
+                            </label>
+
+                            <input type="number" class="form-control" formControlName="weight">
+
+                        </div>
+
+                        <!-- QTY -->
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Quantidade
+                            </label>
+
+                            <input type="number" class="form-control" formControlName="quantity">
+
+                        </div>
+
+                        <!-- HOURS -->
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Tempo (h)
+                            </label>
+
+                            <input type="number" class="form-control" formControlName="hours">
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- RESULT -->
+
+        <div class="col-12 col-xl-8">
+
+            <div class="pricing-result-card">
+
+                <small class="text-muted">
+                    RESULTADO
+                </small>
+
+                <h1>
+
+                    R$
+                    {{
+                    previewResult
+                    | number:'1.2-2'
+                    }}
+
+                </h1>
+
+                <p class="text-muted mb-0">
+
+                    Valor calculado pelo motor
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    }
+
+</div>

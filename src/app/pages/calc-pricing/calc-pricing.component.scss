@@ -1,0 +1,130 @@
+/* calc-pricing.component.scss */
+
+.pricing-tabs {
+
+    display: flex;
+
+    gap: 1rem;
+
+    overflow-x: auto;
+}
+
+.tab-btn {
+
+    border: none;
+
+    background:
+        rgba(var(--bs-body-color-rgb), .05);
+
+    color:
+        var(--bs-body-color);
+
+    padding:
+        1rem 1.25rem;
+
+    border-radius: 1rem;
+
+    transition: .2s;
+}
+
+.tab-btn.active {
+
+    background:
+        rgba(var(--bs-primary-rgb), .15);
+
+    color:
+        var(--bs-primary);
+}
+
+.pricing-card {
+
+    background:
+        rgba(var(--bs-body-bg-rgb), 1);
+
+    border:
+        1px solid rgba(var(--bs-border-color-rgb), .4);
+
+    border-radius: 1.5rem;
+
+    padding: 1.5rem;
+
+    height: 100%;
+}
+
+.rule-card {
+
+    background:
+        rgba(var(--bs-body-color-rgb), .03);
+
+    border:
+        1px solid rgba(var(--bs-border-color-rgb), .3);
+
+    border-radius: 1.25rem;
+
+    padding: 1.25rem;
+
+    transition: .2s;
+}
+
+.rule-card:hover {
+
+    transform:
+        translateY(-2px);
+}
+
+.pricing-result-card {
+
+    background:
+        linear-gradient(135deg,
+            rgba(var(--bs-primary-rgb), .18),
+            rgba(var(--bs-primary-rgb), .08));
+
+    border:
+        1px solid rgba(var(--bs-primary-rgb), .2);
+
+    border-radius: 2rem;
+
+    padding: 3rem;
+
+    min-height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+.pricing-result-card h1 {
+
+    font-size: 4rem;
+
+    font-weight: 800;
+
+    margin: 1rem 0;
+
+    color:
+        var(--bs-primary);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 991px) {
+
+    .pricing-card {
+
+        padding: 1rem;
+    }
+
+    .pricing-result-card {
+
+        padding: 2rem;
+    }
+
+    .pricing-result-card h1 {
+
+        font-size: 2.5rem;
+    }
+}

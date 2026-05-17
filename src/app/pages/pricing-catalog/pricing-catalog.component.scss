@@ -1,0 +1,68 @@
+.catalog-card {
+
+  background:
+    rgba(var(--bs-body-bg-rgb), 1);
+
+  border:
+    1px solid rgba(var(--bs-border-color-rgb), .4);
+
+  border-radius: 1.5rem;
+
+  padding: 1.5rem;
+
+  height: 100%;
+}
+
+.catalog-badge {
+
+  width: 42px;
+
+  height: 42px;
+
+  border-radius: 1rem;
+
+  background:
+    rgba(var(--bs-primary-rgb), .15);
+
+  color:
+    var(--bs-primary);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-weight: 700;
+}
+
+.table {
+
+  margin-bottom: 0;
+}
+
+.table td,
+.table th {
+
+  vertical-align: middle;
+
+  border-color:
+    rgba(var(--bs-border-color-rgb), .3);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 991px) {
+
+  .catalog-card {
+
+    padding: 1rem;
+  }
+
+  .table {
+
+    min-width: 900px;
+  }
+}

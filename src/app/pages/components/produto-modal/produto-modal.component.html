@@ -1,0 +1,581 @@
+<div class="modal fade" id="productModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content app-modal">
+            <div class="modal-header border-0">
+                <div>
+                    <h4 class="modal-title fw-bold mb-1">
+                        Novo Produto
+                    </h4>
+                    <p class="text-muted mb-0">
+                        Produto comercial + ficha técnica
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+                </button>
+            </div>
+
+            <!-- TABS -->
+
+            <div class="modal-tabs px-4">
+
+                <button
+                    type="button"
+                    class="tab-btn"
+                    [class.active]="activeTab === 'general'"
+                    (click)="activeTab = 'general'">
+
+                    <i class="bi bi-grid me-2"></i>
+                    Geral
+
+                </button>
+
+                <button
+                    type="button"
+                    class="tab-btn"
+                    [class.active]="activeTab === 'composition'"
+                    (click)="activeTab = 'composition'">
+
+                    <i class="bi bi-box-seam me-2"></i>
+                    Composição
+
+                </button>
+
+                <button
+                    type="button"
+                    class="tab-btn"
+                    [class.active]="activeTab === 'pricing'"
+                    (click)="activeTab = 'pricing'">
+
+                    <i class="bi bi-currency-dollar me-2"></i>
+                    Precificação
+
+                </button>
+
+                <button
+                    type="button"
+                    class="tab-btn"
+                    [class.active]="activeTab === 'production'"
+                    (click)="activeTab = 'production'">
+
+                    <i class="bi bi-cpu me-2"></i>
+                    Produção
+
+                </button>
+
+            </div>
+
+            <!-- BODY -->
+
+            <div class="modal-body pt-0">
+
+                <form
+                    [formGroup]="form"
+                    (ngSubmit)="submit()">
+
+                    <!-- =====================================================
+                         GENERAL TAB
+                    ====================================================== -->
+
+                    @if(activeTab === 'general') {
+
+                    <div class="row g-4">
+
+                           <!-- IMAGE -->
+
+                        <div class="col-12 col-lg-4">
+
+                            <div class="product-image-card">
+
+                                <div class="image-preview">
+
+                                    @if(imagePreview) {
+
+                                    <img [src]="imagePreview" alt="Produto">
+
+                                    } @else {
+
+                                    <div class="empty-image">
+
+                                        <i class="bi bi-image"></i>
+
+                                        <span>
+                                            Upload da imagem
+                                        </span>
+
+                                    </div>
+
+                                    }
+
+                                </div>
+
+                                <label class="btn btn-outline-primary w-100 mt-3">
+
+                                    <i class="bi bi-upload me-2"></i>
+                                    Selecionar imagem
+
+                                    <input hidden type="file" accept="image/*" (change)="onImageChange($event)">
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                        <!-- FORM -->
+
+                        <div class="col-12 col-lg-8">
+
+                            <div class="row g-3">
+
+                                <!-- NAME -->
+
+                                <div class="col-12">
+
+                                    <label class="form-label">
+                                        Nome do produto
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        formControlName="name"
+                                        placeholder="Ex: Chaveiro Switch Azul">
+
+                                </div>
+
+                                <!-- SKU -->
+
+                                <div class="col-12 col-md-6">
+
+                                    <label class="form-label">
+                                        SKU
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        formControlName="sku"
+                                        placeholder="PROD-001">
+
+                                </div>
+
+                                <!-- CATEGORY -->
+
+                                <div class="col-12 col-md-6">
+
+                                    <label class="form-label">
+                                        Categoria
+                                    </label>
+
+                                    <select
+                                        class="form-select"
+                                        formControlName="category">
+
+                                        <option value="">
+                                            Selecione
+                                        </option>
+
+                                        <option value="Chaveiros">
+                                            Chaveiros
+                                        </option>
+
+                                        <option value="Geek">
+                                            Geek
+                                        </option>
+
+                                        <option value="3D Print">
+                                            3D Print
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <!-- DESCRIPTION -->
+
+                                <div class="col-12">
+
+                                    <label class="form-label">
+                                        Descrição
+                                    </label>
+
+                                    <textarea
+                                        rows="5"
+                                        class="form-control"
+                                        formControlName="description"
+                                        placeholder="Descrição do produto...">
+                                    </textarea>
+
+                                </div>
+
+                                <!-- ACTIVE -->
+
+                                <div class="col-12">
+
+                                    <div class="form-check form-switch">
+
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            formControlName="active">
+
+                                        <label class="form-check-label">
+                                            Produto ativo
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    }
+
+                    <!-- =====================================================
+                         COMPOSITION TAB
+                    ====================================================== -->
+
+                    @if(activeTab === 'composition') {
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Ficha Técnica
+                            </h5>
+
+                            <p class="text-muted mb-0">
+                                Recursos utilizados na produção
+                            </p>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            (click)="addCompositionItem()">
+
+                            <i class="bi bi-plus-lg me-2"></i>
+
+                            Adicionar recurso
+
+                        </button>
+
+                    </div>
+
+                    <div class="composition-list">
+
+                        @for(
+                        item of composition.controls;
+                        track $index
+                        ) {
+
+                        <div
+                            class="composition-card"
+                            [formGroup]="form">
+
+                            <div class="row g-3 align-items-end">
+
+                                <!-- RESOURCE -->
+
+                                <div class="col-lg-5">
+
+                                    <label class="form-label">
+                                        Recurso
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        formControlName="inventoryItemName"
+                                        placeholder="PLA Preto">
+
+                                </div>
+
+                                <!-- QUANTITY -->
+
+                                <div class="col-lg-3">
+
+                                    <label class="form-label">
+                                        Quantidade
+                                    </label>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        formControlName="quantity">
+
+                                </div>
+
+                                <!-- UNIT -->
+
+                                <div class="col-lg-2">
+
+                                    <label class="form-label">
+                                        Unidade
+                                    </label>
+
+                                    <select
+                                        class="form-select"
+                                        formControlName="unit">
+
+                                        <option value="g">
+                                            g
+                                        </option>
+
+                                        <option value="kg">
+                                            kg
+                                        </option>
+
+                                        <option value="un">
+                                            un
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <!-- REMOVE -->
+
+                                <div class="col-lg-2">
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-danger w-100"
+                                        (click)="removeCompositionItem($index)">
+
+                                        <i class="bi bi-trash"></i>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        }
+
+                    </div>
+
+                    }
+
+                    <!-- =====================================================
+                         PRICING TAB
+                    ====================================================== -->
+
+                    @if(activeTab === 'pricing') {
+
+                    <div class="row g-4">
+
+                        <!-- COST -->
+
+                        <div class="col-md-4">
+
+                            <div class="pricing-card">
+
+                                <span class="text-muted d-block mb-2">
+                                    Custo produção
+                                </span>
+
+                                <h3 class="fw-bold mb-0">
+
+                                    R$
+                                    {{
+                                    totalCompositionCost
+                                    | number:'1.2-2'
+                                    }}
+
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+                        <!-- EXTRA -->
+
+                        <div class="col-md-4">
+
+                            <div class="pricing-card">
+
+                                <label class="form-label">
+                                    Custos adicionais
+                                </label>
+
+                                <div class="input-group mt-2">
+
+                                    <span class="input-group-text">
+                                        R$
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        formControlName="additionalCost">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- SALE -->
+
+                        <div class="col-md-4">
+
+                            <div class="pricing-card">
+
+                                <label class="form-label">
+                                    Preço venda
+                                </label>
+
+                                <div class="input-group mt-2">
+
+                                    <span class="input-group-text">
+                                        R$
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        formControlName="price">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    }
+
+                    <!-- =====================================================
+                         PRODUCTION TAB
+                    ====================================================== -->
+
+                    @if(activeTab === 'production') {
+
+                    <div class="row g-4">
+
+                        <!-- TIME -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Tempo produção
+                            </label>
+
+                            <div class="input-group">
+
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    formControlName="productionTime">
+
+                                <span class="input-group-text">
+                                    min
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <!-- TYPE -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Tipo produção
+                            </label>
+
+                            <select
+                                class="form-select"
+                                formControlName="productionType">
+
+                                <option value="3d-print">
+                                    Impressão 3D
+                                </option>
+
+                                <option value="manual">
+                                    Manual
+                                </option>
+
+                                <option value="laser">
+                                    Corte Laser
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- PRINTER -->
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Perfil produção
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                formControlName="printerProfile"
+                                placeholder="Ex: Ender 3 PLA 0.20">
+
+                        </div>
+
+                    </div>
+
+                    }
+
+                </form>
+
+            </div>
+
+            <!-- FOOTER -->
+
+            <div class="modal-footer border-0 pt-0">
+
+                <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    [disabled]="loading"
+                    (click)="submit()">
+
+                    @if(loading) {
+
+                    <span
+                        class="spinner-border spinner-border-sm me-2">
+                    </span>
+
+                    }
+
+                    Salvar produto
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

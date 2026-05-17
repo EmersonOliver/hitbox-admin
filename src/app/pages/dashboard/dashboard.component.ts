@@ -38,6 +38,6 @@ export class DashboardComponent {
     }
   ];
   constructor(private title: Title) {
-    title.setTitle('Hitbox - Admin - Dashboard')
+    title.setTitle('Hitbox - Dashboard')
   }
 }

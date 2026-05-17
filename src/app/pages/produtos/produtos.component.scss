@@ -1,0 +1,181 @@
+.dashboard-page {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 1.5rem;
+}
+
+.card-metric {
+  border: none;
+  border-left: 4px solid var(--bs-primary);
+  transition: 0.2s;
+}
+
+.card-metric:hover {
+  transform: translateY(-4px);
+}
+
+.card h3 {
+  font-weight: 600;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+canvas {
+  max-height: 250px;
+}
+
+.quick-actions {
+  background: var(--bs-body-bg);
+  border-radius: 12px;
+}
+
+.action-card {
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: 1px solid var(--bs-border-color);
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  i {
+    font-size: 2rem;
+  }
+
+  h6 {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  small {
+    color: var(--bs-secondary-color);
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* VARIAÇÕES */
+.action-card.primary {
+  border-left: 4px solid var(--bs-primary);
+
+  i {
+    color: var(--bs-primary);
+  }
+}
+
+.action-card.success {
+  border-left: 4px solid var(--bs-success);
+
+  i {
+    color: var(--bs-success);
+  }
+}
+
+.action-card.neutral {
+  border-left: 4px solid var(--bs-secondary);
+
+  i {
+    color: var(--bs-secondary);
+  }
+}
+
+
+.dashboard-container {
+  padding: 24px;
+  // background: #f5f7fb; 
+  min-height: 100vh;
+}
+
+/* HEADER */
+.dashboard-header {
+  margin-bottom: 24px;
+
+  h4 {
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  small {
+    color: #6c757d;
+  }
+}
+
+/* GRID */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+/* TILE */
+.action-tile {
+  --shadow-hover: rgba(0, 0, 0, 0.15);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+
+  padding: 18px;
+  border-radius: 14px;
+
+
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  i {
+    font-size: 1.6rem;
+  }
+
+  h6 {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  small {
+    color: #6c757d;
+  }
+
+  /* 🔥 MICRO INTERAÇÃO */
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px var(--shadow-hover);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+:host-context([data-bs-theme="dark"]) .action-tile {
+  --shadow-hover: rgba(255, 113, 0, 0.338);
+}
+
+
+/* VARIAÇÕES (bem sutis, estilo Stripe) */
+.action-tile.primary {
+  i {
+    color: var(--bs-primary);
+  }
+}
+
+.action-tile.success {
+  i {
+    color: var(--bs-success);
+  }
+}
+
+.action-tile.neutral {
+  i {
+    color: var(--bs-secondary);
+  }
+}

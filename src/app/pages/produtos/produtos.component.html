@@ -1,1 +1,27 @@
-<p>produtos works!</p>
+<div class="dashboard-header">
+    <div class="row">
+        <div class="col-md-8 p-3">
+            <h4>Produtos</h4>
+        </div>
+        <div class="col-md-4 p-3">
+        </div>
+    </div>
+</div>
+<div class="quick-actions-grid">
+    <div class="action-tile primary" data-bs-toggle="modal" data-bs-target="#productModal">
+        <i class="bi bi-bag me-2"></i>
+        <div>
+            <h6>Para Venda</h6>
+        </div>
+    </div>
+    <div class="action-tile success" data-bs-toggle="modal" data-bs-target="#inventoryModal">
+        <i class="bi bi-box me-2"></i>
+        <div>
+            <h6>Para Estoque</h6>
+        </div>
+    </div>
+</div>
+
+<!-- <app-criar-produto-venda></app-criar-produto-venda> -->
+<app-inventory-modal></app-inventory-modal>
+<app-product-modal></app-product-modal>
