@@ -1,0 +1,350 @@
+<div class="container-fluid py-4">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Inventário
+            </h2>
+
+            <p class="text-muted mb-0">
+                Gerencie recursos de produção
+            </p>
+
+        </div>
+
+        <button class="btn btn-primary" (click)="openInventoryModal()">
+
+            <i class="bi bi-plus-circle me-2"></i>
+
+            Novo item
+
+        </button>
+
+    </div>
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <div class="inventory-card mb-4">
+
+        <div class="row g-3">
+
+            <!-- SEARCH -->
+
+            <div class="col-12 col-lg-6">
+
+                <input type="text" class="form-control" placeholder="Buscar item..." [(ngModel)]="search">
+
+            </div>
+
+            <!-- STATUS -->
+
+            <div class="col-12 col-lg-3">
+
+                <select class="form-select">
+
+                    <option>
+                        Todos
+                    </option>
+
+                    <option>
+                        Estoque baixo
+                    </option>
+
+                    <option>
+                        Estoque ok
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- CATEGORY -->
+
+            <div class="col-12 col-lg-3">
+
+                <select class="form-select">
+
+                    <option>
+                        Todas categorias
+                    </option>
+
+                    <option>
+                        Filamento
+                    </option>
+
+                    <option>
+                        Acessório
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         TABLE
+    ====================================================== -->
+
+    <div class="inventory-card">
+
+        <div class="table-responsive">
+
+            <table class="table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Produto
+                        </th>
+
+                        <th>
+                            Categoria
+                        </th>
+
+                        <th>
+                            Estoque
+                        </th>
+
+                        <th>
+                            Nível
+                        </th>
+
+                        <th>
+                            Local
+                        </th>
+
+                        <th>
+                            Custo
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th class="text-end">
+                            Ações
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @for(
+                    item of paginatedInventory;
+                    track item.id
+                    ) {
+
+                    <tr>
+
+                        <!-- PRODUCT -->
+
+                        <td>
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <img [src]="item.image" class="inventory-image">
+
+                                <div>
+
+                                    <h6 class="mb-1">
+
+                                        {{ item.name }}
+
+                                    </h6>
+
+                                    <small class="text-muted">
+
+                                        {{ item.supplier }}
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <!-- CATEGORY -->
+
+                        <td>
+
+                            {{ item.category }}
+
+                        </td>
+
+                        <!-- STOCK -->
+
+                        <td>
+
+                            <strong>
+
+                                {{ item.quantity }}
+                                {{ item.unit }}
+
+                            </strong>
+
+                            <div class="text-muted small">
+
+                                Min:
+                                {{ item.minimumStock }}
+                                {{ item.unit }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- LEVEL -->
+
+                        <td width="220">
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <div class="progress flex-grow-1">
+
+                                    <div class="progress-bar" [class.bg-primary]="getStockVariant(item) === 'primary'"
+                                        [class.bg-warning]="getStockVariant(item) === 'warning'"
+                                        [class.bg-danger]="getStockVariant(item) === 'danger'"
+                                        [style.width.%]="getStockPercentage(item)">
+                                    </div>
+
+                                </div>
+
+                                <small>
+
+                                    {{
+                                    getStockPercentage(item)
+                                    | number:'1.0-0'
+                                    }}%
+
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <!-- LOCATION -->
+
+                        <td>
+
+                            {{ item.location }}
+
+                        </td>
+
+                        <!-- COST -->
+
+                        <td>
+
+                            R$
+                            {{ item.cost }}
+
+                        </td>
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            @if(item.active) {
+
+                            <span class="badge bg-success-subtle text-success">
+
+                                Ativo
+
+                            </span>
+
+                            } @else {
+
+                            <span class="badge bg-danger-subtle text-danger">
+
+                                Inativo
+
+                            </span>
+
+                            }
+
+                        </td>
+
+                        <!-- ACTIONS -->
+
+                        <td class="text-end">
+
+                            <div class="d-flex justify-content-end gap-2">
+
+                                <button class="btn btn-sm btn-outline-primary">
+
+                                    <i class="bi bi-pencil"></i>
+
+                                </button>
+
+                                <button class="btn btn-sm btn-outline-danger">
+
+                                    <i class="bi bi-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+
+            <small class="text-muted">
+
+                Página
+                {{ currentPage }}
+                de
+                {{ totalPages }}
+
+            </small>
+
+            <div class="d-flex gap-2">
+
+                <button class="btn btn-outline-primary btn-sm" (click)="changePage(currentPage - 1)">
+
+                    <i class="bi bi-chevron-left"></i>
+
+                </button>
+
+                <button class="btn btn-outline-primary btn-sm" (click)="changePage(currentPage + 1)">
+
+                    <i class="bi bi-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- MODAL -->
+
+<app-inventory-modal></app-inventory-modal>
