@@ -10,10 +10,7 @@
                         Produto comercial + ficha técnica
                     </p>
                 </div>
-                <button
-                    type="button"
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="modal">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
                 </button>
             </div>
 
@@ -21,10 +18,7 @@
 
             <div class="modal-tabs px-4">
 
-                <button
-                    type="button"
-                    class="tab-btn"
-                    [class.active]="activeTab === 'general'"
+                <button type="button" class="tab-btn" [class.active]="activeTab === 'general'"
                     (click)="activeTab = 'general'">
 
                     <i class="bi bi-grid me-2"></i>
@@ -32,10 +26,7 @@
 
                 </button>
 
-                <button
-                    type="button"
-                    class="tab-btn"
-                    [class.active]="activeTab === 'composition'"
+                <button type="button" class="tab-btn" [class.active]="activeTab === 'composition'"
                     (click)="activeTab = 'composition'">
 
                     <i class="bi bi-box-seam me-2"></i>
@@ -43,10 +34,7 @@
 
                 </button>
 
-                <button
-                    type="button"
-                    class="tab-btn"
-                    [class.active]="activeTab === 'pricing'"
+                <button type="button" class="tab-btn" [class.active]="activeTab === 'pricing'"
                     (click)="activeTab = 'pricing'">
 
                     <i class="bi bi-currency-dollar me-2"></i>
@@ -54,10 +42,7 @@
 
                 </button>
 
-                <button
-                    type="button"
-                    class="tab-btn"
-                    [class.active]="activeTab === 'production'"
+                <button type="button" class="tab-btn" [class.active]="activeTab === 'production'"
                     (click)="activeTab = 'production'">
 
                     <i class="bi bi-cpu me-2"></i>
@@ -71,9 +56,7 @@
 
             <div class="modal-body pt-0">
 
-                <form
-                    [formGroup]="form"
-                    (ngSubmit)="submit()">
+                <form [formGroup]="form" (ngSubmit)="submit()">
 
                     <!-- =====================================================
                          GENERAL TAB
@@ -83,7 +66,7 @@
 
                     <div class="row g-4">
 
-                           <!-- IMAGE -->
+                        <!-- IMAGE -->
 
                         <div class="col-12 col-lg-4">
 
@@ -138,10 +121,7 @@
                                         Nome do produto
                                     </label>
 
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        formControlName="name"
+                                    <input type="text" class="form-control" formControlName="name"
                                         placeholder="Ex: Chaveiro Switch Azul">
 
                                 </div>
@@ -154,10 +134,7 @@
                                         SKU
                                     </label>
 
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        formControlName="sku"
+                                    <input type="text" class="form-control" formControlName="sku"
                                         placeholder="PROD-001">
 
                                 </div>
@@ -170,9 +147,7 @@
                                         Categoria
                                     </label>
 
-                                    <select
-                                        class="form-select"
-                                        formControlName="category">
+                                    <select class="form-select" formControlName="category">
 
                                         <option value="">
                                             Selecione
@@ -202,10 +177,7 @@
                                         Descrição
                                     </label>
 
-                                    <textarea
-                                        rows="5"
-                                        class="form-control"
-                                        formControlName="description"
+                                    <textarea rows="5" class="form-control" formControlName="description"
                                         placeholder="Descrição do produto...">
                                     </textarea>
 
@@ -217,10 +189,7 @@
 
                                     <div class="form-check form-switch">
 
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            formControlName="active">
+                                        <input class="form-check-input" type="checkbox" formControlName="active">
 
                                         <label class="form-check-label">
                                             Produto ativo
@@ -258,10 +227,7 @@
 
                         </div>
 
-                        <button
-                            type="button"
-                            class="btn btn-primary"
-                            (click)="addCompositionItem()">
+                        <button type="button" class="btn btn-primary" (click)="addCompositionItem()">
 
                             <i class="bi bi-plus-lg me-2"></i>
 
@@ -278,9 +244,7 @@
                         track $index
                         ) {
 
-                        <div
-                            class="composition-card"
-                            [formGroup]="form">
+                        <div class="composition-card" [formGroup]="form">
 
                             <div class="row g-3 align-items-end">
 
@@ -292,12 +256,10 @@
                                         Recurso
                                     </label>
 
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        formControlName="inventoryItemName"
-                                        placeholder="PLA Preto">
-
+                                    <select name="inventoryItemName" id="inventoryItemName"
+                                        formControlName="inventoryItemName" class="form-select">
+                                        <option [value]="null" disabled>Selecione</option>
+                                    </select>
                                 </div>
 
                                 <!-- QUANTITY -->
@@ -308,10 +270,7 @@
                                         Quantidade
                                     </label>
 
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        formControlName="quantity">
+                                    <input type="number" class="form-control" formControlName="quantity">
 
                                 </div>
 
@@ -323,9 +282,7 @@
                                         Unidade
                                     </label>
 
-                                    <select
-                                        class="form-select"
-                                        formControlName="unit">
+                                    <select class="form-select" formControlName="unit">
 
                                         <option value="g">
                                             g
@@ -347,9 +304,7 @@
 
                                 <div class="col-lg-2">
 
-                                    <button
-                                        type="button"
-                                        class="btn btn-outline-danger w-100"
+                                    <button type="button" class="btn btn-outline-danger w-100"
                                         (click)="removeCompositionItem($index)">
 
                                         <i class="bi bi-trash"></i>
@@ -416,10 +371,7 @@
                                         R$
                                     </span>
 
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        formControlName="additionalCost">
+                                    <input type="number" class="form-control" formControlName="additionalCost">
 
                                 </div>
 
@@ -443,10 +395,7 @@
                                         R$
                                     </span>
 
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        formControlName="price">
+                                    <input type="number" class="form-control" formControlName="price">
 
                                 </div>
 
@@ -476,10 +425,7 @@
 
                             <div class="input-group">
 
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    formControlName="productionTime">
+                                <input type="number" class="form-control" formControlName="productionTime">
 
                                 <span class="input-group-text">
                                     min
@@ -497,9 +443,7 @@
                                 Tipo produção
                             </label>
 
-                            <select
-                                class="form-select"
-                                formControlName="productionType">
+                            <select class="form-select" formControlName="productionType">
 
                                 <option value="3d-print">
                                     Impressão 3D
@@ -525,10 +469,7 @@
                                 Perfil produção
                             </label>
 
-                            <input
-                                type="text"
-                                class="form-control"
-                                formControlName="printerProfile"
+                            <input type="text" class="form-control" formControlName="printerProfile"
                                 placeholder="Ex: Ender 3 PLA 0.20">
 
                         </div>
@@ -545,25 +486,17 @@
 
             <div class="modal-footer border-0 pt-0">
 
-                <button
-                    type="button"
-                    class="btn btn-outline-secondary"
-                    data-bs-dismiss="modal">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
 
                     Cancelar
 
                 </button>
 
-                <button
-                    type="submit"
-                    class="btn btn-primary"
-                    [disabled]="loading"
-                    (click)="submit()">
+                <button type="submit" class="btn btn-primary" [disabled]="loading" (click)="submit()">
 
                     @if(loading) {
 
-                    <span
-                        class="spinner-border spinner-border-sm me-2">
+                    <span class="spinner-border spinner-border-sm me-2">
                     </span>
 
                     }

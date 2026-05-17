@@ -1,5 +1,6 @@
 import {
-  Component
+  Component,
+  OnInit
 } from '@angular/core';
 
 import {
@@ -12,6 +13,7 @@ import {
   Validators
 } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { CategoriaService } from '../../core/categoria/categoria.service';
 @Component({
   selector: 'app-categorias',
   standalone: true,
@@ -20,7 +22,7 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './categorias.component.html',
   styleUrl: './categorias.component.scss'
 })
-export class CategoriasComponent {
+export class CategoriasComponent implements OnInit {
 
   loading = false;
   currentPage = 1;
@@ -84,10 +86,22 @@ export class CategoriasComponent {
   });
 
   constructor(
+    private categoriaService:CategoriaService,
     private title:Title,
     private fb: FormBuilder
   ) { 
     title.setTitle('Hitbox - Categorias')
+  }
+
+
+  ngOnInit(): void {
+    
+  }
+
+  loadAllCategorias() {
+    this.categoriaService.loadCategorias().subscribe(res=>{
+
+    });
   }
 
   /* ======================================================
