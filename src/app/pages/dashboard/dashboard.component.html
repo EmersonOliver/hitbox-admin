@@ -41,7 +41,7 @@
 <!-- QUICK ACTIONS -->
 <div class="quick-actions-grid">
 
-  <div class="action-tile primary">
+  <div class="action-tile primary" (click)="clickRouterLink('/produtos')">
     <i class="bi bi-plus-lg me-2"></i>
     <div>
       <h6>Novo Produto</h6>
@@ -49,15 +49,15 @@
     </div>
   </div>
 
-  <div class="action-tile success">
+  <div class="action-tile success" (click)="clickRouterLink('/calculos')">
     <i class="bi bi-play me-2"></i>
     <div>
-      <h6>Novo Registro</h6>
+      <h6>Nova Regra de Cálculo</h6>
       <small>Fluxo de produção</small>
     </div>
   </div>
 
-  <div class="action-tile neutral">
+  <div class="action-tile neutral" (click)="clickRouterLink('/inventario')">
     <i class="bi bi-box-seam me-2"></i>
     <div>
       <h6>Inventário</h6>

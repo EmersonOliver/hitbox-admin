@@ -1,1 +1,368 @@
-<p>reports works!</p>
+<div class="container-fluid py-4">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="mb-4">
+
+        <h2 class="fw-bold mb-1">
+            Relatórios
+        </h2>
+
+        <p class="text-muted mb-0">
+            Indicadores do negócio
+        </p>
+
+    </div>
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <div class="report-card mb-4">
+
+        <div class="row g-3">
+
+            <div class="col-12 col-lg-4">
+
+                <input type="date" class="form-control">
+
+            </div>
+
+            <div class="col-12 col-lg-4">
+
+                <input type="date" class="form-control">
+
+            </div>
+
+            <div class="col-12 col-lg-4">
+
+                <button class="btn btn-primary w-100">
+
+                    <i class="bi bi-search me-2"></i>
+
+                    Gerar relatório
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         KPIS
+    ====================================================== -->
+
+    <div class="row g-4 mb-4">
+
+        <!-- FATURAMENTO -->
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="kpi-card">
+
+                <div class="kpi-icon">
+
+                    <i class="bi bi-currency-dollar"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted">
+                        Faturamento
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+
+                        R$
+                        {{ totalRevenue }}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- LUCRO -->
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="kpi-card">
+
+                <div class="kpi-icon success">
+
+                    <i class="bi bi-graph-up"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted">
+                        Lucro
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+
+                        R$
+                        {{ totalProfit }}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- PEDIDOS -->
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="kpi-card">
+
+                <div class="kpi-icon warning">
+
+                    <i class="bi bi-bag"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted">
+                        Pedidos
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+
+                        {{ totalOrders }}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- MARGEM -->
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="kpi-card">
+
+                <div class="kpi-icon danger">
+
+                    <i class="bi bi-pie-chart"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted">
+                        Margem média
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+
+                        {{ averageMargin }}%
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         CHART
+    ====================================================== -->
+
+    <div class="report-card mb-4">
+
+        <div class="mb-4">
+
+            <h4 class="fw-bold mb-1">
+                Faturamento mensal
+            </h4>
+
+            <p class="text-muted mb-0">
+                Evolução financeira
+            </p>
+
+        </div>
+
+        <div class="chart-container">
+
+            <canvas #salesChart></canvas>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         TABLES
+    ====================================================== -->
+
+    <div class="row g-4">
+
+        <!-- TOP PRODUCTS -->
+
+        <div class="col-12 col-xl-7">
+
+            <div class="report-card">
+
+                <div class="mb-4">
+
+                    <h4 class="fw-bold mb-1">
+                        Produtos mais vendidos
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        Ranking de vendas
+                    </p>
+
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="table align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Produto
+                                </th>
+
+                                <th>
+                                    Vendas
+                                </th>
+
+                                <th>
+                                    Receita
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @for(
+                            product of topProducts;
+                            track product.name
+                            ) {
+
+                            <tr>
+
+                                <td>
+
+                                    <strong>
+
+                                        {{ product.name }}
+
+                                    </strong>
+
+                                </td>
+
+                                <td>
+
+                                    {{ product.sales }}
+
+                                </td>
+
+                                <td>
+
+                                    R$
+                                    {{ product.revenue }}
+
+                                </td>
+
+                            </tr>
+
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- STOCK -->
+
+        <div class="col-12 col-xl-5">
+
+            <div class="report-card">
+
+                <div class="mb-4">
+
+                    <h4 class="fw-bold mb-1">
+                        Estoque crítico
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        Itens abaixo do mínimo
+                    </p>
+
+                </div>
+
+                <div class="d-flex flex-column gap-3">
+
+                    @for(
+                    item of criticalStock;
+                    track item.name
+                    ) {
+
+                    <div class="stock-alert">
+
+                        <div>
+
+                            <h6 class="mb-1">
+
+                                {{ item.name }}
+
+                            </h6>
+
+                            <small class="text-muted">
+
+                                {{ item.quantity }}
+                                /
+                                {{ item.minimum }}
+
+                            </small>
+
+                        </div>
+
+                        <span class="badge bg-danger-subtle text-danger">
+
+                            Crítico
+
+                        </span>
+
+                    </div>
+
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -5,15 +5,17 @@ import { FormsModule } from '@angular/forms';
 import { RangeDatepickerComponent } from "../components/datepicker/range-datepicker.component";
 import { RatingComponent } from '../components/rating/rating.component';
 import { StockProgressComponent } from "../components/stock-progress/stock-progress.component";
+import { Router, RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, RangeDatepickerComponent, RatingComponent, StockProgressComponent],
+  imports: [CommonModule, FormsModule, RangeDatepickerComponent, RatingComponent, StockProgressComponent, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
+
   rating = 0;
   cards = [
     {
@@ -37,7 +39,10 @@ export class DashboardComponent {
       icon: 'bi-percent'
     }
   ];
-  constructor(private title: Title) {
+  constructor(private title: Title, private router: Router) {
     title.setTitle('Hitbox - Dashboard')
+  }
+  clickRouterLink(link: string) {
+    this.router.navigate([link])
   }
 }
