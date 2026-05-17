@@ -10,7 +10,7 @@ import { Router, RouterLink } from "@angular/router";
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, RangeDatepickerComponent, RatingComponent, StockProgressComponent, RouterLink],
+  imports: [CommonModule, FormsModule, RangeDatepickerComponent, RatingComponent, StockProgressComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
