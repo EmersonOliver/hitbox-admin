@@ -39,6 +39,20 @@ export class CategoriasComponent implements OnInit {
 
   categorias: CategoriaModel[] = [];
   categoriaSelecionada!: CategoriaModel;
+  tipoCategoria = [
+    {
+      value: 'INSUMO',
+      label: 'Insumo'
+    },
+    {
+      value: 'OPERACIONAL',
+      label: 'Operacional'
+    },
+    {
+      value: 'VENDA',
+      label: 'Venda'
+    }
+  ]
 
   form!: FormGroup;
 
@@ -52,6 +66,7 @@ export class CategoriasComponent implements OnInit {
     title.setTitle('Hitbox - Categorias')
     this.form = this.fb.group({
       nome: [null, Validators.required],
+      tipo: [null, Validators.required],
       descricao: [''],
       ativo: [true]
     });
@@ -60,6 +75,12 @@ export class CategoriasComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategorias();
+  }
+
+  getCategoria(tipo:string){
+    let tipoCategoria = this.tipoCategoria.find(i=> i.value === tipo)?.label;
+    console.log(tipoCategoria)
+    return tipoCategoria;
   }
 
   loadCategorias(): void {
@@ -150,6 +171,7 @@ export class CategoriasComponent implements OnInit {
 
       let payload: CategoriaModel = {
         nome: this.form.get('nome')?.value,
+        tipo: this.form.get('tipo')?.value,
         descricao: this.form.get('descricao')?.value,
         ativo: this.form.get('ativo')?.value
       }
@@ -206,6 +228,7 @@ export class CategoriasComponent implements OnInit {
     this.form.patchValue({
       id: categoria.id,
       nome: categoria.nome,
+      tipo: categoria.tipo,
       descricao: categoria.descricao,
       ativo: categoria.ativo
     });

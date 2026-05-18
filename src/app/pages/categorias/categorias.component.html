@@ -46,7 +46,18 @@
                         </div>
 
                         <!-- DESCRIPTION -->
+                        <div class="col-12">
 
+                            <label class="form-label">
+                                Tipo
+                            </label>
+
+                            <select name="tipo" formControlName="tipo" id="tipo" class="form-select">
+                                <option [value]="null" disabled>Selecione</option>
+                                <option *ngFor="let i of tipoCategoria" [value]="i.value">{{i.label}}</option>
+                            </select>
+
+                        </div>
                         <div class="col-12">
 
                             <label class="form-label">
@@ -132,7 +143,8 @@
 
                         <thead>
                             <tr>
-                                <th> Nome</th>
+                                <th>Nome</th>
+                                <th>Tipo</th>
                                 <th>Descrição</th>
                                 <th>Status</th>
                                 <th class="text-end">Ações</th>
@@ -155,6 +167,11 @@
                                             </h6>
                                         </div>
                                     </div>
+                                </td>
+                                   <td>
+                                    <span class="text-muted">
+                                        {{ getCategoria(category.tipo) }}
+                                    </span>
                                 </td>
                                 <td>
                                     <span class="text-muted">
