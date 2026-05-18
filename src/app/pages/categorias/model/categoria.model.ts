@@ -1,6 +1,6 @@
 export interface CategoriaModel {
-    id: number;
+    id?: number;
     nome: string;
-    descricao: string;
+    descricao?: string;
     ativo: boolean;
 }

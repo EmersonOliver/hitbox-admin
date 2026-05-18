@@ -9,98 +9,90 @@ import {
 
 import {
   FormBuilder,
+  FormGroup,
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { CategoriaService } from '../../core/categoria/categoria.service';
+import { CategoriaModel } from './model/categoria.model';
+import { ToastComponent } from "../components/toast/toast.component";
+import { ToastService } from '../components/toast/toast.service';
 @Component({
   selector: 'app-categorias',
   standalone: true,
   imports: [CommonModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule, ToastComponent],
   templateUrl: './categorias.component.html',
   styleUrl: './categorias.component.scss'
 })
 export class CategoriasComponent implements OnInit {
 
   loading = false;
-  currentPage = 1;
+  currentPage = 0;
   pageSize = 5;
+  totalPages = 0;
+  totalElements = 0;
+  first = true;
+  last = false;
+  editar = false;
 
-  categories = [
+  categorias: CategoriaModel[] = [];
+  categoriaSelecionada!: CategoriaModel;
 
-    {
-      id: 1,
-      name: 'Chaveiros',
-      description: 'Produtos impressos 3D',
-      active: true
-    },
+  form!: FormGroup;
 
-    {
-      id: 2,
-      name: 'Geek',
-      description: 'Produtos geeks',
-      active: true
-    },
-
-    {
-      id: 3,
-      name: 'Papelaria',
-      description: 'Itens personalizados',
-      active: false
-    },
-
-    {
-      id: 4,
-      name: 'Colecionáveis',
-      description: 'Miniaturas',
-      active: true
-    },
-
-    {
-      id: 5,
-      name: 'Acessórios',
-      description: 'Itens extras',
-      active: true
-    },
-
-    {
-      id: 6,
-      name: 'Switches',
-      description: 'Teclado mecânico',
-      active: true
-    }
-  ];
-
-  form = this.fb.group({
-
-    name: [
-      '',
-      Validators.required
-    ],
-
-    description: [''],
-
-    active: [true]
-  });
 
   constructor(
-    private categoriaService:CategoriaService,
-    private title:Title,
+    private categoriaService: CategoriaService,
+    private toastService: ToastService,
+    private title: Title,
     private fb: FormBuilder
-  ) { 
+  ) {
     title.setTitle('Hitbox - Categorias')
+    this.form = this.fb.group({
+      nome: [null, Validators.required],
+      descricao: [''],
+      ativo: [true]
+    });
   }
 
 
   ngOnInit(): void {
-    
+    this.loadCategorias();
   }
 
-  loadAllCategorias() {
-    this.categoriaService.loadCategorias().subscribe(res=>{
+  loadCategorias(): void {
 
+    this.loading = true;
+    console.log(this.currentPage)
+    console.log(this.pageSize)
+    this.categoriaService.loadCategorias(
+      this.currentPage,
+      this.pageSize
+    ).subscribe({
+      next: response => {
+
+        this.categorias =
+          response.content;
+
+        this.totalPages =
+          response.totalPages;
+
+        this.totalElements =
+          response.totalElements;
+
+        this.first =
+          response.first;
+
+        this.last =
+          response.last;
+
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+      }
     });
   }
 
@@ -108,42 +100,37 @@ export class CategoriasComponent implements OnInit {
     PAGINATION
  ====================================================== */
 
-  get paginatedCategories() {
-
-    const start =
-      (
-        this.currentPage - 1
-      ) * this.pageSize;
-
-    const end =
-      start + this.pageSize;
-
-    return this.categories.slice(
-      start,
-      end
-    );
-  }
-
-  get totalPages(): number {
-
-    return Math.ceil(
-      this.categories.length /
-      this.pageSize
-    );
-  }
-
   changePage(
     page: number
   ): void {
 
     if (
-      page < 1 ||
-      page > this.totalPages
+      page < 0 ||
+      page >= this.totalPages
     ) {
       return;
     }
 
     this.currentPage = page;
+
+    this.loadCategorias();
+  }
+
+  nextPage(): void {
+
+    if (!this.last) {
+
+      this.currentPage++;
+
+      this.loadCategorias();
+    }
+  }
+
+  previousPage(): void {
+    if (!this.first) {
+      this.currentPage--;
+      this.loadCategorias();
+    }
   }
 
   /* ======================================================
@@ -153,9 +140,7 @@ export class CategoriasComponent implements OnInit {
   submit(): void {
 
     if (this.form.invalid) {
-
       this.form.markAllAsTouched();
-
       return;
     }
 
@@ -163,13 +148,89 @@ export class CategoriasComponent implements OnInit {
 
     setTimeout(() => {
 
-      this.form.reset({
-        active: true
+      let payload: CategoriaModel = {
+        nome: this.form.get('nome')?.value,
+        descricao: this.form.get('descricao')?.value,
+        ativo: this.form.get('ativo')?.value
+      }
+
+      if (this.editar && this.categoriaSelecionada.id) {
+        this.categoriaService.editarCategoria(this.categoriaSelecionada.id, payload).subscribe({
+          next: response => {
+            this.toastService.show(
+              'Categoria editada com sucesso',
+              'success'
+            );
+            this.loadCategorias();
+            this.editar = false;
+            this.form.reset({
+              ativo: true
+            });
+          },
+          error: (msg) => {
+            this.loading = false;
+            this.toastService.show(
+              msg.error.message,
+              'danger'
+            );
+          }
+        });
+        return;
+      }
+
+      this.categoriaService.salvarCategoria(payload).subscribe({
+        next: response => {
+          this.toastService.show(
+            'Categoria salva com sucesso',
+            'success'
+          );
+          this.loadCategorias();
+        }, error: (msg) => {
+          this.loading = false;
+          this.toastService.show(
+            msg.error.message,
+            'danger'
+          );
+        }
       });
-
+      this.form.reset({
+        ativo: true
+      });
       this.loading = false;
-
     }, 800);
+  }
+
+  selecionarCategoria(categoria: CategoriaModel) {
+    this.categoriaSelecionada = categoria;
+    this.editar = true;
+    this.form.patchValue({
+      id: categoria.id,
+      nome: categoria.nome,
+      descricao: categoria.descricao,
+      ativo: categoria.ativo
+    });
+  }
+
+  catchCategoria(categoria: CategoriaModel) {
+    this.categoriaSelecionada = categoria;
+  }
+  removerCategoria(categoria: CategoriaModel) {
+    if (categoria.id)
+      this.categoriaService.removerCategoria(categoria.id).subscribe({
+        next: response => {
+          this.toastService.show(
+            'Categoria removida com sucesso',
+            'success'
+          );
+          this.loadCategorias();
+        },
+        error: (msg) => {
+          this.toastService.show(
+            msg.error.message,
+            'danger'
+          );
+        }
+      })
   }
 
 }
