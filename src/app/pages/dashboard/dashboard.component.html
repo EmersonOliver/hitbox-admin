@@ -42,22 +42,30 @@
 <div class="quick-actions-grid">
 
   <div class="action-tile primary" (click)="clickRouterLink('/produtos')">
-    <i class="bi bi-plus-lg me-2"></i>
+    <i class="bi bi-cash-stack me-2"></i>
     <div>
-      <h6>Novo Produto</h6>
-      <small>Criar rapidamente</small>
+      <h6>Custos</h6>
+      <small>Gerenciar custos</small>
     </div>
   </div>
 
-  <div class="action-tile success" (click)="clickRouterLink('/calculos')">
-    <i class="bi bi-play me-2"></i>
+  <div class="action-tile primary" (click)="clickRouterLink('/calculos')">
+    <i class="bi bi-journal-check me-2"></i>
     <div>
-      <h6>Nova Regra de Cálculo</h6>
-      <small>Fluxo de produção</small>
+      <h6>Catálogos</h6>
+      <small>Gerenciar catálogos</small>
     </div>
   </div>
 
-  <div class="action-tile neutral" (click)="clickRouterLink('/inventario')">
+  <div class="action-tile primary" (click)="clickRouterLink('/calculos')">
+    <i class="bi bi-tags me-2"></i>
+    <div>
+      <h6>Categorias</h6>
+      <small>Gerenciar categorias</small>
+    </div>
+  </div>
+
+  <div class="action-tile primary" (click)="clickRouterLink('/inventario')">
     <i class="bi bi-box-seam me-2"></i>
     <div>
       <h6>Inventário</h6>
@@ -162,56 +170,60 @@
               <tbody>
                 <tr class="align-items-center">
                   <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/inventario/filmento_amarelo.jpg" class="img-fluid img-thumbnail product-image rounded ">
+                    <img src="assets/img/inventario/filmento_amarelo.jpg"
+                      class="img-fluid img-thumbnail product-image rounded ">
                   </th>
                   <td>Filamento Amarelo 1Kg</td>
                   <td>120g restantes</td>
                   <td>
-                     <app-stock-progress [value]="30">
+                    <app-stock-progress [value]="30">
                     </app-stock-progress>
                   </td>
                 </tr>
-                 <tr class="align-items-center">
+                <tr class="align-items-center">
                   <th scope="row" class="product-image-cell ">
                     <img src="assets/img/inventario/click.webp" class="img-fluid img-thumbnail product-image rounded ">
                   </th>
                   <td>Kit Click - 200Un</td>
                   <td>40 restantes</td>
                   <td>
-                     <app-stock-progress [value]="40">
+                    <app-stock-progress [value]="40">
                     </app-stock-progress>
                   </td>
                 </tr>
-                 <tr class="align-items-center">
+                <tr class="align-items-center">
                   <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/inventario/saquinho.jpg" class="img-fluid img-thumbnail product-image rounded ">
+                    <img src="assets/img/inventario/saquinho.jpg"
+                      class="img-fluid img-thumbnail product-image rounded ">
                   </th>
                   <td>Saquinho Kit 400un</td>
                   <td>300 restantes</td>
                   <td>
-                     <app-stock-progress [value]="85">
+                    <app-stock-progress [value]="85">
                     </app-stock-progress>
                   </td>
                 </tr>
-                 <tr class="align-items-center">
+                <tr class="align-items-center">
                   <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/inventario/correntinha.webp" class="img-fluid img-thumbnail product-image rounded ">
+                    <img src="assets/img/inventario/correntinha.webp"
+                      class="img-fluid img-thumbnail product-image rounded ">
                   </th>
                   <td>Correntinha Bolinha - Kit 20Un</td>
                   <td>3 restantes</td>
                   <td>
-                     <app-stock-progress [value]="15">
+                    <app-stock-progress [value]="15">
                     </app-stock-progress>
                   </td>
                 </tr>
-                 <tr class="align-items-center">
+                <tr class="align-items-center">
                   <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/inventario/filamento_azul.webp" class="img-fluid img-thumbnail product-image rounded ">
+                    <img src="assets/img/inventario/filamento_azul.webp"
+                      class="img-fluid img-thumbnail product-image rounded ">
                   </th>
                   <td>Filamento Azul 1Kg</td>
                   <td>920g restantes</td>
                   <td>
-                     <app-stock-progress [value]="90">
+                    <app-stock-progress [value]="90">
                     </app-stock-progress>
                   </td>
                 </tr>

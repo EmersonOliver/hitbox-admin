@@ -1,31 +1,22 @@
 <div class="container-fluid py-4">
-
+    <app-toast></app-toast>
     <!-- =====================================================
          HEADER
     ====================================================== -->
 
     <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
-
         <div>
-
             <h2 class="fw-bold mb-1">
                 Inventário
             </h2>
-
             <p class="text-muted mb-0">
                 Gerencie recursos de produção
             </p>
-
         </div>
-
         <button class="btn btn-primary" (click)="openInventoryModal()">
-
             <i class="bi bi-plus-circle me-2"></i>
-
             Novo item
-
         </button>
-
     </div>
 
     <!-- =====================================================
@@ -76,14 +67,9 @@
                         Todas categorias
                     </option>
 
-                    <option>
-                        Filamento
+                    <option *ngFor="let c of categorias">
+                        {{c.nome}}
                     </option>
-
-                    <option>
-                        Acessório
-                    </option>
-
                 </select>
 
             </div>
@@ -97,93 +83,66 @@
     ====================================================== -->
 
     <div class="inventory-card">
-
         <div class="table-responsive">
-
             <table class="table align-middle">
-
                 <thead>
-
                     <tr>
-
                         <th>
                             Produto
                         </th>
-
                         <th>
                             Categoria
                         </th>
-
                         <th>
                             Estoque
                         </th>
-
                         <th>
                             Nível
                         </th>
-
                         <th>
                             Local
                         </th>
-
                         <th>
                             Custo
                         </th>
-
                         <th>
                             Status
                         </th>
-
                         <th class="text-end">
                             Ações
                         </th>
-
                     </tr>
-
                 </thead>
 
                 <tbody>
 
                     @for(
-                    item of paginatedInventory;
+                    item of inventory;
                     track item.id
                     ) {
 
                     <tr>
 
                         <!-- PRODUCT -->
-
                         <td>
-
                             <div class="d-flex align-items-center gap-3">
-
-                                <img [src]="item.image" class="inventory-image">
-
+                                <img [src]="resolveImage(item.imageUrl)" class="inventory-image">
                                 <div>
-
                                     <h6 class="mb-1">
-
                                         {{ item.name }}
-
                                     </h6>
-
                                     <small class="text-muted">
-
                                         {{ item.supplier }}
-
                                     </small>
-
                                 </div>
-
                             </div>
-
                         </td>
 
                         <!-- CATEGORY -->
 
                         <td>
 
-                            {{ item.category }}
+                            {{ item.categoria.nome }}
 
                         </td>
 
@@ -194,7 +153,7 @@
                             <strong>
 
                                 {{ item.quantity }}
-                                {{ item.unit }}
+                               {{ item.unit | unitLabel }}
 
                             </strong>
 
@@ -202,7 +161,7 @@
 
                                 Min:
                                 {{ item.minimumStock }}
-                                {{ item.unit }}
+                              {{ item.unit | unitLabel }}
 
                             </div>
 
@@ -240,18 +199,13 @@
                         <!-- LOCATION -->
 
                         <td>
-
-                            {{ item.location }}
-
+                             {{ item.location }}
                         </td>
 
                         <!-- COST -->
 
                         <td>
-
-                            R$
-                            {{ item.cost }}
-
+                            {{ item.cost | currency:'BRL'}}
                         </td>
 
                         <!-- STATUS -->
@@ -284,16 +238,15 @@
 
                             <div class="d-flex justify-content-end gap-2">
 
-                                <button class="btn btn-sm btn-outline-primary">
+                                <button class="btn btn-sm btn-outline-primary" (click)="selectInventoryEdit(item)">
 
                                     <i class="bi bi-pencil"></i>
 
                                 </button>
 
-                                <button class="btn btn-sm btn-outline-danger">
-
+                                <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                (click)="abrirModalRemoveInventario(item)" data-bs-target="#inventarioModalExclusao">
                                     <i class="bi bi-trash"></i>
-
                                 </button>
 
                             </div>
@@ -347,4 +300,25 @@
 
 <!-- MODAL -->
 
-<app-inventory-modal></app-inventory-modal>
+<app-inventory-modal (save)="reloadInventory()" 
+[inventorySelected]="inventorySelecionado"></app-inventory-modal>
+
+
+<div *ngIf="inventorySelecionado" class="modal fade" id="inventarioModalExclusao" aria-labelledby="inventarioModalExclusao" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Excluir</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja remover este item do inventário? <strong>"{{inventorySelecionado.name}}"</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                    (click)="removerInventario(inventorySelecionado)">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>

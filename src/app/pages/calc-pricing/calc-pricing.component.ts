@@ -1,7 +1,8 @@
 // calc-pricing.component.ts
 
 import {
-  Component
+  Component,
+  OnInit
 } from '@angular/core';
 
 import {
@@ -16,6 +17,14 @@ import {
   Validators
 } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { PricingEngineService } from '../../core/pricing/services/price-engine.service';
+import { PricingRule } from '../../core/pricing/models/pricing-rule.model';
+import { CalculationType } from '../../core/pricing/enums/calculation-type.enum';
+import { PricingRuleService } from '../../core/pricing/services/pricing-rule.service';
+import { ToastService } from '../components/toast/toast.service';
+import { CategoriaModel } from '../categorias/model/categoria.model';
+import { CategoriaService } from '../../core/categoria/categoria.service';
+import { PricingRuleResponse } from './models/pricing.rules.response';
 
 @Component({
   selector: 'app-calc-pricing',
@@ -34,7 +43,7 @@ import { Title } from '@angular/platform-browser';
   styleUrl:
     './calc-pricing.component.scss'
 })
-export class CalcPricingComponent {
+export class CalcPricingComponent implements OnInit {
 
   activeTab =
     'rules';
@@ -48,35 +57,9 @@ export class CalcPricingComponent {
 
   selectedStatus = 'ALL';
 
-  rules = [
+  rules: PricingRuleResponse[] = [];
 
-    {
-      id: 1,
-      name: 'Chaveiro Comum',
-      category: 'Chaveiros',
-      type: 'PER_GRAM',
-      basePrice: 5,
-      pricePerGram: 0.12,
-      active: true
-    },
-
-    {
-      id: 2,
-      name: 'Chaveiro Personalizado',
-      category: 'Chaveiros',
-      type: 'PER_GRAM',
-      basePrice: 10,
-      pricePerGram: 0.18,
-      active: true
-    }
-  ];
-
-  categories = [
-    'Chaveiros',
-    'Imãs',
-    'Geek',
-    'Personalizados'
-  ];
+  categories: CategoriaModel[] = [];
 
   calculationTypes = [
 
@@ -101,35 +84,27 @@ export class CalcPricingComponent {
     }
   ];
 
-  form: FormGroup =
-    this.fb.group({
+ form: FormGroup =
+  this.fb.group({
 
-      name: [
-        '',
-        Validators.required
-      ],
+    name: ['', Validators.required],
 
-      category: [
-        '',
-        Validators.required
-      ],
-
-      calculationType: [
-        'FIXED'
-      ],
-
-      basePrice: [0],
-
-      pricePerGram: [0],
-
-      pricePerHour: [0],
-
-      additionalPrice: [0],
-
-      minimumPrice: [0],
-
-      active: [true]
-    });
+    categoriaId: [
+      null as number | null,
+      Validators.required
+    ],
+    calculationType: ['FIXED'],
+    setupCost: [0],
+    pricePerGram: [0],
+    pricePerHour: [0],
+    pricePerUnit: [0],
+    additionalCost: [0],
+    profitMargin: [0],
+    marketplaceFee: [0],
+    cardFee: [0],
+    minimumPrice: [0],
+    active: [true]
+  });
 
   simulationForm =
     this.fb.group({
@@ -142,16 +117,44 @@ export class CalcPricingComponent {
     });
 
   constructor(
-    private title:Title,
-    private fb: FormBuilder
+    private title: Title,
+    private fb: FormBuilder,
+    private pringingRuleService: PricingRuleService,
+    private categoriaService: CategoriaService,
+    private pricingEngine: PricingEngineService,
+    private toast: ToastService
   ) {
     title.setTitle('Hitbox - Cálculos')
     this.simulationForm
       .valueChanges
       .subscribe(() => {
-
         this.calculatePreview();
       });
+  }
+  ngOnInit(): void {
+    this.loadRules();
+    this.loadCategorias();
+  }
+
+  loadCategorias() {
+    this.categoriaService.loadCategoriasWithouPages().subscribe({
+      next: response => {
+        this.categories = response.content;
+      }, error: (error) => {
+        this.toast.show('Ocorreu um erro ao carregar categorias ' + error.error.message, 'danger');
+      }
+    });
+  }
+
+  loadRules() {
+    this.pringingRuleService.getPage(this.currentPage - 1,
+      this.pageSize).subscribe({
+        next: response => {
+          this.rules = response.content;
+        }, error: (error) => {
+          this.toast.show('Ocorreu um erro ' + error.error.message, 'danger')
+        }
+      })
   }
 
   calculatePreview(): void {
@@ -159,49 +162,38 @@ export class CalcPricingComponent {
     const rule =
       this.rules[0];
 
-    const values =
-      this.simulationForm.value;
-
-    let total =
-      rule.basePrice;
-
-    total +=
-      (
-        values.weight || 0
-      ) * rule.pricePerGram;
-
     this.previewResult =
-      total;
+      this.pricingEngine
+        .calculate(
+          rule,
+          this.simulationForm.getRawValue()
+        ).total;
   }
 
   submit(): void {
-
     if (this.form.invalid) {
-
       this.form.markAllAsTouched();
-
       return;
     }
-
     this.loading = true;
+    const payload =
+      this.form.getRawValue();
 
-    setTimeout(() => {
-
-      this.rules.unshift({
-
-        id: this.rules.length + 1,
-
-        ...this.form.getRawValue()
+    this.pringingRuleService
+      .save(payload)
+      .subscribe({
+        next: response => {
+          // this.rules.unshift(response);
+          this.loading = false;
+          this.form.reset({
+            calculationType: 'FIXED',
+            active: true
+          });
+        },
+        error: () => {
+          this.loading = false;
+        }
       });
-
-      this.loading = false;
-
-      this.form.reset({
-        calculationType: 'FIXED',
-        active: true
-      });
-
-    }, 800);
   }
   get filteredRules() {
 

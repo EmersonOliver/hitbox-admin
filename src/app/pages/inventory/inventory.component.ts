@@ -1,5 +1,6 @@
 import {
-  Component
+  Component,
+  OnInit
 } from '@angular/core';
 
 import {
@@ -10,6 +11,14 @@ import {
   FormsModule
 } from '@angular/forms';
 import { InventoryModalComponent } from "../components/inventory-modal/inventory-modal.component";
+import { InventarioService } from '../../core/inventario/inventario.service';
+import { InventoryModel } from '../components/inventory-modal/models/inventory.model';
+import { UnitLabelPipe } from "../../core/pipe/unitlable.pipe";
+import { ImageUtil } from '../../core/utils/image.util';
+import { CategoriaService } from '../../core/categoria/categoria.service';
+import { CategoriaModel } from '../categorias/model/categoria.model';
+import { ToastService } from '../components/toast/toast.service';
+import { ToastComponent } from "../components/toast/toast.component";
 
 declare var bootstrap: any;
 
@@ -21,8 +30,10 @@ declare var bootstrap: any;
   imports: [
     CommonModule,
     FormsModule,
-    InventoryModalComponent
-],
+    InventoryModalComponent,
+    UnitLabelPipe,
+    ToastComponent
+  ],
 
   templateUrl:
     './inventory.component.html',
@@ -30,58 +41,43 @@ declare var bootstrap: any;
   styleUrl:
     './inventory.component.scss'
 })
-export class InventoryComponent {
+export class InventoryComponent implements OnInit {
+
+  abrirModalRemoveInventario(item: InventoryModel) {
+    this.inventorySelecionado = item;
+  }
 
   currentPage = 1;
-
   pageSize = 5;
+  totalPages = 0;
+  totalElements = 0;
 
   search = '';
+  inventory: InventoryModel[] = [];
+  categorias: CategoriaModel[] = [];
+  inventorySelecionado?:
+    InventoryModel | null = null;
 
-  inventory = [
+  constructor(
+    private inventoryService: InventarioService,
+    private toast: ToastService,
+    private categoriaService: CategoriaService) { }
 
-    {
-      id: 1,
-      image: 'assets/img/inventario/filmento_amarelo.jpg',
-      name: 'PLA Amarelo',
-      category: 'Filamento',
-      quantity: 950,
-      minimumStock: 300,
-      unit: 'g',
-      location: 'A-01',
-      supplier: '3D Lab',
-      cost: 0.12,
-      active: true
-    },
 
-    {
-      id: 2,
-      image: 'assets/img/inventario/click.webp',
-      name: 'Switch Azul',
-      category: 'Acessório',
-      quantity: 25,
-      minimumStock: 50,
-      unit: 'un',
-      location: 'B-02',
-      supplier: 'KeyTech',
-      cost: 2.5,
-      active: true
-    },
+  ngOnInit(): void {
+    this.loadInventory()
+    this.loadCategoriasFiltro();
+  }
 
-    {
-      id: 3,
-      image: 'assets/img/inventario/correntinha.webp',
-      name: 'Corrente metálica',
-      category: 'Acessório',
-      quantity: 120,
-      minimumStock: 40,
-      unit: 'un',
-      location: 'B-05',
-      supplier: 'Metal Shop',
-      cost: 0.85,
-      active: true
-    }
-  ];
+  loadCategoriasFiltro() {
+    this.categoriaService.loadCategoriasWithouPages().subscribe({
+      next: response => {
+        this.categorias = response.content;
+      }, error: (msg) => {
+        this.toast.show('Ocorreu um erro ' + msg.error.message, 'danger');
+      }
+    })
+  }
 
   get filteredInventory() {
 
@@ -96,10 +92,7 @@ export class InventoryComponent {
 
   get paginatedInventory() {
 
-    const start =
-      (
-        this.currentPage - 1
-      ) * this.pageSize;
+    const start = (this.currentPage - 1) * this.pageSize;
 
     const end =
       start + this.pageSize;
@@ -107,14 +100,6 @@ export class InventoryComponent {
     return this.filteredInventory.slice(
       start,
       end
-    );
-  }
-
-  get totalPages() {
-
-    return Math.ceil(
-      this.filteredInventory.length /
-      this.pageSize
     );
   }
 
@@ -129,11 +114,12 @@ export class InventoryComponent {
     ) {
       return;
     }
-
     this.currentPage = page;
+    this.loadInventory();
   }
 
   openInventoryModal(): void {
+    this.inventorySelecionado = null;
 
     const modal =
       new bootstrap.Modal(
@@ -141,7 +127,17 @@ export class InventoryComponent {
           'inventoryModal'
         )
       );
+    modal.show();
+  }
 
+  selectInventoryEdit(item: InventoryModel): void {
+    this.inventorySelecionado = item;
+    const modal =
+      new bootstrap.Modal(
+        document.getElementById(
+          'inventoryModal'
+        )
+      );
     modal.show();
   }
 
@@ -182,4 +178,50 @@ export class InventoryComponent {
 
     return 'primary';
   }
+  reloadInventory(): void {
+    this.loadInventory();
+  }
+  loadInventory(): void {
+    this.inventoryService
+      .getPage(
+        this.currentPage - 1,
+        this.pageSize
+      )
+      .subscribe({
+
+        next: (response) => {
+
+          this.inventory =
+            response.content;
+
+          this.totalPages =
+            response.totalPages;
+
+          this.totalElements =
+            response.totalElements;
+        }
+      });
+  }
+
+  resolveImage(
+    path?: string
+  ): string {
+
+    return ImageUtil.resolve(
+      path
+    );
+  }
+
+  removerInventario(item: InventoryModel) {
+    this.inventoryService.delete(item.id).subscribe({
+      next: () => {
+        this.toast.show('Excluído com sucesso!', 'success');
+        this.loadInventory();
+      }, error: (msg) => {
+        this.toast.show('Ocorreu um erro! ' + msg.error.message, 'danger');
+      }
+    });
+  }
+
+
 }

@@ -29,15 +29,14 @@ export class CategoriaService {
 
 
   loadCategorias(page: number, size: number): Observable<ApiPage<CategoriaModel>> {
-    if (page != undefined && size != undefined) {
-      console.log("aqui")
       return this.http.get<ApiPage<CategoriaModel>>(`api/hitbox/categoria/listAll`, {
         params: {
           page,
           size
         }
       }).pipe();
-    }
-    return this.http.get<ApiPage<CategoriaModel>>(`api/hitbox/categoria/listAll`).pipe();
+  }
+  loadCategoriasWithouPages(): Observable<ApiPage<CategoriaModel>> {
+     return this.http.get<ApiPage<CategoriaModel>>(`api/hitbox/categoria/listAll`).pipe();
   }
 }

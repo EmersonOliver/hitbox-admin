@@ -1,10 +1,6 @@
-<div
-  class="modal fade"
-  id="inventoryModal"
-  tabindex="-1">
+<div class="modal fade" id="inventoryModal" tabindex="-1">
 
-  <div
-    class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered">
 
     <div class="modal-content app-modal">
 
@@ -23,10 +19,7 @@
           </p>
         </div>
 
-        <button
-          type="button"
-          class="btn-close btn-close-white"
-          data-bs-dismiss="modal">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
         </button>
 
       </div>
@@ -35,9 +28,7 @@
 
       <div class="modal-body pt-0">
 
-        <form
-          [formGroup]="form"
-          class="row g-3">
+        <form [formGroup]="form" class="row g-3">
 
           <!-- IMAGE -->
 
@@ -47,29 +38,23 @@
 
               @if(imagePreview) {
 
-                <img
-                  [src]="imagePreview">
+              <img [src]="imagePreview">
 
               } @else {
 
-                <i class="bi bi-box-seam"></i>
+              <i class="bi bi-box-seam"></i>
 
               }
 
             </div>
 
-            <label
-              class="btn btn-outline-primary w-100 mt-3">
+            <label class="btn btn-outline-primary w-100 mt-3">
 
               <i class="bi bi-upload me-2"></i>
 
               Selecionar imagem
 
-              <input
-                hidden
-                type="file"
-                accept="image/*"
-                (change)="onImageChange($event)">
+              <input hidden type="file" accept="image/*" (change)="onImageChange($event)">
 
             </label>
 
@@ -83,11 +68,7 @@
               Nome
             </label>
 
-            <input
-              type="text"
-              class="form-control"
-              formControlName="name"
-              placeholder="PLA Preto 1kg">
+            <input type="text" class="form-control" formControlName="name" placeholder="PLA Preto 1kg">
 
           </div>
 
@@ -99,30 +80,9 @@
               Categoria
             </label>
 
-            <select
-              class="form-select"
-              formControlName="category">
-
-              <option value="">
-                Selecione
-              </option>
-
-              <option value="Filamento">
-                Filamento
-              </option>
-
-              <option value="Resina">
-                Resina
-              </option>
-
-              <option value="Embalagem">
-                Embalagem
-              </option>
-
-              <option value="Acessório">
-                Acessório
-              </option>
-
+            <select class="form-select" formControlName="categoriaId">
+              <option [value]="null" disabled>Selecione</option>
+              <option *ngFor="let c of categorias" [value]="c.id"> {{c.nome}}</option>
             </select>
 
           </div>
@@ -135,23 +95,21 @@
               Unidade
             </label>
 
-            <select
-              class="form-select"
-              formControlName="unit">
+            <select class="form-select" formControlName="unit">
 
-              <option value="g">
+              <option value="GRAMA">
                 Gramas
               </option>
 
-              <option value="kg">
+              <option value="QUILOGRAMA">
                 Quilos
               </option>
 
-              <option value="un">
+              <option value="UNIDADE">
                 Unidade
               </option>
 
-              <option value="m">
+              <option value="METRO">
                 Metro
               </option>
 
@@ -167,10 +125,7 @@
               Quantidade
             </label>
 
-            <input
-              type="number"
-              class="form-control"
-              formControlName="quantity">
+            <input type="number" class="form-control" formControlName="quantity">
 
           </div>
 
@@ -182,10 +137,7 @@
               Estoque mínimo
             </label>
 
-            <input
-              type="number"
-              class="form-control"
-              formControlName="minimumStock">
+            <input type="number" class="form-control" formControlName="minimumStock">
 
           </div>
 
@@ -203,10 +155,7 @@
                 R$
               </span>
 
-              <input
-                type="number"
-                class="form-control"
-                formControlName="cost">
+              <input type="number" class="form-control" formControlName="cost">
 
             </div>
 
@@ -220,10 +169,7 @@
               Fornecedor
             </label>
 
-            <input
-              type="text"
-              class="form-control"
-              formControlName="supplier">
+            <input type="text" class="form-control" formControlName="supplier">
 
           </div>
 
@@ -235,11 +181,7 @@
               Localização
             </label>
 
-            <input
-              type="text"
-              class="form-control"
-              formControlName="location"
-              placeholder="Prateleira A-02">
+            <input type="text" class="form-control" formControlName="location" placeholder="Prateleira A-02">
 
           </div>
 
@@ -249,10 +191,7 @@
 
             <div class="form-check form-switch">
 
-              <input
-                type="checkbox"
-                class="form-check-input"
-                formControlName="active">
+              <input type="checkbox" class="form-check-input" formControlName="active">
 
               <label class="form-check-label">
                 Item ativo
@@ -270,24 +209,18 @@
 
       <div class="modal-footer border-0">
 
-        <button
-          class="btn btn-outline-secondary"
-          data-bs-dismiss="modal">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
 
           Cancelar
 
         </button>
 
-        <button
-          class="btn btn-primary"
-          [disabled]="loading"
-          (click)="submit()">
+        <button class="btn btn-primary" data-bs-dismiss="modal" [disabled]="loading" (click)="submit()">
 
           @if(loading) {
 
-            <span
-              class="spinner-border spinner-border-sm me-2">
-            </span>
+          <span class="spinner-border spinner-border-sm me-2">
+          </span>
 
           }
 

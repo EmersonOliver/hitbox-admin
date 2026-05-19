@@ -1,7 +1,22 @@
-<ul class="nav justify-content-end">
-    <li class="nav-item">
-        <button class="btn btn-outline-secondary" (click)="toggleTheme()">
-            <i class="bi bi-moon"></i>
-        </button>
-    </li>
-</ul>
+<div class="row align-items-center g-2">
+    <!-- LOGO -->
+    <div class="col-6">
+        <div class="d-flex align-items-center">
+            <!-- SOMENTE MOBILE -->
+            <img src="assets/img/logo.jpg" class="mobile-logo d-block d-md-none">
+            <!-- DESKTOP TITLE -->
+            <h4 class="fw-bold text-primary mb-0 d-none d-md-block">
+                Hitbox
+            </h4>
+        </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="col-6">
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-outline-secondary" (click)="toggleTheme()">
+                <i class="bi bi-moon"></i>
+            </button>
+        </div>
+    </div>
+</div>

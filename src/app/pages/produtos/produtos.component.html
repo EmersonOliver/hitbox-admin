@@ -1,27 +1,376 @@
-<div class="dashboard-header">
-    <div class="row">
-        <div class="col-md-8 p-3">
-            <h4>Produtos</h4>
-        </div>
-        <div class="col-md-4 p-3">
-        </div>
-    </div>
-</div>
-<div class="quick-actions-grid">
-    <div class="action-tile primary" data-bs-toggle="modal" data-bs-target="#productModal">
-        <i class="bi bi-bag me-2"></i>
+<div class="container-fluid py-4">
+
+    <app-toast></app-toast>
+
+    <!-- HEADER -->
+
+    <div class="d-flex flex-column flex-lg-row
+    justify-content-between align-items-lg-center
+    gap-3 mb-4">
+
         <div>
-            <h6>Para Venda</h6>
+
+            <h2 class="fw-bold mb-1">
+                Produtos
+            </h2>
+
+            <p class="text-muted mb-0">
+                Gerencie produtos comerciais
+            </p>
+
         </div>
+
+        <button class="btn btn-primary" (click)="openProductModal()">
+
+            <i class="bi bi-plus-circle me-2"></i>
+
+            Novo produto
+
+        </button>
+
     </div>
-    <div class="action-tile success" data-bs-toggle="modal" data-bs-target="#inventoryModal">
-        <i class="bi bi-box me-2"></i>
-        <div>
-            <h6>Para Estoque</h6>
+
+    <!-- FILTERS -->
+
+    <div class="inventory-card mb-4">
+
+        <div class="row g-3">
+
+            <!-- SEARCH -->
+
+            <div class="col-12 col-lg-5">
+
+                <input type="text" class="form-control" placeholder="Buscar produto..." [(ngModel)]="search">
+
+            </div>
+
+            <!-- CATEGORY -->
+
+            <div class="col-12 col-lg-3">
+
+                <select class="form-select">
+
+                    <option>
+                        Todas categorias
+                    </option>
+
+                    @for(
+                    c of categorias;
+                    track c.id
+                    ) {
+
+                    <option>
+
+                        {{ c.nome }}
+
+                    </option>
+
+                    }
+
+                </select>
+
+            </div>
+
+            <!-- STATUS -->
+
+            <div class="col-12 col-lg-2">
+
+                <select class="form-select">
+
+                    <option>
+                        Todos
+                    </option>
+
+                    <option>
+                        Ativos
+                    </option>
+
+                    <option>
+                        Inativos
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- TYPE -->
+
+            <div class="col-12 col-lg-2">
+
+                <select class="form-select">
+
+                    <option>
+                        Produção
+                    </option>
+
+                    <option>
+                        Impressão 3D
+                    </option>
+
+                    <option>
+                        Manual
+                    </option>
+
+                </select>
+
+            </div>
+
         </div>
+
     </div>
+
+    <!-- TABLE -->
+
+    <div class="inventory-card">
+
+        <div class="table-responsive">
+
+            <table class="table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Produto
+                        </th>
+
+                        <th>
+                            Categoria
+                        </th>
+
+                        <th>
+                            Venda
+                        </th>
+
+                        <th>
+                            Lucro
+                        </th>
+
+                        <th>
+                            Produção
+                        </th>
+
+                        <th>
+                            Composição
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th class="text-end">
+                            Ações
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @for(
+                    product of products;
+                    track product.id
+                    ) {
+
+                    <tr>
+
+                        <!-- PRODUCT -->
+
+                        <td>
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <img [src]="resolveImage(product.imageUrl)" class="inventory-image">
+
+                                <div>
+
+                                    <h6 class="mb-1">
+
+                                        {{ product.name }}
+
+                                    </h6>
+
+                                    <small class="text-muted">
+
+                                        SKU:
+                                        {{ product.sku }}
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <!-- CATEGORY -->
+
+                        <td>
+
+                            {{ product.category }}
+
+                        </td>
+
+                        <!-- SALE -->
+
+                        <td>
+
+                            <strong>
+
+                                {{
+                                product.salePrice
+                                | currency:'BRL'
+                                }}
+
+                            </strong>
+
+                        </td>
+
+                        <!-- PROFIT -->
+
+                        <td>
+
+                            <span class="badge bg-success-subtle text-success">
+
+                                {{ product.profitMargin }}%
+
+                            </span>
+
+                        </td>
+
+                        <!-- PRODUCTION -->
+
+                        <td>
+
+                            <div>
+
+                                <strong>
+
+                                    {{ product.productionType }}
+
+                                </strong>
+
+                                <div class="small text-muted">
+
+                                    {{ product.productionTime }}
+                                    min
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <!-- COMPOSITION -->
+
+                        <td>
+
+                            <span class="badge bg-primary-subtle text-primary">
+
+                                {{
+                                product.compositionCount
+                                }}
+                                itens
+
+                            </span>
+
+                        </td>
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            @if(product.active) {
+
+                            <span class="badge bg-success-subtle text-success">
+
+                                Ativo
+
+                            </span>
+
+                            } @else {
+
+                            <span class="badge bg-danger-subtle text-danger">
+
+                                Inativo
+
+                            </span>
+
+                            }
+
+                        </td>
+
+                        <!-- ACTIONS -->
+
+                        <td class="text-end">
+
+                            <div class="d-flex justify-content-end gap-2">
+
+                                <button class="btn btn-sm btn-outline-primary" (click)="editProduct(product)">
+
+                                    <i class="bi bi-pencil"></i>
+
+                                </button>
+
+                                <button class="btn btn-sm btn-outline-danger" (click)="removeProduct(product)">
+
+                                    <i class="bi bi-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+
+        <div class="d-flex justify-content-between
+      align-items-center mt-4">
+
+            <small class="text-muted">
+
+                Página
+                {{ currentPage }}
+                de
+                {{ totalPages }}
+
+            </small>
+
+            <div class="d-flex gap-2">
+
+                <button class="btn btn-outline-primary btn-sm" (click)="changePage(currentPage - 1)">
+
+                    <i class="bi bi-chevron-left"></i>
+
+                </button>
+
+                <button class="btn btn-outline-primary btn-sm" (click)="changePage(currentPage + 1)">
+
+                    <i class="bi bi-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
-<!-- <app-criar-produto-venda></app-criar-produto-venda> -->
-<app-inventory-modal></app-inventory-modal>
-<app-product-modal></app-product-modal>
+<!-- MODAL -->
+
+<app-product-modal [produtoSelecionado]="produtoSelecionado" (save)="reloadProducts()">
+</app-product-modal>

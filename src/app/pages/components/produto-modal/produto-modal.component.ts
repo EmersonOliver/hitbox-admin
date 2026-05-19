@@ -1,5 +1,8 @@
 import {
-  Component
+  Component,
+  EventEmitter,
+  Input,
+  Output
 } from '@angular/core';
 
 import {
@@ -12,6 +15,7 @@ import {
 } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
+import { ProductResponse } from './models/produto.model';
 
 @Component({
   selector: 'app-product-modal',
@@ -31,6 +35,14 @@ import { CommonModule } from '@angular/common';
 })
 export class ProdutoModalComponent {
 
+
+  @Output()
+  save = new EventEmitter();
+
+  @Input()
+  produtoSelecionado!: ProductResponse;
+
+
   activeTab =
     'general';
 
@@ -42,58 +54,19 @@ export class ProdutoModalComponent {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-
-      /* =====================================================
-         GENERAL
-      ===================================================== */
-
-      name: [
-        '',
-        Validators.required
-      ],
-
-      sku: [
-        '',
-        Validators.required
-      ],
-
+      name: ['', Validators.required],
+      sku: ['', Validators.required],
       category: [''],
-
       description: [''],
-
       active: [true],
-
       image: [null],
-
-      /* =====================================================
-         PRICING
-      ===================================================== */
-
-      salePrice: [
-        0,
-        Validators.required
-      ],
-
+      salePrice: [0, Validators.required],
       profitMargin: [0],
-
       additionalCost: [0],
-
-      /* =====================================================
-         PRODUCTION
-      ===================================================== */
-
       productionTime: [0],
-
       productionType: ['3d-print'],
-
       printerProfile: [''],
-
-      /* =====================================================
-         COMPOSITION
-      ===================================================== */
-
-      composition:
-        this.fb.array([])
+      composition: this.fb.array([])
     });
   }
 

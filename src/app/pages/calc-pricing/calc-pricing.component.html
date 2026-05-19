@@ -87,6 +87,41 @@
                             <input type="text" class="form-control" formControlName="name" placeholder="Chaveiro comum">
 
                         </div>
+                        <!-- PROFIT -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Margem lucro (%)
+                            </label>
+
+                            <input type="number" class="form-control" formControlName="profitMargin">
+
+                        </div>
+
+                        <!-- MARKETPLACE -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Taxa marketplace (%)
+                            </label>
+
+                            <input type="number" class="form-control" formControlName="marketplaceFee">
+
+                        </div>
+
+                        <!-- CARD -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Taxa cartão (%)
+                            </label>
+
+                            <input type="number" class="form-control" formControlName="cardFee">
+
+                        </div>
 
                         <!-- CATEGORY -->
 
@@ -96,9 +131,9 @@
                                 Categoria
                             </label>
 
-                            <select class="form-select" formControlName="category">
+                            <select class="form-select" formControlName="categoriaId">
 
-                                <option value="">
+                                <option [value]="null">
                                     Selecione
                                 </option>
 
@@ -107,10 +142,8 @@
                                 track category
                                 ) {
 
-                                <option [value]="category">
-
-                                    {{ category }}
-
+                                <option [value]="category.id">
+                                    {{ category.nome }}
                                 </option>
 
                                 }
@@ -141,37 +174,28 @@
                                 </option>
 
                                 }
-
                             </select>
-
                         </div>
-
-                        <!-- BASE -->
-
+                        <!-- SETUP COST -->
                         <div class="col-md-6">
 
                             <label class="form-label">
-                                Valor base
+                                Custo inicial
                             </label>
-
                             <div class="input-group">
-
                                 <span class="input-group-text">
                                     R$
                                 </span>
-
-                                <input type="number" class="form-control" formControlName="basePrice">
-
+                                <input type="number" class="form-control" formControlName="setupCost">
                             </div>
-
                         </div>
 
-                        <!-- GRAM -->
+                        <!-- ADDITIONAL COST -->
 
                         <div class="col-md-6">
 
                             <label class="form-label">
-                                Valor/grama
+                                Custo adicional
                             </label>
 
                             <div class="input-group">
@@ -180,111 +204,49 @@
                                     R$
                                 </span>
 
-                                <input type="number" class="form-control" formControlName="pricePerGram">
-
-                            </div>
-
-                        </div>
-
-                        <!-- EXTRA -->
-
-                        <div class="col-md-6">
-
-                            <label class="form-label">
-                                Adicional
-                            </label>
-
-                            <div class="input-group">
-
-                                <span class="input-group-text">
-                                    R$
-                                </span>
-
-                                <input type="number" class="form-control" formControlName="additionalPrice">
-
-                            </div>
-
-                        </div>
-
-                        <!-- MIN -->
-
-                        <div class="col-md-6">
-
-                            <label class="form-label">
-                                Valor mínimo
-                            </label>
-
-                            <div class="input-group">
-
-                                <span class="input-group-text">
-                                    R$
-                                </span>
-
-                                <input type="number" class="form-control" formControlName="minimumPrice">
+                                <input type="number" class="form-control" formControlName="additionalCost">
 
                             </div>
 
                         </div>
 
                         <!-- ACTIVE -->
-
                         <div class="col-12">
-
                             <div class="form-check form-switch">
-
                                 <input type="checkbox" class="form-check-input" formControlName="active">
-
                                 <label class="form-check-label">
                                     Regra ativa
                                 </label>
-
                             </div>
-
                         </div>
 
                         <!-- BUTTON -->
-
                         <div class="col-12">
-
                             <button type="submit" class="btn btn-primary w-100">
 
                                 @if(loading) {
 
                                 <span class="spinner-border spinner-border-sm me-2">
                                 </span>
-
                                 }
-
                                 Salvar regra
-
                             </button>
-
                         </div>
-
                     </div>
-
                 </form>
-
             </div>
-
         </div>
 
         <!-- RULES -->
-
         <div class="col-12 col-xl-8">
-
             <div class="pricing-card">
-
                 <div class="mb-4">
-
                     <h4 class="fw-bold mb-1">
                         Regras cadastradas
                     </h4>
-
                     <p class="text-muted mb-0">
                         Gerencie regras do motor
                     </p>
-
                 </div>
 
                 <div class="row g-3">
@@ -299,117 +261,65 @@
                         </div>
 
                         <!-- STATUS -->
-
                         <div>
-
                             <select class="form-select" [(ngModel)]="selectedStatus">
-
                                 <option value="ALL">
                                     Todos
                                 </option>
-
                                 <option value="ACTIVE">
                                     Ativos
                                 </option>
-
                                 <option value="INACTIVE">
                                     Inativos
                                 </option>
-
                             </select>
-
                         </div>
-
                     </div>
                     @for(
                     rule of paginatedRules;
                     track rule.id
                     ) {
-
                     <div class="col-12">
-
                         <div class="rule-card">
-
                             <div class="d-flex justify-content-between align-items-start">
-
                                 <div>
-
                                     <h5 class="fw-bold mb-2">
-
                                         {{ rule.name }}
-
                                     </h5>
-
                                     <div class="d-flex gap-2 flex-wrap">
-
                                         <span class="badge bg-primary-subtle text-primary">
-
-                                            {{ rule.category }}
-
+                                            {{ rule.categoriaNome }}
                                         </span>
-
                                         <span class="badge bg-warning-subtle text-warning">
-
-                                            {{ rule.type }}
-
+                                            {{ rule.calculationType }}
                                         </span>
-
                                     </div>
-
                                 </div>
-
                                 <div class="text-end">
-
                                     <h4 class="fw-bold mb-0">
-
-                                        R$
-                                        {{ rule.basePrice }}
-
+                                        {{ rule.setupCost | currency:'BRL'}}
                                     </h4>
-
                                     <small class="text-muted">
-
                                         base
-
                                     </small>
-
                                 </div>
-
                             </div>
-
                             <hr>
-
                             <div class="row g-3">
-
                                 <div class="col-md-4">
-
                                     <small class="text-muted d-block">
-
                                         Valor/g
-
                                     </small>
-
                                     <strong>
-
-                                        R$
-                                        {{ rule.pricePerGram }}
-
+                                        {{ rule.pricePerGram | currency: 'BRL'}}
                                     </strong>
-
                                 </div>
-
                                 <div class="col-md-4">
-
                                     <small class="text-muted d-block">
-
                                         Tipo
-
                                     </small>
-
                                     <strong>
-
-                                        {{ rule.type }}
-
+                                        {{ rule.calculationType }}
                                     </strong>
 
                                 </div>
