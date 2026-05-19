@@ -15,8 +15,11 @@
 
                     <div>
 
-                        <h4 class="fw-bold mb-1">
+                        <h4 *ngIf="!editar" class="fw-bold mb-1">
                             Nova Categoria
+                        </h4>
+                         <h4 *ngIf="editar"  class="fw-bold mb-1">
+                            Editar Categoria
                         </h4>
 
                         <p class="text-muted mb-0">
@@ -84,12 +87,27 @@
 
                         <div class="col-12">
 
-                            <button type="submit" class="btn btn-primary w-100" [disabled]="loading || form.invalid">
+                            <button *ngIf="!editar" type="submit" class="btn btn-primary w-100" [disabled]="loading || form.invalid">
                                 @if(loading) {
                                 <span class="spinner-border spinner-border-sm me-2">
                                 </span>
                                 }
                                 Salvar categoria
+                            </button>
+
+                             <button *ngIf="editar" type="submit" class="btn btn-info mb-2 w-100" [disabled]="loading || form.invalid">
+                                @if(loading) {
+                                <span class="spinner-border spinner-border-sm me-2">
+                                </span>
+                                }
+                                Salvar Alterações
+                            </button>
+                             <button *ngIf="editar" type="button" (click)="descartarAlteracoes()" class="btn btn-secondary  w-100" >
+                                @if(loading) {
+                                <span class="spinner-border spinner-border-sm me-2">
+                                </span>
+                                }
+                                Descartar Alterações
                             </button>
 
                         </div>

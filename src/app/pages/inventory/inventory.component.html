@@ -61,16 +61,33 @@
 
             <div class="col-12 col-lg-3">
 
-                <select class="form-select">
+                <div class="dropdown w-100">
 
-                    <option>
-                        Todas categorias
-                    </option>
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start filter-dropdown"
+                        type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
 
-                    <option *ngFor="let c of categorias">
-                        {{c.nome}}
-                    </option>
-                </select>
+                        {{ getCategoriasSelecionadasLabel() }}
+
+                    </button>
+
+                    <div class="dropdown-menu w-100 p-3 shadow" style="max-height: 300px; overflow-y: auto;">
+
+                        <div class="form-check mb-2" *ngFor="let c of categorias">
+
+                            <input *ngIf="c.id" class="form-check-input" type="checkbox" [id]="'categoriaId' + c.id"
+                                [checked]="selectedCategorias.includes(c.id)" (change)="toggleCategoria(c.id)">
+
+                            <label class="form-check-label" [for]="'categoriaId' + c.id">
+
+                                {{ c.nome }}
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -153,7 +170,7 @@
                             <strong>
 
                                 {{ item.quantity }}
-                               {{ item.unit | unitLabel }}
+                                {{ item.unit | unitLabel }}
 
                             </strong>
 
@@ -161,7 +178,7 @@
 
                                 Min:
                                 {{ item.minimumStock }}
-                              {{ item.unit | unitLabel }}
+                                {{ item.unit | unitLabel }}
 
                             </div>
 
@@ -199,7 +216,7 @@
                         <!-- LOCATION -->
 
                         <td>
-                             {{ item.location }}
+                            {{ item.location }}
                         </td>
 
                         <!-- COST -->
@@ -245,7 +262,8 @@
                                 </button>
 
                                 <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                                (click)="abrirModalRemoveInventario(item)" data-bs-target="#inventarioModalExclusao">
+                                    (click)="abrirModalRemoveInventario(item)"
+                                    data-bs-target="#inventarioModalExclusao">
                                     <i class="bi bi-trash"></i>
                                 </button>
 
@@ -300,11 +318,11 @@
 
 <!-- MODAL -->
 
-<app-inventory-modal (save)="reloadInventory()" 
-[inventorySelected]="inventorySelecionado"></app-inventory-modal>
+<app-inventory-modal (save)="reloadInventory()" [inventorySelected]="inventorySelecionado"></app-inventory-modal>
 
 
-<div *ngIf="inventorySelecionado" class="modal fade" id="inventarioModalExclusao" aria-labelledby="inventarioModalExclusao" aria-hidden="true" tabindex="-1">
+<div *ngIf="inventorySelecionado" class="modal fade" id="inventarioModalExclusao"
+    aria-labelledby="inventarioModalExclusao" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -312,7 +330,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Tem certeza que deseja remover este item do inventário? <strong>"{{inventorySelecionado.name}}"</strong></p>
+                <p>Tem certeza que deseja remover este item do inventário?
+                    <strong>"{{inventorySelecionado.name}}"</strong>
+                </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

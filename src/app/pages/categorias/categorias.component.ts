@@ -28,6 +28,7 @@ import { ToastService } from '../components/toast/toast.service';
 })
 export class CategoriasComponent implements OnInit {
 
+
   loading = false;
   currentPage = 0;
   pageSize = 5;
@@ -77,8 +78,8 @@ export class CategoriasComponent implements OnInit {
     this.loadCategorias();
   }
 
-  getCategoria(tipo:string){
-    let tipoCategoria = this.tipoCategoria.find(i=> i.value === tipo)?.label;
+  getCategoria(tipo: string) {
+    let tipoCategoria = this.tipoCategoria.find(i => i.value === tipo)?.label;
     console.log(tipoCategoria)
     return tipoCategoria;
   }
@@ -254,6 +255,14 @@ export class CategoriasComponent implements OnInit {
           );
         }
       })
+  }
+  descartarAlteracoes() {
+    this.form.reset({
+      ativo: true
+    });
+    this.categoriaSelecionada = {} as CategoriaModel;
+    this.editar = false
+    this.toastService.show('Alterações descartadas!', 'info')
   }
 
 }

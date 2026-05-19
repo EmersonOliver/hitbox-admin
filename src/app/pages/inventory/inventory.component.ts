@@ -42,6 +42,64 @@ declare var bootstrap: any;
     './inventory.component.scss'
 })
 export class InventoryComponent implements OnInit {
+  getCategoriasSelecionadasLabel(): string {
+    if (
+      this.selectedCategorias.length === 0
+    ) {
+      return 'Todas categorias';
+    }
+    return this.categorias
+      .filter(c =>
+        c.id !== undefined
+        &&
+        this.selectedCategorias.includes(c.id)
+      )
+      .map(c => c.nome)
+      .join(', ');
+  }
+  selectedCategorias: number[] = [];
+
+  toggleCategoria(id: number): void {
+
+    const exists =
+      this.selectedCategorias.includes(id);
+
+
+
+
+    if (exists) {
+      this.selectedCategorias =
+        this.selectedCategorias
+          .filter(c => c !== id);
+      this.filterInventoryByCategorias();
+      return;
+    }
+    this.selectedCategorias.push(id);
+    this.filterInventoryByCategorias();
+  }
+
+  filterInventoryByCategorias() {
+    this.inventoryService
+      .getPage(
+        this.currentPage - 1,
+        this.pageSize,
+        this.selectedCategorias
+      )
+      .subscribe({
+
+        next: (response) => {
+
+          this.inventory =
+            response.content;
+
+          this.totalPages =
+            response.totalPages;
+
+          this.totalElements =
+            response.totalElements;
+        }
+      });
+  }
 
   abrirModalRemoveInventario(item: InventoryModel) {
     this.inventorySelecionado = item;
