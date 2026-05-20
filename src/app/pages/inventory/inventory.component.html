@@ -29,37 +29,16 @@
 
             <!-- SEARCH -->
 
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-8">
 
-                <input type="text" class="form-control" placeholder="Buscar item..." [(ngModel)]="search">
-
-            </div>
-
-            <!-- STATUS -->
-
-            <div class="col-12 col-lg-3">
-
-                <select class="form-select">
-
-                    <option>
-                        Todos
-                    </option>
-
-                    <option>
-                        Estoque baixo
-                    </option>
-
-                    <option>
-                        Estoque ok
-                    </option>
-
-                </select>
+                <input type="text" (keydown)="loadInventory()" (keypress)="loadInventory()" (keyup)="loadInventory()" class="form-control" placeholder="Buscar item..." [(ngModel)]="search">
 
             </div>
+
 
             <!-- CATEGORY -->
 
-            <div class="col-12 col-lg-3">
+            <div class="col-12 col-lg-4">
 
                 <div class="dropdown w-100">
 
@@ -104,26 +83,46 @@
             <table class="table align-middle">
                 <thead>
                     <tr>
-                        <th>
+                        <th role="button" (click)="sort('name')">
                             Produto
+                            <i *ngIf="sortField === 'name'" class="bi" [class.bi-arrow-up]="sortDirection === 'asc'"
+                                [class.bi-arrow-down]="sortDirection === 'desc'">
+                            </i>
                         </th>
-                        <th>
+                        <th role="button" (click)="sort('categoria.nome')">
                             Categoria
+                            <i *ngIf="sortField === 'categoria.nome'" class="bi"
+                                [class.bi-arrow-up]="sortDirection === 'asc'"
+                                [class.bi-arrow-down]="sortDirection === 'desc'">
+                            </i>
                         </th>
-                        <th>
+                        <th role="button" (click)="sort('quantity')">
                             Estoque
+                            <i *ngIf="sortField === 'quantity'" class="bi" [class.bi-arrow-up]="sortDirection === 'asc'"
+                                [class.bi-arrow-down]="sortDirection === 'desc'">
+                            </i>
                         </th>
-                        <th>
+                        <th role="button" (click)="sort('stockLevel')">
                             Nível
+                            <i *ngIf="sortField === 'stockLevel'" class="bi"
+                                [class.bi-arrow-up]="sortDirection === 'asc'"
+                                [class.bi-arrow-down]="sortDirection === 'desc'">
+                            </i>
                         </th>
                         <th>
                             Local
                         </th>
-                        <th>
+                        <th role="button" (click)="sort('cost')">
                             Custo
+                            <i *ngIf="sortField === 'cost'" class="bi" [class.bi-arrow-up]="sortDirection === 'asc'"
+                                [class.bi-arrow-down]="sortDirection === 'desc'">
+                            </i>
                         </th>
-                        <th>
+                        <th role="button" (click)="sort('active')">
                             Status
+                            <i *ngIf="sortField === 'active'" class="bi" [class.bi-arrow-up]="sortDirection === 'asc'"
+                                [class.bi-arrow-down]="sortDirection === 'desc'">
+                            </i>
                         </th>
                         <th class="text-end">
                             Ações
@@ -143,7 +142,8 @@
                         <!-- PRODUCT -->
                         <td>
                             <div class="d-flex align-items-center gap-3">
-                                <img [src]="resolveImage(item.imageUrl)" class="inventory-image">
+                                <img [src]="resolveImage(item.imageUrl)" class="inventory-image inventory-clickable"
+                                    (click)="openImageModal(item.imageUrl)">
                                 <div>
                                     <h6 class="mb-1">
                                         {{ item.name }}
@@ -216,17 +216,13 @@
                         <!-- LOCATION -->
 
                         <td>
-                            {{ item.location }}
+                            <a *ngIf="item.location" [href]="item.location" target="_blank">Link do Fornecedor</a>
                         </td>
-
                         <!-- COST -->
-
                         <td>
                             {{ item.cost | currency:'BRL'}}
                         </td>
-
                         <!-- STATUS -->
-
                         <td>
 
                             @if(item.active) {
@@ -287,29 +283,62 @@
 
             <small class="text-muted">
 
-                Página
-                {{ currentPage }}
+                Exibindo
+
+                {{ inventory.length }}
+
                 de
-                {{ totalPages }}
+
+                {{ totalElements }}
+
+                registros
 
             </small>
 
             <div class="d-flex gap-2">
 
-                <button class="btn btn-outline-primary btn-sm" (click)="changePage(currentPage - 1)">
+                <button class="btn btn-outline-primary btn-sm" [disabled]="currentPage === 1"
+                    (click)="changePage(currentPage - 1)">
 
                     <i class="bi bi-chevron-left"></i>
 
                 </button>
 
-                <button class="btn btn-outline-primary btn-sm" (click)="changePage(currentPage + 1)">
+                <button *ngFor="let page of pages" class="btn btn-sm" [class.btn-primary]="page === currentPage"
+                    [class.btn-outline-primary]="page !== currentPage" (click)="changePage(page)">
+
+                    {{ page }}
+
+                </button>
+
+                <button class="btn btn-outline-primary btn-sm" [disabled]="currentPage === totalPages"
+                    (click)="changePage(currentPage + 1)">
 
                     <i class="bi bi-chevron-right"></i>
 
                 </button>
 
             </div>
+            <div class="d-flex align-items-center gap-2">
 
+                <small>
+                    Itens por página
+                </small>
+
+                <select class="form-select form-select-sm" style="width: 90px" [(ngModel)]="pageSize"
+                    (change)="changePageSize()">
+
+                    <option [value]="5">5</option>
+
+                    <option [value]="10">10</option>
+
+                    <option [value]="20">20</option>
+
+                    <option [value]="50">50</option>
+
+                </select>
+
+            </div>
         </div>
 
     </div>
@@ -339,6 +368,22 @@
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
                     (click)="removerInventario(inventorySelecionado)">Confirmar</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="inventoryImageModal" data-bs-keyboard="true" aria-labelledby="inventoryImageModal"
+    aria-hidden="true" data-bs-backdrop="true" data-bs-dismiss="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-transparent border-0 shadow-none">
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-0">
+                <img *ngIf="selectedImagePreview" [src]="selectedImagePreview"
+                    class="img-fluid rounded shadow-lg inventory-preview-image">
+            </div>
+
         </div>
     </div>
 </div>

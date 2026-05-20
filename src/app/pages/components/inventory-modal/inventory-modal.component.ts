@@ -1,9 +1,12 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
-  Output
+  Output,
+  ViewChild
 } from '@angular/core';
 
 import {
@@ -23,6 +26,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { ImageUtil } from '../../../core/utils/image.util';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-inventory-modal',
@@ -42,12 +46,17 @@ import { ImageUtil } from '../../../core/utils/image.util';
 })
 export class InventoryModalComponent implements OnInit, OnChanges {
 
+
+
   @Output()
   save = new EventEmitter();
 
   @Input()
   inventorySelected?:
     InventoryModel | null = null;
+
+  @ViewChild('pasteArea')
+  pasteArea!: ElementRef<HTMLDivElement>;
 
   loading = false;
   selectedFile!: File;
@@ -98,26 +107,77 @@ export class InventoryModalComponent implements OnInit, OnChanges {
     }
   }
 
-  onImageChange(
-    event: Event
-  ): void {
+  ngAfterViewInit(): void {
 
-    const input = event.target as HTMLInputElement;
+    const modal =
+      document.getElementById('inventoryModal');
+
+    modal?.addEventListener(
+      'shown.bs.modal',
+      () => {
+
+        setTimeout(() => {
+
+          this.pasteArea
+            ?.nativeElement
+            ?.focus();
+
+        }, 100);
+
+      }
+    );
+  }
+
+  fecharModal() {
+ const modalElement =
+    document.getElementById(
+      'inventoryModal'
+    );
+
+  if (!modalElement) {
+    return;
+  }
+
+  const modal =
+    bootstrap.Modal.getInstance(
+      modalElement
+    );
+
+  modal?.hide();
+
+  this.imagePreview = null;
+  this.selectedFile = undefined!;
+  this.editar = false;
+  this.inventorySelected = null;
+  this.form.reset({
+    active: true
+  });
+  }
+  async onImageChange(
+    event: Event
+  ): Promise<void> {
+
+    const input =
+      event.target as HTMLInputElement;
+
     if (!input.files?.length) {
       return;
     }
 
-    const file = input.files[0];
-    this.selectedFile = file;
-    const reader = new FileReader();
+    const file =
+      input.files[0];
 
-    reader.onload = () => {
+    const optimized =
+      await this.compressImage(file);
 
-      this.imagePreview =
-        reader.result;
-    };
-    reader.readAsDataURL(this.selectedFile);
+    this.selectedFile =
+      optimized;
+
+    this.imagePreview =
+      URL.createObjectURL(optimized);
   }
+
+
   loadCategorias() {
     this.categoriaService.loadCategoriasWithouPages().subscribe({
       next: response => {
@@ -180,6 +240,7 @@ export class InventoryModalComponent implements OnInit, OnChanges {
           this.toast.show('Salvo com sucesso!', 'success');
           this.save.emit();
           this.editar = false;
+          this.fecharModal();
         },
         error: (error) => {
           this.loading = false;
@@ -188,57 +249,6 @@ export class InventoryModalComponent implements OnInit, OnChanges {
       });
     })
 
-    // setTimeout(() => {
-
-    //   if (this.editar) {
-
-    //     formData.append('idInventario',
-    //       String(this.inventorySelected?.id));
-    //     console.log(formData)
-
-    //     this.inventarioService.edit(formData)
-    //       .subscribe({
-    //         next: (response) => {
-    //           console.log(response);
-    //           this.loading = false;
-    //           this.form.reset({
-    //             active: true
-    //           });
-    //           this.imagePreview = null;
-    //           this.selectedFile = undefined!;
-    //           this.toast.show('Editado com sucesso!', 'success');
-    //           this.save.emit();
-    //           this.editar = false;
-    //         },
-    //         error: (error) => {
-    //           console.error(error);
-    //           this.loading = false;
-    //         }
-    //       })
-
-    //   } else {
-    //     this.inventarioService
-    //       .save(formData)
-    //       .subscribe({
-    //         next: (response) => {
-    //           console.log(response);
-    //           this.loading = false;
-    //           this.form.reset({
-    //             active: true
-    //           });
-    //           this.imagePreview = null;
-    //           this.selectedFile = undefined!;
-    //           this.toast.show('Salvo com sucesso!', 'success');
-    //           this.save.emit();
-    //         },
-    //         error: (error) => {
-    //           console.error(error);
-    //           this.loading = false;
-    //         }
-    //       });
-    //   }
-
-    // }, 1000);
   }
   fillForm(inventory: InventoryModel): void {
     if (inventory.categoriaId)
@@ -351,5 +361,134 @@ export class InventoryModalComponent implements OnInit, OnChanges {
     }
 
     return formData;
+  }
+
+  onPasteImage(event: ClipboardEvent): void {
+
+    const items = event.clipboardData?.items;
+    if (!items) {
+      return;
+    }
+
+    Array.from(items).forEach(item => {
+
+      if (
+        item.type.includes('image')
+      ) {
+
+        const file =
+          item.getAsFile();
+
+        if (!file) {
+          return;
+        }
+
+      }
+    });
+  }
+
+  compressImage(
+    file: File
+  ): Promise<File> {
+
+    return new Promise(resolve => {
+
+      const image =
+        new Image();
+
+      image.src =
+        URL.createObjectURL(file);
+
+      image.onload = () => {
+
+        const canvas =
+          document.createElement('canvas');
+
+        /*
+         * REDUZ RESOLUÇÃO
+         */
+
+        const MAX_WIDTH = 1200;
+
+        const scale =
+          MAX_WIDTH / image.width;
+
+        canvas.width =
+          MAX_WIDTH;
+
+        canvas.height =
+          image.height * scale;
+
+        const ctx =
+          canvas.getContext('2d');
+
+        ctx?.drawImage(
+          image,
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
+
+        canvas.toBlob(blob => {
+
+          if (!blob) {
+            resolve(file);
+            return;
+          }
+
+          resolve(
+            new File(
+              [blob],
+              file.name,
+              {
+                type: 'image/jpeg'
+              }
+            )
+          );
+
+        },
+          'image/jpeg',
+          0.7); // qualidade
+      };
+    });
+  }
+  async onPaste(
+    event: ClipboardEvent
+  ): Promise<void> {
+
+    event.preventDefault();
+
+    const items =
+      event.clipboardData?.items;
+
+    if (!items) {
+      return;
+    }
+
+    for (const item of Array.from(items)) {
+
+      if (!item.type.startsWith('image/')) {
+        continue;
+      }
+
+      const file =
+        item.getAsFile();
+
+      if (!file) {
+        return;
+      }
+
+      const optimized =
+        await this.compressImage(file);
+
+      this.selectedFile =
+        optimized;
+
+      this.imagePreview =
+        URL.createObjectURL(optimized);
+
+      break;
+    }
   }
 }

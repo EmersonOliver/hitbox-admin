@@ -10,6 +10,7 @@ import {
 import {
   FormBuilder,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
@@ -22,18 +23,21 @@ import { ToastService } from '../components/toast/toast.service';
   selector: 'app-categorias',
   standalone: true,
   imports: [CommonModule,
+    FormsModule,
     ReactiveFormsModule, ToastComponent],
   templateUrl: './categorias.component.html',
   styleUrl: './categorias.component.scss'
 })
 export class CategoriasComponent implements OnInit {
 
-
-  loading = false;
-  currentPage = 0;
+  sortField = 'nome';
+  sortDirection: 'asc' | 'desc' = 'asc';
+  currentPage = 1;
   pageSize = 5;
   totalPages = 0;
   totalElements = 0;
+  search = '';
+  loading = false;
   first = true;
   last = false;
   editar = false;
@@ -61,7 +65,7 @@ export class CategoriasComponent implements OnInit {
   constructor(
     private categoriaService: CategoriaService,
     private toastService: ToastService,
-    private title: Title,
+    public title: Title,
     private fb: FormBuilder
   ) {
     title.setTitle('Hitbox - Categorias')
@@ -85,13 +89,14 @@ export class CategoriasComponent implements OnInit {
   }
 
   loadCategorias(): void {
-
     this.loading = true;
-    console.log(this.currentPage)
-    console.log(this.pageSize)
+
     this.categoriaService.loadCategorias(
-      this.currentPage,
-      this.pageSize
+      this.currentPage - 1,
+      this.pageSize,
+      this.sortField,
+      this.sortDirection,
+      this.search
     ).subscribe({
       next: response => {
 
@@ -127,32 +132,51 @@ export class CategoriasComponent implements OnInit {
   ): void {
 
     if (
-      page < 0 ||
-      page >= this.totalPages
+      page < 1
+      ||
+      page > this.totalPages
     ) {
       return;
     }
-
     this.currentPage = page;
+    this.loadCategorias();
+  }
+
+  sort(field: string): void {
+
+    if (
+      this.sortField === field
+    ) {
+
+      this.sortDirection =
+        this.sortDirection === 'asc'
+          ? 'desc'
+          : 'asc';
+
+    } else {
+
+      this.sortField = field;
+
+      this.sortDirection = 'asc';
+    }
+
+    this.currentPage = 1;
 
     this.loadCategorias();
   }
 
-  nextPage(): void {
+  changePageSize(): void {
 
-    if (!this.last) {
+    this.currentPage = 1;
 
-      this.currentPage++;
-
-      this.loadCategorias();
-    }
+    this.loadCategorias();
   }
+  get pages(): number[] {
 
-  previousPage(): void {
-    if (!this.first) {
-      this.currentPage--;
-      this.loadCategorias();
-    }
+    return Array.from(
+      { length: this.totalPages },
+      (_, i) => i + 1
+    );
   }
 
   /* ======================================================

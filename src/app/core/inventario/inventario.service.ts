@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { InventoryModel } from '../../pages/components/inventory-modal/models/inventory.model';
@@ -22,14 +22,42 @@ export class InventarioService {
   getPage(
     page = 0,
     size = 10,
-    idCategorias?: number[]
+    idCategorias?: number[],
+    sortField?: string,
+    sortDirection?: string,
+    search?: string
   ): Observable<ApiPage<InventoryModel>> {
-    if (idCategorias != null && idCategorias.length != 0) {
-     return this.http.get<ApiPage<InventoryModel>>(`api/hitbox/inventory/page?page=${page}&size=${size}`, {
-        params: { idCategorias: idCategorias }
-      });
+
+    let params =
+      new HttpParams()
+
+        .set('page', page)
+
+        .set('size', size)
+
+        .set(
+          'sort',
+          `${sortField},${sortDirection}`
+        );
+    if (search) {
+
+      params =
+        params.set(
+          'search',
+          search
+        );
     }
-    return this.http.get<ApiPage<InventoryModel>>(`api/hitbox/inventory/page?page=${page}&size=${size}`);
+    idCategorias?.forEach(id => {
+      params =
+        params.append(
+          'idCategorias',
+          id
+        );
+    });
+    
+    return this.http.get<ApiPage<InventoryModel>>(`api/hitbox/inventory/page`, {
+      params
+    });
   }
 
   delete(id?: number): Observable<any> {

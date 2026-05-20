@@ -31,10 +31,10 @@
         <form [formGroup]="form" class="row g-3">
 
           <!-- IMAGE -->
-
           <div class="col-12">
 
-            <div class="inventory-image">
+
+            <div class="inventory-image" #pasteArea tabindex="0" (paste)="onPaste($event)">
 
               @if(imagePreview) {
 
@@ -42,7 +42,15 @@
 
               } @else {
 
-              <i class="bi bi-box-seam"></i>
+              <div class="image-placeholder">
+
+                <i class="bi bi-box-seam"></i>
+
+                <small>
+                  CTRL + V ou selecione uma imagem
+                </small>
+
+              </div>
 
               }
 
@@ -68,8 +76,12 @@
               Nome
             </label>
 
-            <input type="text" class="form-control" formControlName="name" placeholder="PLA Preto 1kg">
-
+            <input type="text" class="form-control"
+              [class.is-invalid]="form.get('name')?.invalid && form.get('name')?.touched" formControlName="name"
+              placeholder="PLA Preto 1kg">
+            <div class="invalid-feedback">
+              Nome é obrigatório
+            </div>
           </div>
 
           <!-- CATEGORY -->
@@ -80,11 +92,15 @@
               Categoria
             </label>
 
-            <select class="form-select" formControlName="categoriaId">
+            <select class="form-select" formControlName="categoriaId"
+              [class.is-invalid]="form.get('categoriaId')?.invalid && form.get('categoriaId')?.touched">
               <option [value]="null" disabled>Selecione</option>
               <option *ngFor="let c of categorias" [value]="c.id"> {{c.nome}}</option>
-            </select>
 
+            </select>
+            <div class="invalid-feedback">
+              Categoria é obrigatório
+            </div>
           </div>
 
           <!-- UNIT -->
@@ -95,7 +111,8 @@
               Unidade
             </label>
 
-            <select class="form-select" formControlName="unit">
+            <select class="form-select" formControlName="unit"
+              [class.is-invalid]="form.get('unit')?.invalid && form.get('unit')?.touched">
 
               <option value="GRAMA">
                 Gramas
@@ -114,7 +131,9 @@
               </option>
 
             </select>
-
+            <div class="invalid-feedback">
+              Un. Medida é obrigatório
+            </div>
           </div>
 
           <!-- QUANTITY -->
@@ -125,8 +144,11 @@
               Quantidade
             </label>
 
-            <input type="number" class="form-control" formControlName="quantity">
-
+            <input type="number" class="form-control" formControlName="quantity"
+              [class.is-invalid]="form.get('quantity')?.invalid && form.get('quantity')?.touched">
+            <div class="invalid-feedback">
+              Quantidade é obrigatório
+            </div>
           </div>
 
           <!-- MINIMUM -->
@@ -137,8 +159,11 @@
               Estoque mínimo
             </label>
 
-            <input type="number" class="form-control" formControlName="minimumStock">
-
+            <input type="number" class="form-control" formControlName="minimumStock"
+              [class.is-invalid]="form.get('minimumStock')?.invalid && form.get('minimumStock')?.touched">
+            <div class="invalid-feedback">
+              Estoque Mínimo é obrigatório
+            </div>
           </div>
 
           <!-- COST -->
@@ -155,8 +180,11 @@
                 R$
               </span>
 
-              <input type="number" class="form-control" formControlName="cost">
-
+              <input type="number" class="form-control" formControlName="cost"
+                [class.is-invalid]="form.get('cost')?.invalid && form.get('cost')?.touched">
+              <div class="invalid-feedback">
+                Custo é obrigatório
+              </div>
             </div>
 
           </div>
@@ -164,13 +192,11 @@
           <!-- SUPPLIER -->
 
           <div class="col-md-6">
-
             <label class="form-label">
               Fornecedor
             </label>
 
             <input type="text" class="form-control" formControlName="supplier">
-
           </div>
 
           <!-- LOCATION -->
@@ -209,13 +235,13 @@
 
       <div class="modal-footer border-0">
 
-        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+        <button class="btn btn-outline-secondary" (click)="fecharModal()">
 
           Cancelar
 
         </button>
 
-        <button class="btn btn-primary" data-bs-dismiss="modal" [disabled]="loading" (click)="submit()">
+        <button class="btn btn-primary" [disabled]="loading || form.invalid" (click)="submit()">
 
           @if(loading) {
 

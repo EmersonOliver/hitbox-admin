@@ -42,69 +42,10 @@ declare var bootstrap: any;
     './inventory.component.scss'
 })
 export class InventoryComponent implements OnInit {
-  getCategoriasSelecionadasLabel(): string {
-    if (
-      this.selectedCategorias.length === 0
-    ) {
-      return 'Todas categorias';
-    }
-    return this.categorias
-      .filter(c =>
-        c.id !== undefined
-        &&
-        this.selectedCategorias.includes(c.id)
-      )
-      .map(c => c.nome)
-      .join(', ');
-  }
+
+  sortField = 'name';
+  sortDirection: 'asc' | 'desc' = 'asc';
   selectedCategorias: number[] = [];
-
-  toggleCategoria(id: number): void {
-
-    const exists =
-      this.selectedCategorias.includes(id);
-
-
-
-
-    if (exists) {
-      this.selectedCategorias =
-        this.selectedCategorias
-          .filter(c => c !== id);
-      this.filterInventoryByCategorias();
-      return;
-    }
-    this.selectedCategorias.push(id);
-    this.filterInventoryByCategorias();
-  }
-
-  filterInventoryByCategorias() {
-    this.inventoryService
-      .getPage(
-        this.currentPage - 1,
-        this.pageSize,
-        this.selectedCategorias
-      )
-      .subscribe({
-
-        next: (response) => {
-
-          this.inventory =
-            response.content;
-
-          this.totalPages =
-            response.totalPages;
-
-          this.totalElements =
-            response.totalElements;
-        }
-      });
-  }
-
-  abrirModalRemoveInventario(item: InventoryModel) {
-    this.inventorySelecionado = item;
-  }
-
   currentPage = 1;
   pageSize = 5;
   totalPages = 0;
@@ -115,6 +56,8 @@ export class InventoryComponent implements OnInit {
   categorias: CategoriaModel[] = [];
   inventorySelecionado?:
     InventoryModel | null = null;
+
+  selectedImagePreview?: string;
 
   constructor(
     private inventoryService: InventarioService,
@@ -137,29 +80,7 @@ export class InventoryComponent implements OnInit {
     })
   }
 
-  get filteredInventory() {
 
-    return this.inventory.filter(item =>
-      item.name
-        .toLowerCase()
-        .includes(
-          this.search.toLowerCase()
-        )
-    );
-  }
-
-  get paginatedInventory() {
-
-    const start = (this.currentPage - 1) * this.pageSize;
-
-    const end =
-      start + this.pageSize;
-
-    return this.filteredInventory.slice(
-      start,
-      end
-    );
-  }
 
   changePage(
     page: number
@@ -236,14 +157,20 @@ export class InventoryComponent implements OnInit {
 
     return 'primary';
   }
+
   reloadInventory(): void {
     this.loadInventory();
   }
+
   loadInventory(): void {
     this.inventoryService
       .getPage(
         this.currentPage - 1,
-        this.pageSize
+        this.pageSize,
+        this.selectedCategorias,
+        this.sortField,
+        this.sortDirection,
+        this.search
       )
       .subscribe({
 
@@ -275,11 +202,126 @@ export class InventoryComponent implements OnInit {
       next: () => {
         this.toast.show('Excluído com sucesso!', 'success');
         this.loadInventory();
+        this.inventorySelecionado = null;
       }, error: (msg) => {
         this.toast.show('Ocorreu um erro! ' + msg.error.message, 'danger');
       }
     });
   }
+  getCategoriasSelecionadasLabel(): string {
+    if (
+      this.selectedCategorias.length === 0
+    ) {
+      return 'Todas categorias';
+    }
+    return this.categorias
+      .filter(c =>
+        c.id !== undefined
+        &&
+        this.selectedCategorias.includes(c.id)
+      )
+      .map(c => c.nome)
+      .join(', ');
+  }
 
+  toggleCategoria(id: number): void {
+
+    const exists =
+      this.selectedCategorias.includes(id);
+
+    if (exists) {
+      this.selectedCategorias =
+        this.selectedCategorias
+          .filter(c => c !== id);
+    } else {
+      this.selectedCategorias.push(id);
+    }
+    this.currentPage = 1;
+    this.loadInventory();
+  }
+
+  filterInventoryByCategorias() {
+    this.inventoryService
+      .getPage(
+        0,
+        this.pageSize,
+        this.selectedCategorias
+      )
+      .subscribe({
+
+        next: (response) => {
+
+          this.inventory =
+            response.content;
+
+          this.totalPages =
+            response.totalPages;
+
+          this.totalElements =
+            response.totalElements;
+        }
+      });
+  }
+
+  abrirModalRemoveInventario(item: InventoryModel) {
+    this.inventorySelecionado = item;
+  }
+  sort(field: string): void {
+
+    if (
+      this.sortField === field
+    ) {
+
+      this.sortDirection =
+        this.sortDirection === 'asc'
+          ? 'desc'
+          : 'asc';
+
+    } else {
+
+      this.sortField = field;
+
+      this.sortDirection = 'asc';
+    }
+
+    this.currentPage = 1;
+
+    this.loadInventory();
+  }
+
+  changePageSize(): void {
+
+    this.currentPage = 1;
+
+    this.loadInventory();
+  }
+  get pages(): number[] {
+
+    return Array.from(
+      { length: this.totalPages },
+      (_, i) => i + 1
+    );
+  }
+
+  openImageModal(
+    image?: string
+  ): void {
+
+    if (!image) {
+      return;
+    }
+
+    this.selectedImagePreview =
+      this.resolveImage(image);
+
+    const modal =
+      new bootstrap.Modal(
+        document.getElementById(
+          'inventoryImageModal'
+        )
+      );
+
+    modal.show();
+  }
 
 }

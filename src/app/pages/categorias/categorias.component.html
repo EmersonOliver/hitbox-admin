@@ -18,7 +18,7 @@
                         <h4 *ngIf="!editar" class="fw-bold mb-1">
                             Nova Categoria
                         </h4>
-                         <h4 *ngIf="editar"  class="fw-bold mb-1">
+                        <h4 *ngIf="editar" class="fw-bold mb-1">
                             Editar Categoria
                         </h4>
 
@@ -87,7 +87,8 @@
 
                         <div class="col-12">
 
-                            <button *ngIf="!editar" type="submit" class="btn btn-primary w-100" [disabled]="loading || form.invalid">
+                            <button *ngIf="!editar" type="submit" class="btn btn-primary w-100"
+                                [disabled]="loading || form.invalid">
                                 @if(loading) {
                                 <span class="spinner-border spinner-border-sm me-2">
                                 </span>
@@ -95,14 +96,16 @@
                                 Salvar categoria
                             </button>
 
-                             <button *ngIf="editar" type="submit" class="btn btn-info mb-2 w-100" [disabled]="loading || form.invalid">
+                            <button *ngIf="editar" type="submit" class="btn btn-info mb-2 w-100"
+                                [disabled]="loading || form.invalid">
                                 @if(loading) {
                                 <span class="spinner-border spinner-border-sm me-2">
                                 </span>
                                 }
                                 Salvar Alterações
                             </button>
-                             <button *ngIf="editar" type="button" (click)="descartarAlteracoes()" class="btn btn-secondary  w-100" >
+                            <button *ngIf="editar" type="button" (click)="descartarAlteracoes()"
+                                class="btn btn-secondary  w-100">
                                 @if(loading) {
                                 <span class="spinner-border spinner-border-sm me-2">
                                 </span>
@@ -145,12 +148,19 @@
                     </div>
 
                     <div class="badge bg-primary-subtle text-primary">
-
                         {{ categorias.length }}
                         categorias
-
                     </div>
 
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <!-- SEARCH -->
+
+                    <div class="col-12 col-lg-6">
+                        <input type="text" class="form-control" placeholder="Buscar item..."
+                            (keydown)="loadCategorias()" (keypress)="loadCategorias()" (keyup)="loadCategorias()"
+                            [(ngModel)]="search">
+                    </div>
                 </div>
 
                 <!-- TABLE -->
@@ -158,7 +168,6 @@
                 <div class="table-responsive">
 
                     <table class="table align-middle">
-
                         <thead>
                             <tr>
                                 <th>Nome</th>
@@ -186,7 +195,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                   <td>
+                                <td>
                                     <span class="text-muted">
                                         {{ getCategoria(category.tipo) }}
                                     </span>
@@ -228,32 +237,58 @@
 
                 <!-- PAGINATION -->
                 <div class="d-flex justify-content-between align-items-center mt-4">
-                    <!-- INFO -->
+
                     <small class="text-muted">
-                        Total:
+                        Exibindo
+                        {{ categorias.length }}
+                        de
                         {{ totalElements }}
+                        registros
                     </small>
 
-                    <!-- PAGINATION -->
-                    <div class="d-flex align-items-center gap-2">
-                        <!-- PREVIOUS -->
-                        <button class="btn btn-outline-primary btn-sm" [disabled]="first" (click)="previousPage()">
+                    <div class="d-flex gap-2">
+
+                        <button class="btn btn-outline-primary btn-sm" [disabled]="currentPage === 1"
+                            (click)="changePage(currentPage - 1)">
+
                             <i class="bi bi-chevron-left"></i>
+
                         </button>
-                        <!-- PAGES -->
-                        @for(
-                        page of [].constructor(totalPages);
-                        track $index
-                        ) {
-                        <button class="btn btn-sm" [class.btn-primary]="currentPage === $index"
-                            [class.btn-outline-primary]="currentPage !== $index" (click)="changePage($index)">
-                            {{ $index + 1 }}
+
+                        <button *ngFor="let page of pages" class="btn btn-sm" [class.btn-primary]="page === currentPage"
+                            [class.btn-outline-primary]="page !== currentPage" (click)="changePage(page)">
+
+                            {{ page }}
+
                         </button>
-                        }
-                        <!-- NEXT -->
-                        <button class="btn btn-outline-primary btn-sm" [disabled]="last" (click)="nextPage()">
+
+                        <button class="btn btn-outline-primary btn-sm" [disabled]="currentPage === totalPages"
+                            (click)="changePage(currentPage + 1)">
+
                             <i class="bi bi-chevron-right"></i>
+
                         </button>
+
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+
+                        <small>
+                            Itens por página
+                        </small>
+
+                        <select class="form-select form-select-sm" style="width: 90px" [(ngModel)]="pageSize"
+                            (change)="changePageSize()">
+
+                            <option [value]="5">5</option>
+
+                            <option [value]="10">10</option>
+
+                            <option [value]="20">20</option>
+
+                            <option [value]="50">50</option>
+
+                        </select>
+
                     </div>
                 </div>
             </div>
@@ -261,7 +296,8 @@
     </div>
 </div>
 
-<div *ngIf="categoriaSelecionada" class="modal fade" id="modalExclusao" aria-labelledby="modalExclusao" aria-hidden="true" tabindex="-1">
+<div *ngIf="categoriaSelecionada" class="modal fade" id="modalExclusao" aria-labelledby="modalExclusao"
+    aria-hidden="true" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

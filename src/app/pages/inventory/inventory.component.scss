@@ -96,3 +96,24 @@
 
     backdrop-filter: blur(10px);
 }
+
+.inventory-clickable {
+
+  cursor: pointer;
+
+  transition: transform 0.2s ease;
+}
+
+.inventory-clickable:hover {
+
+  transform: scale(1.05);
+}
+
+.inventory-preview-image {
+
+  max-height: 90vh;
+
+  object-fit: contain;
+
+  border-radius: 16px;
+}
