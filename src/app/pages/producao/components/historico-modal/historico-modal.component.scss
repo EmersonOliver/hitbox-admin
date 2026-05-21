@@ -1,0 +1,121 @@
+.history-modal {
+
+    background: #111827;
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    border-radius: 24px;
+
+    color: #fff;
+}
+
+.history-card {
+
+    background: #0f172a;
+
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+    margin-bottom: 16px;
+
+    transition: all 0.2s ease;
+}
+
+.history-card:hover {
+
+    border-color: rgba(59, 130, 246, 0.4);
+
+    transform: translateY(-2px);
+}
+
+.history-info {
+
+    display: flex;
+
+    gap: 32px;
+
+    flex-wrap: wrap;
+}
+
+.history-info div {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.history-info small {
+
+    color: #9ca3af;
+}
+
+.history-info strong {
+
+    color: #fff;
+}
+
+.history-total {
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #0f172a;
+
+    border-radius: 12px;
+
+    border: 1px solid rgba(255,255,255,0.05);
+
+    color: #9ca3af;
+
+    font-size: 14px;
+}
+
+.empty-history {
+
+    padding: 60px 20px;
+
+    text-align: center;
+
+    color: #9ca3af;
+}
+
+.empty-history i {
+
+    font-size: 48px;
+}
+
+.form-control,
+.form-select {
+
+    background: #0f172a;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    color: #fff;
+}
+
+.form-control:focus,
+.form-select:focus {
+
+    background: #0f172a;
+
+    color: #fff;
+
+    border-color: #3b82f6;
+
+    box-shadow: none;
+}
+
+.modal-footer {
+
+    border-top:
+      1px solid rgba(255,255,255,0.06);
+}

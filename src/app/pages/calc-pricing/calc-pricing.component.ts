@@ -1,5 +1,3 @@
-// calc-pricing.component.ts
-
 import {
   Component,
   OnInit
@@ -16,15 +14,41 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
-import { PricingEngineService } from '../../core/pricing/services/price-engine.service';
-import { PricingRule } from '../../core/pricing/models/pricing-rule.model';
-import { CalculationType } from '../../core/pricing/enums/calculation-type.enum';
-import { PricingRuleService } from '../../core/pricing/services/pricing-rule.service';
-import { ToastService } from '../components/toast/toast.service';
-import { CategoriaModel } from '../categorias/model/categoria.model';
-import { CategoriaService } from '../../core/categoria/categoria.service';
-import { PricingRuleResponse } from './models/pricing.rules.response';
+
+import {
+  Title
+} from '@angular/platform-browser';
+
+import {
+  PricingRuleService
+} from '../../core/pricing/services/pricing-rule.service';
+
+import {
+  ToastService
+} from '../components/toast/toast.service';
+
+import {
+  PricingRuleResponse
+} from './models/pricing.rules.response';
+
+import {
+  SuggestedPriceResult
+} from './models/suggested.pricing.model';
+import { ToastComponent } from "../components/toast/toast.component";
+
+import {
+  FormArray
+} from '@angular/forms';
+
+import {
+  debounceTime
+} from 'rxjs';
+
+import {
+  ProductExtraCost
+} from './models/product-extra-cost.model';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-calc-pricing',
@@ -34,7 +58,8 @@ import { PricingRuleResponse } from './models/pricing.rules.response';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastComponent
   ],
 
   templateUrl:
@@ -45,156 +70,228 @@ import { PricingRuleResponse } from './models/pricing.rules.response';
 })
 export class CalcPricingComponent implements OnInit {
 
-  activeTab =
-    'rules';
+
+
+  activeTab = 'rules';
 
   loading = false;
 
-  previewResult = 0;
   currentPage = 1;
+
   pageSize = 5;
+
   search = '';
 
   selectedStatus = 'ALL';
 
   rules: PricingRuleResponse[] = [];
 
-  categories: CategoriaModel[] = [];
+  simulationResults: SuggestedPriceResult[] = [];
 
-  calculationTypes = [
+  editar: boolean = false;
+  ruleSelected!: PricingRuleResponse;
 
-    {
-      label: 'Preço fixo',
-      value: 'FIXED'
-    },
-
-    {
-      label: 'Por grama',
-      value: 'PER_GRAM'
-    },
-
-    {
-      label: 'Por hora',
-      value: 'PER_HOUR'
-    },
-
-    {
-      label: 'Por unidade',
-      value: 'PER_UNIT'
-    }
-  ];
-
- form: FormGroup =
-  this.fb.group({
-
-    name: ['', Validators.required],
-
-    categoriaId: [
-      null as number | null,
+  form: FormGroup = this.fb.group({
+    name: [null, Validators.required],
+    salesChannel: [null, Validators.required],
+    profitMargin: [
+      0,
       Validators.required
     ],
-    calculationType: ['FIXED'],
-    setupCost: [0],
-    pricePerGram: [0],
-    pricePerHour: [0],
-    pricePerUnit: [0],
-    additionalCost: [0],
-    profitMargin: [0],
-    marketplaceFee: [0],
-    cardFee: [0],
-    minimumPrice: [0],
-    active: [true]
+
+    marketplaceFee: [
+      0
+    ],
+
+    cardFee: [
+      0
+    ],
+
+    operationalCost: [
+      0
+    ],
+
+    commercialCost: [
+      0
+    ],
+
+    minimumPrice: [
+      0
+    ],
+
+    active: [
+      true
+    ]
   });
 
-  simulationForm =
-    this.fb.group({
+  simulationForm = this.fb.group({
 
-      weight: [0],
+    quantity: [
+      1,
+      Validators.required
+    ],
 
-      quantity: [1],
+    productionCost: [
+      0,
+      Validators.required
+    ],
 
-      hours: [0]
-    });
+    filamentWeight: [
+      0
+    ],
+
+    filamentCostPerGram: [
+      0
+    ],
+
+    printHours: [
+      0
+    ],
+
+    machineHourCost: [
+      0
+    ],
+
+    energyCost: [
+      0
+    ],
+    packagingCost: [
+      0
+    ],
+    maintenancePercentage: [
+      1
+    ],
+    extras: this.fb.array([])
+  });
 
   constructor(
     private title: Title,
     private fb: FormBuilder,
-    private pringingRuleService: PricingRuleService,
-    private categoriaService: CategoriaService,
-    private pricingEngine: PricingEngineService,
+    private pricingRuleService: PricingRuleService,
     private toast: ToastService
   ) {
-    title.setTitle('Hitbox - Cálculos')
+
+    this.title.setTitle(
+      'Hitbox - Cálculos'
+    );
+
     this.simulationForm
       .valueChanges
+      .pipe(
+        debounceTime(300)
+      )
       .subscribe(() => {
-        this.calculatePreview();
+
+        if (
+          this.simulationForm.valid
+        ) {
+
+          this.simulate();
+        }
+
       });
   }
+
   ngOnInit(): void {
     this.loadRules();
-    this.loadCategorias();
   }
 
-  loadCategorias() {
-    this.categoriaService.loadCategoriasWithouPages().subscribe({
-      next: response => {
-        this.categories = response.content;
-      }, error: (error) => {
-        this.toast.show('Ocorreu um erro ao carregar categorias ' + error.error.message, 'danger');
-      }
-    });
-  }
+  loadRules(): void {
 
-  loadRules() {
-    this.pringingRuleService.getPage(this.currentPage - 1,
-      this.pageSize).subscribe({
+    this.pricingRuleService
+      .getPage(
+        this.currentPage - 1,
+        this.pageSize
+      )
+      .subscribe({
+
         next: response => {
-          this.rules = response.content;
-        }, error: (error) => {
-          this.toast.show('Ocorreu um erro ' + error.error.message, 'danger')
+
+          this.rules =
+            response.content;
+        },
+
+        error: error => {
+
+          this.toast.show(
+            'Erro ao carregar regras',
+            'danger'
+          );
         }
-      })
+      });
   }
 
-  calculatePreview(): void {
+  simulate(): void {
 
-    const rule =
-      this.rules[0];
+    const payload =
+      this.simulationForm.getRawValue();
 
-    this.previewResult =
-      this.pricingEngine
-        .calculate(
-          rule,
-          this.simulationForm.getRawValue()
-        ).total;
+    this.pricingRuleService
+      .simulate(payload)
+      .subscribe({
+
+        next: response => {
+
+          this.simulationResults =
+            response;
+        },
+
+        error: () => {
+
+          this.simulationResults = [];
+        }
+      });
   }
 
   submit(): void {
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    this.loading = true;
-    const payload =
-      this.form.getRawValue();
 
-    this.pringingRuleService
-      .save(payload)
+    this.loading = true;
+
+    const request = this.editar ?
+      this.pricingRuleService.edit(
+        this.ruleSelected!.id!,
+        this.form.getRawValue()
+      ) : this.pricingRuleService
+        .save(this.form.getRawValue());
+
+    request
       .subscribe({
-        next: response => {
-          // this.rules.unshift(response);
+        next: () => {
           this.loading = false;
+          this.toast.show(
+            'Regra salva com sucesso',
+            'success'
+          );
           this.form.reset({
-            calculationType: 'FIXED',
+
+            profitMargin: 0,
+            marketplaceFee: 0,
+            cardFee: 0,
+            operationalCost: 0,
+            commercialCost: 0,
+            minimumPrice: 0,
             active: true
           });
+          this.editar = false;
+          this.ruleSelected = {} as PricingRuleResponse;
+          this.loadRules();
         },
+
         error: () => {
           this.loading = false;
+          this.toast.show(
+            'Erro ao salvar regra',
+            'danger'
+          );
         }
       });
   }
+
   get filteredRules() {
 
     return this.rules.filter(rule => {
@@ -211,12 +308,14 @@ export class CalcPricingComponent implements OnInit {
         ||
         (
           this.selectedStatus === 'ACTIVE'
-          && rule.active
+          &&
+          rule.active
         )
         ||
         (
           this.selectedStatus === 'INACTIVE'
-          && !rule.active
+          &&
+          !rule.active
         );
 
       return (
@@ -234,16 +333,13 @@ export class CalcPricingComponent implements OnInit {
         this.currentPage - 1
       ) * this.pageSize;
 
-    const end =
-      start + this.pageSize;
-
     return this.filteredRules.slice(
       start,
-      end
+      start + this.pageSize
     );
   }
 
-  get totalPages() {
+  get totalPages(): number {
 
     return Math.ceil(
       this.filteredRules.length /
@@ -262,5 +358,91 @@ export class CalcPricingComponent implements OnInit {
     }
 
     this.currentPage = page;
+  }
+  removeRule(id: number | undefined) {
+
+  }
+
+  selectRule(item: PricingRuleResponse) {
+    this.ruleSelected = item;
+
+    const element =
+      document.getElementById('ruleExclusaoModal');
+
+    if (!element) {
+      return;
+    }
+
+    const modal =
+      new bootstrap.Modal(element);
+
+    modal.show();
+
+  }
+
+  editRule(item: PricingRuleResponse) {
+    this.fillForm(item);
+    this.ruleSelected = item;
+  }
+
+  private fillForm(rule: PricingRuleResponse): void {
+    if (rule.id)
+      this.form.patchValue({
+        id: rule.id,
+        name: rule.name,
+        salesChannel: rule.salesChannel,
+        profitMargin: rule.profitMargin,
+        marketplaceFee: rule.marketplaceFee,
+        cardFee: rule.cardFee,
+        operationalCost: rule.operationalCost,
+        commercialCost: rule.commercialCost,
+        minimumPrice: rule.minimumPrice,
+        active: rule.active
+      });
+
+    this.editar = true;
+  }
+  descartarAlteracoes() {
+    this.form.reset({
+      id: null,
+      profitMargin: 0,
+      marketplaceFee: 0,
+      cardFee: 0,
+      operationalCost: 0,
+      commercialCost: 0,
+      minimumPrice: 0,
+      active: true
+    });
+    this.editar = false
+  }
+
+  get extras(): FormArray {
+
+    return this.simulationForm.get(
+      'extras'
+    ) as FormArray;
+  }
+
+  addExtra(): void {
+
+    this.extras.push(
+
+      this.fb.group({
+
+        name: [''],
+
+        value: [0],
+
+        multiplyByQuantity: [true]
+
+      })
+
+    );
+  }
+  removeExtra(index: number): void {
+
+    this.extras.removeAt(index);
+
+    this.simulate();
   }
 }

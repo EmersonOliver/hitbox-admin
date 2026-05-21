@@ -84,7 +84,6 @@ export class CategoriasComponent implements OnInit {
 
   getCategoria(tipo: string) {
     let tipoCategoria = this.tipoCategoria.find(i => i.value === tipo)?.label;
-    console.log(tipoCategoria)
     return tipoCategoria;
   }
 

@@ -57,4 +57,11 @@ export class CategoriaService {
   loadCategoriasWithouPages(): Observable<ApiPage<CategoriaModel>> {
     return this.http.get<ApiPage<CategoriaModel>>(`api/hitbox/categoria/listAll`).pipe();
   }
+
+  loadCategoriasByParametro(tipoCategoria: string): Observable<CategoriaModel[]> {
+    let params = new HttpParams().append("tipoCategoria", tipoCategoria);
+    return this.http.get<CategoriaModel[]>('api/hitbox/categoria/parametros', {
+      params
+    })
+  }
 }

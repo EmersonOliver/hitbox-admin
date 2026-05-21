@@ -54,8 +54,15 @@ export class InventarioService {
           id
         );
     });
-    
+
     return this.http.get<ApiPage<InventoryModel>>(`api/hitbox/inventory/page`, {
+      params
+    });
+  }
+
+  listInventoryByCategory(tipoCategoria: string): Observable<InventoryModel[]> {
+    let params = new HttpParams().append("tipoCategoria", tipoCategoria);
+    return this.http.get<InventoryModel[]>(`api/hitbox/inventory/loadByCategory`, {
       params
     });
   }

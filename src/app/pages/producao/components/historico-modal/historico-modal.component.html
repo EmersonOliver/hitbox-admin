@@ -1,0 +1,279 @@
+<div
+  class="modal fade"
+  id="historicoModal"
+  tabindex="-1"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+
+    <div class="modal-content history-modal">
+
+      <!-- HEADER -->
+
+      <div class="modal-header border-0">
+
+        <div>
+
+          <h4 class="fw-bold mb-1">
+            Histórico de produções
+          </h4>
+
+          <p class="text-muted mb-0">
+            Acompanhe produções finalizadas
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal">
+        </button>
+
+      </div>
+
+      <!-- FILTERS -->
+
+      <div class="px-4 pb-3">
+
+        <div class="row g-3">
+
+          <!-- SEARCH -->
+
+          <div class="col-12 col-lg-5">
+
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Buscar produto..."
+              [(ngModel)]="search"
+              (input)="applyFilters()">
+
+          </div>
+
+          <!-- STATUS -->
+
+          <div class="col-12 col-lg-3">
+
+            <select
+              class="form-select"
+              [(ngModel)]="selectedStatus"
+              (change)="applyFilters()">
+
+              <option value="">
+                Todos status
+              </option>
+
+              <option value="FINALIZADO">
+                Finalizado
+              </option>
+
+              <option value="FALHA">
+                Falha
+              </option>
+
+              <option value="CANCELADO">
+                Cancelado
+              </option>
+
+            </select>
+
+          </div>
+
+          <!-- PAGE SIZE -->
+
+          <div class="col-12 col-lg-2">
+
+            <select
+              class="form-select"
+              [(ngModel)]="pageSize"
+              (change)="changePageSize()">
+
+              <option [ngValue]="5">
+                5 itens
+              </option>
+
+              <option [ngValue]="10">
+                10 itens
+              </option>
+
+              <option [ngValue]="20">
+                20 itens
+              </option>
+
+            </select>
+
+          </div>
+
+          <!-- TOTAL -->
+
+          <div class="col-12 col-lg-2">
+
+            <div class="history-total">
+
+              {{ filteredHistory.length }}
+              registros
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- BODY -->
+
+      <div class="modal-body">
+
+        <div
+          class="history-card"
+          *ngFor="let item of paginatedHistory">
+
+          <div
+            class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+
+            <div>
+
+              <div class="d-flex align-items-center gap-2 mb-1">
+
+                <h5 class="fw-bold mb-0">
+
+                  {{ item.product }}
+
+                </h5>
+
+                <span
+                  class="badge"
+                  [class.bg-success-subtle]="item.status === 'FINALIZADO'"
+                  [class.text-success]="item.status === 'FINALIZADO'"
+                  [class.bg-danger-subtle]="item.status === 'FALHA'"
+                  [class.text-danger]="item.status === 'FALHA'"
+                  [class.bg-secondary-subtle]="item.status === 'CANCELADO'"
+                  [class.text-secondary]="item.status === 'CANCELADO'">
+
+                  {{ item.status }}
+
+                </span>
+
+              </div>
+
+              <small class="text-muted">
+
+                {{ item.date }}
+
+              </small>
+
+            </div>
+
+            <div class="history-info">
+
+              <div>
+
+                <small class="text-muted">
+                  Operador
+                </small>
+
+                <strong>
+                  {{ item.operator }}
+                </strong>
+
+              </div>
+
+              <div>
+
+                <small class="text-muted">
+                  Impressora
+                </small>
+
+                <strong>
+                  {{ item.printer }}
+                </strong>
+
+              </div>
+
+              <div>
+
+                <small class="text-muted">
+                  Tempo
+                </small>
+
+                <strong>
+                  {{ item.duration }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- EMPTY -->
+
+        <div
+          class="empty-history"
+          *ngIf="paginatedHistory.length === 0">
+
+          <i class="bi bi-clock-history"></i>
+
+          <h5 class="fw-bold mt-3">
+            Nenhum histórico encontrado
+          </h5>
+
+          <p class="text-muted mb-0">
+            Ajuste os filtros para visualizar os registros
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+
+      <div class="modal-footer border-0">
+
+        <div
+          class="d-flex justify-content-between align-items-center w-100">
+
+          <small class="text-muted">
+
+            Página
+            {{ currentPage }}
+            de
+            {{ totalPages }}
+
+          </small>
+
+          <div class="d-flex gap-2">
+
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              [disabled]="currentPage === 1"
+              (click)="changePage(currentPage - 1)">
+
+              <i class="bi bi-chevron-left"></i>
+
+            </button>
+
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              [disabled]="currentPage === totalPages"
+              (click)="changePage(currentPage + 1)">
+
+              <i class="bi bi-chevron-right"></i>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

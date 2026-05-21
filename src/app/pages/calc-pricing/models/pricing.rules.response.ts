@@ -3,17 +3,12 @@ import { CalculationType } from "../../../core/pricing/enums/calculation-type.en
 export interface PricingRuleResponse {
     id?: number;
     name: string;
-    categoriaI: number;
-    categoriaNome: string;
-    calculationType: CalculationType;
-    setupCost: number;
-    pricePerGram: number;
-    pricePerHour: number;
-    pricePerUnit: number;
-    additionalCost: number;
+    salesChannel: string;
     profitMargin: number;
-    minimumPrice: number;
     marketplaceFee: number;
     cardFee: number;
-    active: boolean
+    operationalCost: number;
+    commercialCost: number;
+    minimumPrice: number;
+    active: boolean;
 }

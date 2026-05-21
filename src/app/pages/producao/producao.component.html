@@ -1,0 +1,293 @@
+<div class="container-fluid py-4">
+
+    <!-- HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Produção
+            </h2>
+
+            <p class="text-muted mb-0">
+                Workflow de produção manual
+            </p>
+
+        </div>
+        <button class="btn btn-secondary"  (click)="openNewProductionModal('historicoModal')">
+            Histórico
+        </button>
+
+        <button
+            class="btn btn-primary"
+            (click)="openNewProductionModal('producaoModal')">
+            <i class="bi bi-plus-circle me-2"></i>
+            Nova Produção
+        </button>
+    </div>
+
+    <!-- WORKFLOW -->
+
+    <div class="workflow-board">
+
+        <!-- PENDENTE -->
+
+        <div class="workflow-column">
+
+            <div class="workflow-header">
+
+                <h5>Pendente</h5>
+
+                <span class="badge bg-secondary">
+                    {{ getByStatus('PENDENTE').length }}
+                </span>
+
+            </div>
+
+            <div
+                class="production-card"
+                *ngFor="let production of getByStatus('PENDENTE')">
+
+                <div class="d-flex justify-content-between mb-3">
+
+                    <strong>
+                        {{ production.produto }}
+                    </strong>
+
+                    <span
+                        class="badge"
+                        [class.bg-danger]="production.prioridade === 'ALTA'"
+                        [class.bg-warning]="production.prioridade === 'MEDIA'"
+                        [class.bg-primary]="production.prioridade === 'BAIXA'">
+
+                        {{ production.prioridade }}
+
+                    </span>
+
+                </div>
+
+                <small class="text-muted d-block mb-3">
+
+                    {{ production.impressora }}
+
+                </small>
+
+                <button
+                    class="btn btn-primary w-100"
+                    (click)="nextStep(production)">
+
+                    {{ getNextButtonLabel(production.status) }}
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- CONFIG -->
+
+        <div class="workflow-column">
+
+            <div class="workflow-header">
+
+                <h5>Configuração</h5>
+
+                <span class="badge bg-info">
+                    {{ getByStatus('CONFIGURACAO').length }}
+                </span>
+
+            </div>
+
+            <div
+                class="production-card"
+                *ngFor="let production of getByStatus('CONFIGURACAO')">
+
+                <div class="d-flex justify-content-between mb-3">
+
+                    <strong>
+                        {{ production.produto }}
+                    </strong>
+
+                    <span
+                        class="badge"
+                        [class.bg-danger]="production.prioridade === 'ALTA'"
+                        [class.bg-warning]="production.prioridade === 'MEDIA'"
+                        [class.bg-primary]="production.prioridade === 'BAIXA'">
+
+                        {{ production.prioridade }}
+
+                    </span>
+
+                </div>
+
+                <small class="text-muted d-block mb-3">
+
+                    {{ production.impressora }}
+
+                </small>
+
+                <div class="progress mb-3">
+
+                    <div
+                        class="progress-bar"
+                        [style.width.%]="production.progresso">
+                    </div>
+
+                </div>
+
+                <button
+                    class="btn btn-primary w-100 mb-3"
+                    (click)="nextStep(production)">
+
+                    {{ getNextButtonLabel(production.status) }}
+
+                </button>
+                  <button
+                    class="btn btn-secondary w-100 "
+                    (click)="backStep(production)">
+                    Voltar 
+                </button>
+            </div>
+
+        </div>
+
+        <!-- PRODUZINDO -->
+
+        <div class="workflow-column">
+
+            <div class="workflow-header">
+
+                <h5>Produzindo</h5>
+
+                <span class="badge bg-warning">
+                    {{ getByStatus('PRODUZINDO').length }}
+                </span>
+
+            </div>
+
+            <div
+                class="production-card"
+                *ngFor="let production of getByStatus('PRODUZINDO')">
+
+                <div class="d-flex justify-content-between mb-3">
+
+                    <strong>
+                        {{ production.produto }}
+                    </strong>
+
+                    <span
+                        class="badge"
+                        [class.bg-danger]="production.prioridade === 'ALTA'"
+                        [class.bg-warning]="production.prioridade === 'MEDIA'"
+                        [class.bg-primary]="production.prioridade === 'BAIXA'">
+
+                        {{ production.prioridade }}
+
+                    </span>
+
+                </div>
+
+                <small class="text-muted d-block mb-3">
+
+                    {{ production.impressora }}
+
+                </small>
+
+                <div class="progress mb-2">
+
+                    <div
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        [style.width.%]="production.progresso">
+                    </div>
+
+                </div>
+
+                <small class="text-muted d-block mb-3">
+
+                    {{ production.tempoRestante }}
+
+                </small>
+
+                <button
+                    class="btn btn-success w-100 mb-3"
+                    (click)="nextStep(production)">
+
+                    {{ getNextButtonLabel(production.status) }}
+
+                </button>
+                  <button
+                    class="btn btn-secondary w-100 "
+                    (click)="backStep(production)">
+                    Voltar 
+                </button>
+            </div>
+
+        </div>
+
+        <!-- MONTAGEM -->
+
+        <div class="workflow-column">
+
+            <div class="workflow-header">
+
+                <h5>Montagem</h5>
+
+                <span class="badge bg-primary">
+                    {{ getByStatus('MONTAGEM').length }}
+                </span>
+
+            </div>
+
+            <div
+                class="production-card"
+                *ngFor="let production of getByStatus('MONTAGEM')">
+
+                <div class="d-flex justify-content-between mb-3">
+
+                    <strong>
+                        {{ production.produto }}
+                    </strong>
+
+                    <span
+                        class="badge"
+                        [class.bg-danger]="production.prioridade === 'ALTA'"
+                        [class.bg-warning]="production.prioridade === 'MEDIA'"
+                        [class.bg-primary]="production.prioridade === 'BAIXA'">
+
+                        {{ production.prioridade }}
+
+                    </span>
+
+                </div>
+
+                <small class="text-muted d-block mb-3">
+
+                    {{ production.impressora }}
+
+                </small>
+
+                <button
+                    class="btn btn-success w-100 mb-3"
+                    (click)="nextStep(production)">
+
+                    {{ getNextButtonLabel(production.status) }}
+
+                </button>
+
+                 <button
+                    class="btn btn-secondary w-100 "
+                    (click)="backStep(production)">
+                    Voltar 
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<app-producao-modal></app-producao-modal>
+<app-historico-modal></app-historico-modal>

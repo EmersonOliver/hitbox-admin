@@ -1,0 +1,184 @@
+.production-modal {
+
+    background: #111827;
+
+    border: 1px solid rgba(255,255,255,0.06);
+
+    border-radius: 24px;
+
+    color: #fff;
+}
+
+.production-steps {
+
+    display: flex;
+
+    align-items: center;
+
+    overflow-x: auto;
+
+    gap: 18px;
+
+    scrollbar-width: none;
+}
+
+.production-steps::-webkit-scrollbar {
+
+    display: none;
+}
+
+.step-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    min-width: 220px;
+
+    opacity: .5;
+
+    transition: .25s ease;
+}
+
+.step-item.active,
+.step-item.completed {
+
+    opacity: 1;
+}
+
+.step-circle {
+
+    width: 52px;
+
+    height: 52px;
+
+    border-radius: 50%;
+
+    background: #1f2937;
+
+    border: 2px solid #374151;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: 700;
+
+    flex-shrink: 0;
+}
+
+.step-item.active .step-circle {
+
+    background: #3b82f6;
+
+    border-color: #3b82f6;
+}
+
+.step-item.completed .step-circle {
+
+    background: #10b981;
+
+    border-color: #10b981;
+}
+
+.step-content {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.step-content strong {
+
+    color: #fff;
+}
+
+.step-content small {
+
+    color: #9ca3af;
+}
+
+.step-line {
+
+    width: 50px;
+
+    height: 2px;
+
+    background: rgba(255,255,255,0.08);
+
+    flex-shrink: 0;
+}
+
+.inventory-image {
+
+    width: 52px;
+
+    height: 52px;
+
+    border-radius: 14px;
+
+    object-fit: cover;
+
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.upload-box {
+
+    border: 2px dashed rgba(255,255,255,0.12);
+
+    border-radius: 18px;
+
+    padding: 48px 24px;
+
+    text-align: center;
+
+    background: #0f172a;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.upload-box:hover {
+
+    border-color: #3b82f6;
+
+    background: rgba(59,130,246,0.08);
+}
+
+.upload-box i {
+
+    font-size: 42px;
+
+    margin-bottom: 12px;
+
+    display: block;
+
+    color: #60a5fa;
+}
+
+.form-control,
+.form-select {
+
+    background: #0f172a;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    color: #fff;
+}
+
+.form-control:focus,
+.form-select:focus {
+
+    background: #0f172a;
+
+    color: #fff;
+
+    border-color: #3b82f6;
+
+    box-shadow: 0 0 0 .25rem rgba(59,130,246,.25);
+}

@@ -1,0 +1,459 @@
+<div class="modal fade" id="producaoModal" tabindex="-1" aria-hidden="true">
+
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+
+    <div class="modal-content production-modal">
+
+      <!-- HEADER -->
+
+      <div class="modal-header border-0">
+
+        <div>
+
+          <h4 class="fw-bold mb-1">
+            Nova Produção
+          </h4>
+
+          <p class="text-muted mb-0">
+            Configure a produção antes de iniciar
+          </p>
+
+        </div>
+
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+        </button>
+
+      </div>
+
+      <!-- BODY -->
+
+      <div class="modal-body">
+
+        <!-- =====================================================
+             STEPS
+        ====================================================== -->
+
+        <div class="production-steps mb-4">
+
+          <!-- STEP 1 -->
+
+          <div class="step-item" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+
+            <div class="step-circle">
+
+              @if(currentStep > 1) {
+
+              <i class="bi bi-check-lg"></i>
+
+              } @else {
+
+              1
+
+              }
+
+            </div>
+
+            <div class="step-content">
+
+              <strong>
+                Produto
+              </strong>
+
+              <small>
+                Produto final
+              </small>
+
+            </div>
+
+          </div>
+
+          <div class="step-line"></div>
+
+          <!-- STEP 2 -->
+
+          <div class="step-item" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+
+            <div class="step-circle">
+
+              @if(currentStep > 2) {
+
+              <i class="bi bi-check-lg"></i>
+
+              } @else {
+
+              2
+
+              }
+
+            </div>
+
+            <div class="step-content">
+
+              <strong>
+                Materiais
+              </strong>
+
+              <small>
+                Seleção de insumos
+              </small>
+
+            </div>
+
+          </div>
+
+          <div class="step-line"></div>
+
+          <!-- STEP 3 -->
+
+          <div class="step-item" [class.active]="currentStep === 3">
+
+            <div class="step-circle">
+              3
+            </div>
+
+            <div class="step-content">
+
+              <strong>
+                Configuração
+              </strong>
+
+              <small>
+                Parâmetros da produção
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- =====================================================
+             STEP 1
+        ====================================================== -->
+
+        @if(currentStep === 1) {
+
+        <div>
+
+          <div class="row g-4">
+
+            <!-- PRODUTO -->
+
+            <div class="col-12 col-lg-6">
+
+              <label class="form-label">
+                Produto Final
+              </label>
+
+              <select class="form-select">
+
+                <option>
+                  Selecione
+                </option>
+
+                <option *ngFor="let item of items" [value]="item.id">
+                  {{item.nome}}
+                </option>
+
+              </select>
+
+            </div>
+
+            <!-- QUANTIDADE -->
+
+            <div class="col-12 col-lg-3">
+
+              <label class="form-label">
+                Quantidade
+              </label>
+
+              <input type="number" class="form-control" min="1">
+
+            </div>
+
+            <!-- PRIORIDADE -->
+
+            <div class="col-12 col-lg-3">
+
+              <label class="form-label">
+                Prioridade
+              </label>
+
+              <select class="form-select">
+
+                <option value="LOW">
+                  Baixa
+                </option>
+
+                <option value="MEDIUM">
+                  Média
+                </option>
+
+                <option value="HIGH">
+                  Alta
+                </option>
+
+              </select>
+
+            </div>
+
+            <!-- OBSERVAÇÕES -->
+
+            <div class="col-12">
+
+              <label class="form-label">
+                Observações
+              </label>
+
+              <textarea rows="5" class="form-control" placeholder="Detalhes adicionais da produção">
+              </textarea>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        }
+
+        <!-- =====================================================
+             STEP 2
+        ====================================================== -->
+
+        @if(currentStep === 2) {
+
+        <div>
+
+          <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+              <h5 class="fw-bold mb-1">
+                Materiais necessários
+              </h5>
+
+              <p class="text-muted mb-0">
+                Selecione os itens utilizados
+              </p>
+
+            </div>
+
+            <button class="btn btn-outline-primary">
+
+              <i class="bi bi-plus-lg me-2"></i>
+
+              Adicionar material
+
+            </button>
+
+          </div>
+
+          <!-- TABELA -->
+
+          <div class="table-responsive">
+
+            <table class="table align-middle">
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Material
+                  </th>
+
+                  <th>
+                    Estoque
+                  </th>
+
+                  <th width="180">
+                    Quantidade
+                  </th>
+
+                  <th class="text-end">
+                    Ações
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                @for(item of selectedMaterials; track item.id) {
+
+                <tr>
+
+                  <td>
+
+                    <div class="d-flex align-items-center gap-3">
+
+                      <img [src]="item.imageUrl" class="inventory-image">
+
+                      <div>
+
+                        <strong>
+                          {{ item.name }}
+                        </strong>
+
+                        <div class="small text-muted">
+
+                          {{ item.category }}
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </td>
+
+                  <td>
+
+                    {{ item.stock }}
+
+                  </td>
+
+                  <td>
+
+                    <input type="number" class="form-control">
+
+                  </td>
+
+                  <td class="text-end">
+
+                    <button class="btn btn-outline-danger btn-sm">
+
+                      <i class="bi bi-trash"></i>
+
+                    </button>
+
+                  </td>
+
+                </tr>
+
+                }
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+        }
+
+        <!-- =====================================================
+             STEP 3
+        ====================================================== -->
+
+        @if(currentStep === 3) {
+
+        <div>
+
+          <div class="row g-4">
+
+            <!-- IMPRESSORA -->
+
+            <div class="col-12 col-lg-8">
+
+              <label class="form-label">
+                Impressora
+              </label>
+
+              <select class="form-select">
+
+                <option>
+                  Bambu Lab X1C
+                </option>
+
+              </select>
+
+            </div>
+
+            <!-- TEMPO -->
+            <div class="col-12 col-lg-4">
+
+              <label class="form-label">
+                Tempo estimado
+              </label>
+
+              <input type="number" class="form-control">
+            </div>
+
+            <!-- ARQUIVO -->
+            <div class="col-12">
+              <label class="form-label">
+                Arquivo de impressão
+              </label>
+
+              <div class="upload-box">
+
+                <i class="bi bi-cloud-upload"></i>
+
+                <strong>
+                  Arraste o arquivo .3mf ou .gcode
+                </strong>
+
+                <small class="text-muted">
+                  ou clique para selecionar
+                </small>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        }
+
+      </div>
+
+      <!-- FOOTER -->
+
+      <div class="modal-footer border-0">
+
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+
+          Cancelar
+
+        </button>
+
+        <div class="d-flex gap-2">
+
+          <button class="btn btn-outline-primary" [disabled]="currentStep === 1" (click)="previousStep()">
+
+            Voltar
+
+          </button>
+
+          @if(currentStep < 3) { <button class="btn btn-primary" (click)="nextStep()">
+
+            Próximo
+
+            </button>
+
+            } @else {
+
+            <button class="btn btn-success">
+
+              <i class="bi bi-play-fill me-2"></i>
+
+              Iniciar Produção
+
+            </button>
+
+            }
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

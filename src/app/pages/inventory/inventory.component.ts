@@ -125,13 +125,11 @@ export class InventoryComponent implements OnInit {
   ): number {
 
     const percentage =
-      (
-        item.quantity /
-        (
-          item.minimumStock * 2
-        )
-      ) * 100;
-
+      (item.quantity / (item.minimumStock * 2)) * 100;
+    console.log(Math.min(
+      percentage,
+      100
+    ))
     return Math.min(
       percentage,
       100

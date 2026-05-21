@@ -1,0 +1,80 @@
+.workflow-board {
+
+    display: flex;
+
+    gap: 20px;
+
+    overflow-x: auto;
+
+    padding-bottom: 10px;
+}
+
+.workflow-column {
+
+    min-width: 320px;
+
+    background: #111827;
+
+    border-radius: 20px;
+
+    padding: 20px;
+
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+.workflow-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.workflow-header h5 {
+
+    color: #fff;
+
+    margin: 0;
+}
+
+.production-card {
+
+    background: #0f172a;
+
+    border-radius: 18px;
+
+    padding: 18px;
+
+    margin-bottom: 16px;
+
+    border: 1px solid rgba(255,255,255,0.05);
+
+    transition: 0.2s ease;
+}
+
+.production-card:hover {
+
+    transform: translateY(-2px);
+
+    border-color: rgba(59,130,246,0.4);
+}
+
+.production-card strong {
+
+    color: #fff;
+}
+
+.progress {
+
+    height: 10px;
+
+    background: rgba(255,255,255,0.08);
+}
+
+.progress-bar {
+
+    background: #3b82f6;
+}
