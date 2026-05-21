@@ -22,9 +22,6 @@ import { SuggestedPriceResult } from '../../../pages/calc-pricing/models/suggest
 })
 export class PricingRuleService {
 
-
-
-
     private readonly API =
         '/api/hitbox/pricing-rule';
 
@@ -74,6 +71,10 @@ export class PricingRuleService {
         return this.http.post<SuggestedPriceResult[]>(
             `api/hitbox/pricing-rule/suggested/price`, productionCost
         );
+    }
+
+    deleteRule(id?: number): Observable<any> {
+        return this.http.delete<any>(`api/hitbox/pricing-rule/delete/${id}`).pipe();
     }
 
 

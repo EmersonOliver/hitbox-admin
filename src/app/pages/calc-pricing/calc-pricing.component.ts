@@ -372,7 +372,14 @@ export class CalcPricingComponent implements OnInit {
     this.currentPage = page;
   }
   removeRule(id: number | undefined) {
-
+    this.pricingRuleService.deleteRule(id).subscribe({
+      next:res=> {
+        this.toast.show('Regra removida com sucesso!', 'success');
+        this.loadRules();
+      },error: (error)=> {
+          this.toast.show('Ocorreu um erro ao excluir a regra!' + error.error.message, 'danger');
+      }
+    })
   }
 
   selectRule(item: PricingRuleResponse) {
