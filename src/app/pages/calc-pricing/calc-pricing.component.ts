@@ -145,7 +145,9 @@ export class CalcPricingComponent implements OnInit {
     ],
 
     printHours: [
-      0
+      null, [Validators.pattern(
+        /^(\d+d)?(\d+h)?(\d+m)?(\d+s)?$/
+      )]
     ],
 
     machineHourCost: [
@@ -209,6 +211,7 @@ export class CalcPricingComponent implements OnInit {
 
           this.rules =
             response.content;
+          console.log(response)
         },
 
         error: error => {
@@ -222,9 +225,18 @@ export class CalcPricingComponent implements OnInit {
   }
 
   simulate(): void {
-
-    const payload =
+    const formValue =
       this.simulationForm.getRawValue();
+
+    const payload = {
+
+      ...formValue,
+
+      printHours:
+        this.parseDurationToHours(
+          formValue.printHours
+        )
+    };
 
     this.pricingRuleService
       .simulate(payload)
@@ -444,5 +456,46 @@ export class CalcPricingComponent implements OnInit {
     this.extras.removeAt(index);
 
     this.simulate();
+  }
+  private parseDurationToHours( value: string | null): number {
+
+    if (!value) {
+      return 0;
+    }
+
+    const normalized =
+      value.toLowerCase().trim();
+
+    const days =
+      this.extract(normalized, /(\d+)d/);
+
+    const hours =
+      this.extract(normalized, /(\d+)h/);
+
+    const minutes =
+      this.extract(normalized, /(\d+)m/);
+
+    const seconds =
+      this.extract(normalized, /(\d+)s/);
+
+    return (
+      (days * 24)
+      + hours
+      + (minutes / 60)
+      + (seconds / 3600)
+    );
+  }
+
+  private extract(
+    value: string,
+    regex: RegExp
+  ): number {
+
+    const match =
+      value.match(regex);
+
+    return match
+      ? Number(match[1])
+      : 0;
   }
 }

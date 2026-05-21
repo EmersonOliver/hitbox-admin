@@ -1,6 +1,14 @@
+<!-- ========================= -->
+<!-- PAGE -->
+<!-- ========================= -->
+
 <div class="container-fluid py-4 pricing-page">
-<app-toast></app-toast>
+
+    <app-toast></app-toast>
+
+    <!-- ========================= -->
     <!-- HEADER -->
+    <!-- ========================= -->
 
     <div class="page-header mb-4">
 
@@ -15,7 +23,7 @@
             </h2>
 
             <p class="text-muted mb-0">
-                Configure regras e simule preços
+                Configure regras e simule preços de impressão 3D
             </p>
 
         </div>
@@ -34,7 +42,9 @@
 
     </div>
 
+    <!-- ========================= -->
     <!-- TABS -->
+    <!-- ========================= -->
 
     <div class="pricing-tabs mb-4">
 
@@ -56,38 +66,51 @@
 
     </div>
 
+    <!-- ====================================================== -->
     <!-- RULES -->
+    <!-- ====================================================== -->
 
     @if(activeTab === 'rules') {
 
     <div class="row g-4">
 
+        <!-- ========================= -->
         <!-- FORM -->
+        <!-- ========================= -->
 
         <div class="col-12 col-xl-4">
 
-            <div class="pricing-card sticky-card" 
-                    [style]="editar ? 'border-radius: 1rem;
-                    border: 1px solid rgba(var(--bs-info-rgb));': 
-                    ''">
+            <div class="pricing-card sticky-card" [class.border-info]="editar">
 
-                <h4 *ngIf="!editar" class="fw-bold mb-1">
+                <h4 class="fw-bold mb-1">
+
+                    @if(!editar) {
                     Nova Regra
-                </h4>
-                <h4 *ngIf="editar" class="fw-bold mb-1">
+                    }
+
+                    @if(editar) {
                     Editar Regra
+                    }
+
                 </h4>
 
-                <p *ngIf="!editar" class="text-muted mb-4">
-                    Configure a regra comercial
-                </p>
-                <p *ngIf="editar" class="text-muted mb-4">
-                    Altere a regra comercial
+                <p class="text-muted mb-4">
+
+                    @if(!editar) {
+                    Configure uma regra comercial
+                    }
+
+                    @if(editar) {
+                    Atualize os dados da regra
+                    }
+
                 </p>
 
                 <form [formGroup]="form" (ngSubmit)="submit()">
 
                     <div class="row g-3">
+
+                        <!-- NOME -->
 
                         <div class="col-12">
 
@@ -95,9 +118,12 @@
                                 Nome da regra
                             </label>
 
-                            <input type="text" class="form-control" placeholder="Ex: Marketplace" formControlName="name">
+                            <input type="text" class="form-control" placeholder="Ex: Shopee Premium"
+                                formControlName="name">
 
                         </div>
+
+                        <!-- CANAL -->
 
                         <div class="col-12">
 
@@ -105,9 +131,12 @@
                                 Canal de venda
                             </label>
 
-                            <input type="text" placeholder="Ex: Loja Virtual" class="form-control" formControlName="salesChannel">
+                            <input type="text" class="form-control" placeholder="Ex: Mercado Livre"
+                                formControlName="salesChannel">
 
                         </div>
+
+                        <!-- MARGEM -->
 
                         <div class="col-md-6">
 
@@ -127,6 +156,8 @@
 
                         </div>
 
+                        <!-- MARKETPLACE -->
+
                         <div class="col-md-6">
 
                             <label class="form-label">
@@ -144,6 +175,8 @@
                             </div>
 
                         </div>
+
+                        <!-- CARTAO -->
 
                         <div class="col-md-6">
 
@@ -163,10 +196,12 @@
 
                         </div>
 
+                        <!-- OPERACIONAL -->
+
                         <div class="col-md-6">
 
                             <label class="form-label">
-                                Operacional
+                                Custo operacional
                             </label>
 
                             <div class="input-group">
@@ -180,6 +215,8 @@
                             </div>
 
                         </div>
+
+                        <!-- COMERCIAL -->
 
                         <div class="col-md-6">
 
@@ -199,6 +236,8 @@
 
                         </div>
 
+                        <!-- MINIMO -->
+
                         <div class="col-md-6">
 
                             <label class="form-label">
@@ -216,6 +255,8 @@
                             </div>
 
                         </div>
+
+                        <!-- ATIVO -->
 
                         <div class="col-12">
 
@@ -235,35 +276,43 @@
 
                         </div>
 
+                        <!-- BUTTONS -->
+
                         <div class="col-12">
 
-                            <button *ngIf="!editar" type="submit" class="btn btn-primary w-100 btn-save">
+                            @if(!editar) {
+
+                            <button type="submit" class="btn btn-primary w-100 btn-save">
 
                                 @if(loading) {
-
                                 <span class="spinner-border spinner-border-sm me-2"></span>
-
                                 }
 
                                 Salvar regra
 
                             </button>
-                            <button *ngIf="editar" type="submit" class="btn btn-info w-100 btn-save mb-3">
+
+                            }
+
+                            @if(editar) {
+
+                            <button type="submit" class="btn btn-info w-100 btn-save mb-3">
 
                                 @if(loading) {
-
-                                <span class="spinner-border spinner-border-sm me-2 "></span>
-
+                                <span class="spinner-border spinner-border-sm me-2"></span>
                                 }
 
-                                Salvar Alterações
+                                Salvar alterações
 
                             </button>
-                              <button *ngIf="editar" type="button" (click)="descartarAlteracoes()" class="btn btn-secondary w-100 btn-save">
 
-                                Descartar Alterações
+                            <button type="button" class="btn btn-secondary w-100" (click)="descartarAlteracoes()">
+
+                                Descartar alterações
 
                             </button>
+
+                            }
 
                         </div>
 
@@ -275,7 +324,9 @@
 
         </div>
 
-        <!-- RULES -->
+        <!-- ========================= -->
+        <!-- LIST -->
+        <!-- ========================= -->
 
         <div class="col-12 col-xl-8">
 
@@ -321,7 +372,7 @@
 
                 </div>
 
-                <!-- LIST -->
+                <!-- RULES -->
 
                 <div class="rules-list">
 
@@ -399,6 +450,8 @@
 
                         </div>
 
+                        <!-- METRICS -->
+
                         <div class="metrics-grid">
 
                             <div class="metric-item">
@@ -440,11 +493,11 @@
                             <div class="metric-item">
 
                                 <small>
-                                    Preço mínimo
+                                    Operacional
                                 </small>
 
                                 <strong>
-                                    {{ rule.minimumPrice | currency:'BRL' }}
+                                    {{ rule.operationalCost | currency:'BRL' }}
                                 </strong>
 
                             </div>
@@ -465,14 +518,19 @@
 
     }
 
+    <!-- ====================================================== -->
     <!-- SIMULATION -->
+    <!-- ====================================================== -->
 
     @if(activeTab === 'simulation') {
 
     <div class="row g-4">
 
+        <!-- ========================= -->
+        <!-- FORM -->
+        <!-- ========================= -->
 
-        <div class="col-12 col-xl-4">
+        <div class="col-12 col-xl-5">
 
             <div class="pricing-card">
 
@@ -481,17 +539,43 @@
                 </h4>
 
                 <p class="text-muted mb-4">
-                    Informe os custos do produto
+                    Informe os custos reais da impressão
                 </p>
 
-                <form [formGroup]="simulationForm" [formGroup]="simulationForm">
+                <form [formGroup]="simulationForm">
 
                     <div class="row g-3">
 
-                        <div class="col-12">
+                        <!-- QUANTIDADE -->
+
+                        <div class="col-md-6">
 
                             <label class="form-label">
-                                Custo produção
+                                Quantidade peças
+                            </label>
+
+                            <input type="number" class="form-control" formControlName="quantity">
+
+                        </div>
+
+                        <!-- PESO -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Peso filamento (g)
+                            </label>
+
+                            <input type="number" class="form-control" formControlName="filamentWeight">
+
+                        </div>
+
+                        <!-- CUSTO GRAMA -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Custo por grama
                             </label>
 
                             <div class="input-group">
@@ -500,11 +584,13 @@
                                     R$
                                 </span>
 
-                                <input type="number" class="form-control" formControlName="productionCost">
+                                <input type="number" class="form-control" formControlName="filamentCostPerGram">
 
                             </div>
 
                         </div>
+
+                        <!-- TEMPO -->
 
                         <div class="col-md-6">
 
@@ -512,19 +598,12 @@
                                 Tempo impressão
                             </label>
 
-                            <input type="number" class="form-control" formControlName="printHours">
+                            <input type="text" class="form-control" placeholder="Ex: 2d1h38m20s"
+                                 formControlName="printHours">
 
                         </div>
 
-                        <div class="col-md-6">
-
-                            <label class="form-label">
-                                Peso filamento
-                            </label>
-
-                            <input type="number" class="form-control" formControlName="filamentWeight">
-
-                        </div>
+                        <!-- MAQUINA -->
 
                         <div class="col-md-6">
 
@@ -544,6 +623,8 @@
 
                         </div>
 
+                        <!-- ENERGIA -->
+
                         <div class="col-md-6">
 
                             <label class="form-label">
@@ -562,7 +643,9 @@
 
                         </div>
 
-                        <div class="col-12">
+                        <!-- EMBALAGEM -->
+
+                        <div class="col-md-6">
 
                             <label class="form-label">
                                 Embalagem
@@ -580,14 +663,59 @@
 
                         </div>
 
+                        <!-- PRODUCAO -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Produção manual
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    R$
+                                </span>
+
+                                <input type="number" class="form-control" formControlName="productionCost">
+
+                            </div>
+
+                        </div>
+
+                        <!-- MANUTENCAO -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                % manutenção
+                            </label>
+
+                            <div class="input-group">
+
+                                <input type="number" class="form-control" formControlName="maintenancePercentage">
+
+                                <span class="input-group-text">
+                                    %
+                                </span>
+
+                            </div>
+
+                        </div>
+
                     </div>
+
                 </form>
 
             </div>
 
         </div>
 
-        <div class="col-12 col-xl-8">
+        <!-- ========================= -->
+        <!-- RESULT -->
+        <!-- ========================= -->
+
+        <div class="col-12 col-xl-7">
 
             <div class="pricing-result-card">
 
@@ -617,6 +745,8 @@
 
                     <div class="simulation-result-item">
 
+                        <!-- HEADER -->
+
                         <div class="d-flex justify-content-between align-items-center mb-3">
 
                             <div>
@@ -633,14 +763,13 @@
 
                             <div class="result-price">
 
-                                {{
-                                result.suggestedPrice
-                                | currency:'BRL'
-                                }}
+                                {{ result.suggestedPrice | currency:'BRL' }}
 
                             </div>
 
                         </div>
+
+                        <!-- GRID -->
 
                         <div class="simulation-grid">
 
@@ -659,11 +788,35 @@
                             <div class="simulation-info">
 
                                 <span>
-                                    Lucro
+                                    Filamento
                                 </span>
 
                                 <strong>
-                                    {{ result.profitValue | currency:'BRL' }}
+                                    {{ result.filamentCost | currency:'BRL' }}
+                                </strong>
+
+                            </div>
+
+                            <div class="simulation-info">
+
+                                <span>
+                                    Máquina
+                                </span>
+
+                                <strong>
+                                    {{ result.machineCost | currency:'BRL' }}
+                                </strong>
+
+                            </div>
+
+                            <div class="simulation-info">
+
+                                <span>
+                                    Manutenção
+                                </span>
+
+                                <strong>
+                                    {{ result.maintenanceCost | currency:'BRL' }}
                                 </strong>
 
                             </div>
@@ -692,6 +845,42 @@
 
                             </div>
 
+                            <div class="simulation-info">
+
+                                <span>
+                                    Lucro
+                                </span>
+
+                                <strong>
+                                    {{ result.profitValue | currency:'BRL' }}
+                                </strong>
+
+                            </div>
+
+                            <div class="simulation-info">
+
+                                <span>
+                                    Custo por peça
+                                </span>
+
+                                <strong>
+                                    {{ result.unitCost | currency:'BRL' }}
+                                </strong>
+
+                            </div>
+
+                            <div class="simulation-info highlight">
+
+                                <span>
+                                    Preço por peça
+                                </span>
+
+                                <strong>
+                                    {{ result.unitPrice | currency:'BRL' }}
+                                </strong>
+
+                            </div>
+
                         </div>
 
                     </div>
@@ -712,25 +901,57 @@
 
 </div>
 
-<div class="modal fade" id="ruleExclusaoModal"
-    aria-labelledby="ruleExclusaoModal" aria-hidden="true" tabindex="-1" >
+<!-- ====================================================== -->
+<!-- MODAL -->
+<!-- ====================================================== -->
+
+<div class="modal fade" id="ruleExclusaoModal" tabindex="-1" aria-hidden="true">
+
     <div class="modal-dialog">
+
         <div class="modal-content">
+
             <div class="modal-header">
-                <h5 class="modal-title">Excluir</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                <h5 class="modal-title">
+                    Excluir regra
+                </h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+
             </div>
+
             <div class="modal-body">
-                <p>Tem certeza que deseja remover esta regra de Cálculo?
-                    <strong>"{{ruleSelected?.name}}"</strong>
+                <p>
+                    Tem certeza que deseja remover a regra
+                    <strong>
+                        "{{ ruleSelected?.name }}"
+                    </strong>
+                    ?
                 </p>
-                <small>Obs: Removendo esta regra não será possível restaurar!</small>
+
+                <small class="text-danger">
+                    Esta ação não poderá ser desfeita.
+                </small>
             </div>
+
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                    (click)="removeRule(ruleSelected?.id)">Confirmar</button>
+                    (click)="removeRule(ruleSelected?.id)">
+                    Confirmar exclusão
+                </button>
             </div>
+
         </div>
+
     </div>
+
 </div>
