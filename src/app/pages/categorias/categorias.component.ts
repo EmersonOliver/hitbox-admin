@@ -43,7 +43,7 @@ export class CategoriasComponent implements OnInit {
   editar = false;
 
   categorias: CategoriaModel[] = [];
-  categoriaSelecionada!: CategoriaModel;
+  categoriaSelecionada?: CategoriaModel;
   tipoCategoria = [
     {
       value: 'INSUMO',
@@ -200,7 +200,7 @@ export class CategoriasComponent implements OnInit {
         ativo: this.form.get('ativo')?.value
       }
 
-      if (this.editar && this.categoriaSelecionada.id) {
+      if (this.editar && this.categoriaSelecionada?.id) {
         this.categoriaService.editarCategoria(this.categoriaSelecionada.id, payload).subscribe({
           next: response => {
             this.toastService.show(
@@ -261,9 +261,9 @@ export class CategoriasComponent implements OnInit {
   catchCategoria(categoria: CategoriaModel) {
     this.categoriaSelecionada = categoria;
   }
-  removerCategoria(categoria: CategoriaModel) {
-    if (categoria.id)
-      this.categoriaService.removerCategoria(categoria.id).subscribe({
+  removerCategoria(id?: number) {
+    if (id)
+      this.categoriaService.removerCategoria(id).subscribe({
         next: response => {
           this.toastService.show(
             'Categoria removida com sucesso',
@@ -277,7 +277,7 @@ export class CategoriasComponent implements OnInit {
             'danger'
           );
         }
-      })
+      });
   }
   descartarAlteracoes() {
     this.form.reset({

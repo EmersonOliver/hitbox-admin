@@ -195,8 +195,8 @@ export class InventoryComponent implements OnInit {
     );
   }
 
-  removerInventario(item: InventoryModel) {
-    this.inventoryService.delete(item.id).subscribe({
+  removerInventario(id?: number) {
+    this.inventoryService.delete(id).subscribe({
       next: () => {
         this.toast.show('Excluído com sucesso!', 'success');
         this.loadInventory();

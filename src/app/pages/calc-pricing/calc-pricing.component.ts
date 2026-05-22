@@ -89,7 +89,7 @@ export class CalcPricingComponent implements OnInit {
   simulationResults: SuggestedPriceResult[] = [];
 
   editar: boolean = false;
-  ruleSelected!: PricingRuleResponse;
+  ruleSelected?: PricingRuleResponse;
 
   form: FormGroup = this.fb.group({
     name: [null, Validators.required],

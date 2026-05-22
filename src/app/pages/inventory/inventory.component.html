@@ -350,7 +350,7 @@
 <app-inventory-modal (save)="reloadInventory()" [inventorySelected]="inventorySelecionado"></app-inventory-modal>
 
 
-<div *ngIf="inventorySelecionado" class="modal fade" id="inventarioModalExclusao"
+<div  class="modal fade" id="inventarioModalExclusao"
     aria-labelledby="inventarioModalExclusao" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -360,13 +360,13 @@
             </div>
             <div class="modal-body">
                 <p>Tem certeza que deseja remover este item do inventário?
-                    <strong>"{{inventorySelecionado.name}}"</strong>
+                    <strong>"{{inventorySelecionado?.name}}"</strong>
                 </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                    (click)="removerInventario(inventorySelecionado)">Confirmar</button>
+                    (click)="removerInventario(inventorySelecionado?.id)">Confirmar</button>
             </div>
         </div>
     </div>
