@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { InventoryModalComponent } from "../components/inventory-modal/inventory-modal.component";
-import { ProdutoModalComponent } from "../components/produto-modal/produto-modal.component";
+import { ProdutoModalComponent } from "./components/produto-modal/produto-modal.component";
 import { ToastComponent } from "../components/toast/toast.component";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CategoriaModel } from '../categorias/model/categoria.model';
-import { ProductResponse } from '../components/produto-modal/models/produto.model';
+import { ProductResponse } from './components/produto-modal/models/produto.model';
 import { CategoriaService } from '../../core/categoria/categoria.service';
 import { ToastService } from '../components/toast/toast.service';
 import { ImageUtil } from '../../core/utils/image.util';
+import { InventoryModalComponent } from '../inventory/components/inventory-modal/inventory-modal.component';
 declare var bootstrap: any;
 
 declare var $: any;

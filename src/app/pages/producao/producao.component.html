@@ -2,7 +2,7 @@
 
     <!-- HEADER -->
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
 
@@ -15,16 +15,35 @@
             </p>
 
         </div>
-        <button class="btn btn-secondary"  (click)="openNewProductionModal('historicoModal')">
+        <button class="btn btn-secondary" (click)="openNewProductionModal('historicoModal')">
             Histórico
         </button>
 
-        <button
-            class="btn btn-primary"
-            (click)="openNewProductionModal('producaoModal')">
+        <button class="btn btn-primary" (click)="openNewProductionModal('producaoModal')">
             <i class="bi bi-plus-circle me-2"></i>
             Nova Produção
         </button>
+    </div> -->
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+        <div >
+            <h2 class="fw-bold mb-1">
+                Produção
+            </h2>
+            <p class="text-muted mb-0">
+                Workflow de produção manual
+            </p>
+        </div>
+        <div>
+            <button class="btn btn-secondary me-2" (click)="openNewProductionModal('historicoModal')">
+                Histórico
+            </button>
+            <button class="btn btn-primary" (click)="openNewProductionModal('producaoModal')">
+                <i class="bi bi-plus-circle me-2"></i>
+                Nova Produção
+            </button>
+
+        </div>
+
     </div>
 
     <!-- WORKFLOW -->
@@ -45,9 +64,7 @@
 
             </div>
 
-            <div
-                class="production-card"
-                *ngFor="let production of getByStatus('PENDENTE')">
+            <div class="production-card" *ngFor="let production of getByStatus('PENDENTE')">
 
                 <div class="d-flex justify-content-between mb-3">
 
@@ -55,9 +72,7 @@
                         {{ production.produto }}
                     </strong>
 
-                    <span
-                        class="badge"
-                        [class.bg-danger]="production.prioridade === 'ALTA'"
+                    <span class="badge" [class.bg-danger]="production.prioridade === 'ALTA'"
                         [class.bg-warning]="production.prioridade === 'MEDIA'"
                         [class.bg-primary]="production.prioridade === 'BAIXA'">
 
@@ -73,9 +88,7 @@
 
                 </small>
 
-                <button
-                    class="btn btn-primary w-100"
-                    (click)="nextStep(production)">
+                <button class="btn btn-primary w-100" (click)="nextStep(production)">
 
                     {{ getNextButtonLabel(production.status) }}
 
@@ -99,9 +112,7 @@
 
             </div>
 
-            <div
-                class="production-card"
-                *ngFor="let production of getByStatus('CONFIGURACAO')">
+            <div class="production-card" *ngFor="let production of getByStatus('CONFIGURACAO')">
 
                 <div class="d-flex justify-content-between mb-3">
 
@@ -109,9 +120,7 @@
                         {{ production.produto }}
                     </strong>
 
-                    <span
-                        class="badge"
-                        [class.bg-danger]="production.prioridade === 'ALTA'"
+                    <span class="badge" [class.bg-danger]="production.prioridade === 'ALTA'"
                         [class.bg-warning]="production.prioridade === 'MEDIA'"
                         [class.bg-primary]="production.prioridade === 'BAIXA'">
 
@@ -129,24 +138,18 @@
 
                 <div class="progress mb-3">
 
-                    <div
-                        class="progress-bar"
-                        [style.width.%]="production.progresso">
+                    <div class="progress-bar" [style.width.%]="production.progresso">
                     </div>
 
                 </div>
 
-                <button
-                    class="btn btn-primary w-100 mb-3"
-                    (click)="nextStep(production)">
+                <button class="btn btn-primary w-100 mb-3" (click)="nextStep(production)">
 
                     {{ getNextButtonLabel(production.status) }}
 
                 </button>
-                  <button
-                    class="btn btn-secondary w-100 "
-                    (click)="backStep(production)">
-                    Voltar 
+                <button class="btn btn-secondary w-100 " (click)="backStep(production)">
+                    Voltar
                 </button>
             </div>
 
@@ -166,9 +169,7 @@
 
             </div>
 
-            <div
-                class="production-card"
-                *ngFor="let production of getByStatus('PRODUZINDO')">
+            <div class="production-card" *ngFor="let production of getByStatus('PRODUZINDO')">
 
                 <div class="d-flex justify-content-between mb-3">
 
@@ -176,9 +177,7 @@
                         {{ production.produto }}
                     </strong>
 
-                    <span
-                        class="badge"
-                        [class.bg-danger]="production.prioridade === 'ALTA'"
+                    <span class="badge" [class.bg-danger]="production.prioridade === 'ALTA'"
                         [class.bg-warning]="production.prioridade === 'MEDIA'"
                         [class.bg-primary]="production.prioridade === 'BAIXA'">
 
@@ -196,8 +195,7 @@
 
                 <div class="progress mb-2">
 
-                    <div
-                        class="progress-bar progress-bar-striped progress-bar-animated"
+                    <div class="progress-bar progress-bar-striped progress-bar-animated"
                         [style.width.%]="production.progresso">
                     </div>
 
@@ -209,17 +207,13 @@
 
                 </small>
 
-                <button
-                    class="btn btn-success w-100 mb-3"
-                    (click)="nextStep(production)">
+                <button class="btn btn-success w-100 mb-3" (click)="nextStep(production)">
 
                     {{ getNextButtonLabel(production.status) }}
 
                 </button>
-                  <button
-                    class="btn btn-secondary w-100 "
-                    (click)="backStep(production)">
-                    Voltar 
+                <button class="btn btn-secondary w-100 " (click)="backStep(production)">
+                    Voltar
                 </button>
             </div>
 
@@ -239,9 +233,7 @@
 
             </div>
 
-            <div
-                class="production-card"
-                *ngFor="let production of getByStatus('MONTAGEM')">
+            <div class="production-card" *ngFor="let production of getByStatus('MONTAGEM')">
 
                 <div class="d-flex justify-content-between mb-3">
 
@@ -249,9 +241,7 @@
                         {{ production.produto }}
                     </strong>
 
-                    <span
-                        class="badge"
-                        [class.bg-danger]="production.prioridade === 'ALTA'"
+                    <span class="badge" [class.bg-danger]="production.prioridade === 'ALTA'"
                         [class.bg-warning]="production.prioridade === 'MEDIA'"
                         [class.bg-primary]="production.prioridade === 'BAIXA'">
 
@@ -267,18 +257,14 @@
 
                 </small>
 
-                <button
-                    class="btn btn-success w-100 mb-3"
-                    (click)="nextStep(production)">
+                <button class="btn btn-success w-100 mb-3" (click)="nextStep(production)">
 
                     {{ getNextButtonLabel(production.status) }}
 
                 </button>
 
-                 <button
-                    class="btn btn-secondary w-100 "
-                    (click)="backStep(production)">
-                    Voltar 
+                <button class="btn btn-secondary w-100 " (click)="backStep(production)">
+                    Voltar
                 </button>
 
             </div>

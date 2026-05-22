@@ -16,16 +16,16 @@ import {
 } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
-import { InventarioService } from '../../../core/inventario/inventario.service';
-import { ToastService } from '../toast/toast.service';
-import { CategoriaModel } from '../../categorias/model/categoria.model';
-import { CategoriaService } from '../../../core/categoria/categoria.service';
 import { InventoryModel } from './models/inventory.model';
 import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { ImageUtil } from '../../../core/utils/image.util';
+import { CategoriaModel } from '../../../categorias/model/categoria.model';
+import { InventarioService } from '../../../../core/inventario/inventario.service';
+import { CategoriaService } from '../../../../core/categoria/categoria.service';
+import { ToastService } from '../../../components/toast/toast.service';
+import { ImageUtil } from '../../../../core/utils/image.util';
 declare var bootstrap: any;
 
 @Component({

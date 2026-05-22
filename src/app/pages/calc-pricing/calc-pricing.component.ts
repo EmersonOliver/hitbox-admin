@@ -69,8 +69,21 @@ declare var bootstrap: any;
     './calc-pricing.component.scss'
 })
 export class CalcPricingComponent implements OnInit {
-
-
+  resetSimulationForm() {
+    this.simulationResults = []
+    this.simulationForm.reset({
+      quantity: 1,
+      productionCost: 0,
+      filamentWeight: 0,
+      filamentCostPerGram: 0,
+      printHours: null,
+      machineHourCost: 0,
+      energyCost: 0,
+      packagingCost: 0,
+      maintenancePercentage: 1,
+      extras: []
+    });
+  }
 
   activeTab = 'rules';
 
@@ -373,11 +386,11 @@ export class CalcPricingComponent implements OnInit {
   }
   removeRule(id: number | undefined) {
     this.pricingRuleService.deleteRule(id).subscribe({
-      next:res=> {
+      next: res => {
         this.toast.show('Regra removida com sucesso!', 'success');
         this.loadRules();
-      },error: (error)=> {
-          this.toast.show('Ocorreu um erro ao excluir a regra!' + error.error.message, 'danger');
+      }, error: (error) => {
+        this.toast.show('Ocorreu um erro ao excluir a regra!' + error.error.message, 'danger');
       }
     })
   }
@@ -464,7 +477,7 @@ export class CalcPricingComponent implements OnInit {
 
     this.simulate();
   }
-  private parseDurationToHours( value: string | null): number {
+  private parseDurationToHours(value: string | null): number {
 
     if (!value) {
       return 0;

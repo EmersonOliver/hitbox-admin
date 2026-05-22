@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { InventoryModel } from '../../pages/components/inventory-modal/models/inventory.model';
 import { ApiPage } from '../api/api.response.model';
+import { InventoryModel } from '../../pages/inventory/components/inventory-modal/models/inventory.model';
 
 @Injectable({
   providedIn: 'root'

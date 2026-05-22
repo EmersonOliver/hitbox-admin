@@ -21,13 +21,13 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { ProductResponse } from './models/produto.model';
-import { InventarioService } from '../../../core/inventario/inventario.service';
-import { InventoryModel } from '../inventory-modal/models/inventory.model';
-import { PricingRuleService } from '../../../core/pricing/services/pricing-rule.service';
-import { CategoriaModel } from '../../categorias/model/categoria.model';
-import { CategoriaService } from '../../../core/categoria/categoria.service';
-import { ToastService } from '../toast/toast.service';
-import { SuggestedPriceResult } from '../../calc-pricing/models/suggested.pricing.model';
+import { InventarioService } from '../../../../core/inventario/inventario.service';
+import { PricingRuleService } from '../../../../core/pricing/services/pricing-rule.service';
+import { CategoriaModel } from '../../../categorias/model/categoria.model';
+import { CategoriaService } from '../../../../core/categoria/categoria.service';
+import { ToastService } from '../../../components/toast/toast.service';
+import { SuggestedPriceResult } from '../../../calc-pricing/models/suggested.pricing.model';
+import { InventoryModel } from '../../../inventory/components/inventory-modal/models/inventory.model';
 
 @Component({
   selector: 'app-product-modal',

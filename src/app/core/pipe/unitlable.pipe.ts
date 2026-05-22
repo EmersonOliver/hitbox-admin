@@ -2,7 +2,7 @@ import {
   Pipe,
   PipeTransform
 } from '@angular/core';
-import { InventoryUnit } from '../../pages/components/inventory-modal/models/inventory.model';
+import { InventoryUnit } from '../../pages/inventory/components/inventory-modal/models/inventory.model';
 
 
 @Pipe({

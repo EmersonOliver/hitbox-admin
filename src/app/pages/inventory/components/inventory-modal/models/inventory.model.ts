@@ -1,4 +1,4 @@
-import { CategoriaModel } from "../../../categorias/model/categoria.model";
+import { CategoriaModel } from "../../../../categorias/model/categoria.model";
 
 export interface InventoryModel {
   id?: number;

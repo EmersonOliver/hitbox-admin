@@ -10,15 +10,15 @@ import {
 import {
   FormsModule
 } from '@angular/forms';
-import { InventoryModalComponent } from "../components/inventory-modal/inventory-modal.component";
 import { InventarioService } from '../../core/inventario/inventario.service';
-import { InventoryModel } from '../components/inventory-modal/models/inventory.model';
 import { UnitLabelPipe } from "../../core/pipe/unitlable.pipe";
 import { ImageUtil } from '../../core/utils/image.util';
 import { CategoriaService } from '../../core/categoria/categoria.service';
 import { CategoriaModel } from '../categorias/model/categoria.model';
 import { ToastService } from '../components/toast/toast.service';
 import { ToastComponent } from "../components/toast/toast.component";
+import { InventoryModalComponent } from './components/inventory-modal/inventory-modal.component';
+import { InventoryModel } from './components/inventory-modal/models/inventory.model';
 
 declare var bootstrap: any;
 
@@ -121,19 +121,32 @@ export class InventoryComponent implements OnInit {
   }
 
   getStockPercentage(
-    item: any
+    item: InventoryModel
   ): number {
 
+    if (!item.quantity || item.quantity <= 0) {
+      return 0;
+    }
+
     const percentage =
-      (item.quantity / (item.minimumStock * 2)) * 100;
-    console.log(Math.min(
-      percentage,
-      100
-    ))
+      (item.quantity / item.minimumStock) * 100;
+
     return Math.min(
-      percentage,
+      Math.max(percentage, 0),
       100
     );
+  }
+  getStockStatus(item: any): string {
+
+    if (item.quantity <= 0) {
+      return 'OUT';
+    }
+
+    if (item.quantity <= item.minimumStock) {
+      return 'LOW';
+    }
+
+    return 'OK';
   }
 
   getStockVariant(
@@ -153,7 +166,7 @@ export class InventoryComponent implements OnInit {
       return 'warning';
     }
 
-    return 'primary';
+    return 'success';
   }
 
   reloadInventory(): void {

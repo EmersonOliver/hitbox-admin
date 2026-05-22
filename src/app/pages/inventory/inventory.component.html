@@ -31,7 +31,8 @@
 
             <div class="col-12 col-lg-8">
 
-                <input type="text" (keydown)="loadInventory()" (keypress)="loadInventory()" (keyup)="loadInventory()" class="form-control" placeholder="Buscar item..." [(ngModel)]="search">
+                <input type="text" (keydown)="loadInventory()" (keypress)="loadInventory()" (keyup)="loadInventory()"
+                    class="form-control" placeholder="Buscar item..." [(ngModel)]="search">
 
             </div>
 
@@ -192,11 +193,13 @@
 
                                 <div class="progress flex-grow-1">
 
-                                    <div class="progress-bar" [class.bg-primary]="getStockVariant(item) === 'primary'"
+                                    <div class="progress-bar" [class.bg-success]="getStockVariant(item) === 'success'"
                                         [class.bg-warning]="getStockVariant(item) === 'warning'"
                                         [class.bg-danger]="getStockVariant(item) === 'danger'"
                                         [style.width.%]="getStockPercentage(item)">
+
                                     </div>
+
 
                                 </div>
 
@@ -208,7 +211,7 @@
                                     }}%
 
                                 </small>
-
+                                
                             </div>
 
                         </td>
@@ -350,8 +353,8 @@
 <app-inventory-modal (save)="reloadInventory()" [inventorySelected]="inventorySelecionado"></app-inventory-modal>
 
 
-<div  class="modal fade" id="inventarioModalExclusao"
-    aria-labelledby="inventarioModalExclusao" aria-hidden="true" tabindex="-1">
+<div class="modal fade" id="inventarioModalExclusao" aria-labelledby="inventarioModalExclusao" aria-hidden="true"
+    tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

@@ -56,7 +56,8 @@
 
         </button>
 
-        <button *ngIf="rules.length > 0" class="tab-btn" [class.active]="activeTab === 'simulation'" (click)="activeTab = 'simulation'">
+        <button *ngIf="rules.length > 0" class="tab-btn" [class.active]="activeTab === 'simulation'"
+            (click)="activeTab = 'simulation'">
 
             <i class="bi bi-cpu me-2"></i>
 
@@ -599,7 +600,7 @@
                             </label>
 
                             <input type="text" class="form-control" placeholder="Ex: 2d1h38m20s"
-                                 formControlName="printHours">
+                                formControlName="printHours">
 
                         </div>
 
@@ -703,6 +704,22 @@
 
                         </div>
 
+                        <div class="col-md-6 d-flex flex-column">
+
+                            <label class="form-label opacity-0">
+                                Ação
+                            </label>
+
+                            <button type="button" class="btn btn-outline-secondary h-100"
+                                (click)="resetSimulationForm()">
+
+                                <i class="bi bi-arrow-counterclockwise me-2"></i>
+
+                                Resetar simulação
+
+                            </button>
+
+                        </div>
                     </div>
 
                 </form>
