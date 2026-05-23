@@ -28,6 +28,8 @@ import { CategoriaService } from '../../../../core/categoria/categoria.service';
 import { ToastService } from '../../../components/toast/toast.service';
 import { SuggestedPriceResult } from '../../../calc-pricing/models/suggested.pricing.model';
 import { InventoryModel } from '../../../inventory/components/inventory-modal/models/inventory.model';
+import { ProductService } from '../../../../core/product/product.service';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-product-modal',
@@ -52,7 +54,9 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit {
   save = new EventEmitter();
 
   @Input()
-  produtoSelecionado!: ProductResponse;
+  produtoSelecionado?: ProductResponse;
+
+  
 
   suggestedPrices:
     SuggestedPriceResult[] = [];
@@ -71,29 +75,26 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit {
 
   inventoryDataResponse: InventoryModel[] = []
   categorias: CategoriaModel[] = []
+  editar: boolean =false;
 
   constructor(
     private fb: FormBuilder,
     private pricingService: PricingRuleService,
     private inventoryService: InventarioService,
     private categoriaService: CategoriaService,
+    private productService: ProductService,
     private toast: ToastService
   ) {
     this.form = this.fb.group({
       name: ['', Validators.required],
-      sku: ['', Validators.required],
-      categoriaId: [null],
       description: [''],
-      active: [true],
-      image: [null],
-      salePrice: [0, Validators.required],
-      profitMargin: [0],
-      additionalCost: [0],
-      productionTime: [0],
-      productionType: ['3d-print'],
-      printerProfile: [''],
-      price: [0],
-      composition: this.fb.array([])
+      categoryId: [null, Validators.required],
+      productionWeight: [0],
+      shippingWeight: [0],
+      width: [0],
+      height: [0],
+      depth: [0],
+      materials: this.fb.array([])
     });
   }
   ngOnInit(): void {
@@ -134,7 +135,6 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit {
 
 
   loadCategorias() {
-
     this.categoriaService.loadCategoriasByParametro('VENDA').subscribe({
       next: res => {
         this.categorias = res
@@ -174,50 +174,36 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit {
     })
   }
 
-  get composition(): FormArray {
+  get materials(): FormArray {
 
     return this.form.get(
-      'composition'
+      'materials'
     ) as FormArray;
   }
 
   selecionarRecurso(index: number): void {
 
-    const compositionGroup =
-      this.composition.at(index);
+    const materialGroup =
+      this.materials.at(index);
 
-    const inventoryItemId =
-      compositionGroup.get('inventoryItemId')?.value;
+    const inventoryId =
+      materialGroup.get('inventoryId')?.value;
 
     const inventory =
       this.inventoryDataResponse.find(
-        d => d.id == inventoryItemId
+        d => d.id == inventoryId
       );
 
     if (!inventory) {
       return;
     }
 
-    /*
-     * custo unitário
-     * ex:
-     * estoque total = 1000g
-     * custo total = 50 reais
-     * custo por g = 0.05
-     */
-
     const unitCost =
-      inventory.cost / inventory.quantity;
+      inventory.unitCost;
 
-    compositionGroup.patchValue({
-
-      cost: unitCost,
-
-      unit: inventory.unit
-
+    materialGroup.patchValue({
+      unitCostSnapshot: unitCost
     });
-
-    console.log(compositionGroup.value);
   }
 
   /* =====================================================
@@ -225,18 +211,28 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit {
   ===================================================== */
 
   addCompositionItem(): void {
-    this.composition.push(
+
+    this.materials.push(
+
       this.fb.group({
-        inventoryItemId: [
+
+        inventoryId: [
           null,
           Validators.required
         ],
+
         quantity: [
           0,
           Validators.required
         ],
-        unit: ['g'],
-        cost: [0]
+
+        consumptionType: [
+          'FIXED'
+        ],
+
+        unitCostSnapshot: [
+          0
+        ]
       })
     );
   }
@@ -245,7 +241,7 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit {
     index: number
   ): void {
 
-    this.composition.removeAt(index);
+    this.materials.removeAt(index);
   }
 
   asFormGroup(control: AbstractControl): FormGroup {
@@ -256,18 +252,14 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit {
   ===================================================== */
 
   get totalCompositionCost(): number {
-    console.log('total custocomposition aqui')
-    return this.composition.controls
+    return this.materials.controls
       .reduce((total, item) => {
 
-        const value =
-          item.value;
-        console.log(value);
-        console.log('Valor aqui ' + value)
+        const value = item.value;
         return total +
           (
             (value.quantity || 0) *
-            (value.cost || 0)
+            ((value.unitCostSnapshot || 0))
           );
 
       }, 0);
@@ -288,15 +280,115 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit {
   ===================================================== */
 
   submit(): void {
+
     if (this.form.invalid) {
+
       this.form.markAllAsTouched();
       return;
     }
-    console.log(
-      this.form.getRawValue()
+
+    this.loading = true;
+
+    const formValue =
+      this.form.getRawValue();
+
+    const payload = {
+
+      name:
+        formValue.name,
+
+      description:
+        formValue.description,
+
+      categoryId:
+        formValue.categoryId,
+
+      productionWeight:
+        formValue.productionWeight,
+
+      shippingWeight:
+        formValue.shippingWeight,
+
+      width:
+        formValue.width,
+
+      height:
+        formValue.height,
+
+      depth:
+        formValue.depth,
+
+      materials:
+        formValue.materials
+    };
+
+    const multipart =
+      new FormData();
+
+    multipart.append(
+      'data',
+      new Blob(
+        [
+          JSON.stringify(payload)
+        ],
+        {
+          type: 'application/json'
+        }
+      )
     );
+
+    if (this.selectedFile) {
+
+      multipart.append(
+        'image',
+        this.selectedFile
+      );
+    }
+
+    console.log(payload);
+    this.productService.save(multipart).subscribe({
+      next: response => {
+        this.toast.show('Cadastrado com sucesso!', 'success');
+        console.log(response)
+        this.loading = false
+        this.save.emit();
+        this.fecharModal();
+      },
+      error: (error) => {
+        console.log(error)
+        this.toast.show('Erro ao cadastrar! ' + error.error.message, 'danger');
+        this.loading = false
+
+      }
+    })
   }
-  
+
+   fecharModal() {
+    const modalElement =
+      document.getElementById(
+        'productModal'
+      );
+
+    if (!modalElement) {
+      return;
+    }
+
+    const modal =
+      bootstrap.Modal.getInstance(
+        modalElement
+      );
+
+    modal?.hide();
+
+    this.imagePreview = null;
+    this.selectedFile = undefined!;
+    this.editar = false;
+    this.produtoSelecionado = undefined;
+    this.form.reset({
+      active: true
+    });
+  }
+
   async onImageChange(
     event: Event
   ): Promise<void> {

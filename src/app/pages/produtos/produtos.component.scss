@@ -179,3 +179,63 @@ canvas {
     color: var(--bs-secondary);
   }
 }
+
+.product-image {
+
+  width: 58px;
+
+  height: 58px;
+
+  border-radius: 1rem;
+
+  object-fit: cover;
+
+  border:
+    1px solid rgba(var(--bs-border-color-rgb), .4);
+}
+.product-clickable {
+
+  cursor: pointer;
+
+  transition: transform 0.2s ease;
+}
+
+.product-clickable:hover {
+
+  transform: scale(1.05);
+}
+
+.product-preview-image {
+
+  max-height: 90vh;
+
+  object-fit: contain;
+
+  border-radius: 16px;
+}
+
+.filter-dropdown {
+
+    height: 48px;
+
+    border-radius: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 16px;
+
+    font-size: 1rem;
+}
+
+.dropdown-menu {
+
+    border-radius: 16px;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    backdrop-filter: blur(10px);
+}

@@ -76,3 +76,30 @@ textarea.form-control {
     min-width: 700px;
   }
 }
+
+.empty-state {
+
+  padding: 5rem 2rem;
+
+  text-align: center;
+
+  color:
+    var(--bs-secondary-color);
+
+  i {
+
+    font-size: 4rem;
+
+    opacity: .5;
+
+    margin-bottom: 1rem;
+
+    display: block;
+  }
+
+  h5 {
+
+    color:
+      var(--bs-body-color);
+  }
+}

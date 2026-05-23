@@ -5,8 +5,8 @@
     <!-- HEADER -->
 
     <div class="d-flex flex-column flex-lg-row
-    justify-content-between align-items-lg-center
-    gap-3 mb-4">
+        justify-content-between align-items-lg-center
+        gap-3 mb-4">
 
         <div>
 
@@ -20,7 +20,9 @@
 
         </div>
 
-        <button class="btn btn-primary" (click)="openProductModal()">
+        <button
+            class="btn btn-primary"
+            (click)="openProductModal()">
 
             <i class="bi bi-plus-circle me-2"></i>
 
@@ -38,77 +40,66 @@
 
             <!-- SEARCH -->
 
-            <div class="col-12 col-lg-5">
+            <div class="col-12 col-lg-6">
 
-                <input type="text" class="form-control" placeholder="Buscar produto..." [(ngModel)]="search">
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Buscar produto..."
+                    [(ngModel)]="search">
 
             </div>
 
             <!-- CATEGORY -->
 
+            <div class="col-12 col-lg-4">
+
+                <div class="dropdown w-100">
+
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start filter-dropdown"
+                        type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+
+                        {{ getCategoriasSelecionadasLabel() }}
+
+                    </button>
+
+                    <div class="dropdown-menu w-100 p-3 shadow" style="max-height: 300px; overflow-y: auto;">
+
+                        <div class="form-check mb-2" *ngFor="let c of categorias">
+
+                            <input *ngIf="c.id" class="form-check-input" type="checkbox" [id]="'categoriaId' + c.id"
+                                [checked]="selectedCategorias.includes(c.id)" (change)="toggleCategoria(c.id)">
+
+                            <label class="form-check-label" [for]="'categoriaId' + c.id">
+
+                                {{ c.nome }}
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- SORT -->
+
             <div class="col-12 col-lg-3">
 
                 <select class="form-select">
 
-                    <option>
-                        Todas categorias
+                    <option value="name">
+                        Nome
                     </option>
 
-                    @for(
-                    c of categorias;
-                    track c.id
-                    ) {
-
-                    <option>
-
-                        {{ c.nome }}
-
+                    <option value="cost">
+                        Custo
                     </option>
 
-                    }
-
-                </select>
-
-            </div>
-
-            <!-- STATUS -->
-
-            <div class="col-12 col-lg-2">
-
-                <select class="form-select">
-
-                    <option>
-                        Todos
-                    </option>
-
-                    <option>
-                        Ativos
-                    </option>
-
-                    <option>
-                        Inativos
-                    </option>
-
-                </select>
-
-            </div>
-
-            <!-- TYPE -->
-
-            <div class="col-12 col-lg-2">
-
-                <select class="form-select">
-
-                    <option>
-                        Produção
-                    </option>
-
-                    <option>
-                        Impressão 3D
-                    </option>
-
-                    <option>
-                        Manual
+                    <option value="sku">
+                        SKU
                     </option>
 
                 </select>
@@ -140,23 +131,19 @@
                         </th>
 
                         <th>
-                            Venda
+                            Custo Atual
                         </th>
 
                         <th>
-                            Lucro
+                            Peso Produção
                         </th>
 
                         <th>
-                            Produção
+                            Peso Envio
                         </th>
 
                         <th>
-                            Composição
-                        </th>
-
-                        <th>
-                            Status
+                            Materiais
                         </th>
 
                         <th class="text-end">
@@ -171,7 +158,7 @@
 
                     @for(
                     product of products;
-                    track product.id
+                    track product.productId
                     ) {
 
                     <tr>
@@ -182,7 +169,10 @@
 
                             <div class="d-flex align-items-center gap-3">
 
-                                <img [src]="resolveImage(product.imageUrl)" class="inventory-image">
+                                <img
+                                    [src]="resolveImage(product.imageUrl)"
+                                    class="product-image product-clickable" 
+                                    (click)="openImageModal(product.imageUrl)">
 
                                 <div>
 
@@ -209,18 +199,18 @@
 
                         <td>
 
-                            {{ product.category }}
+                            {{ product.categoryName }}
 
                         </td>
 
-                        <!-- SALE -->
+                        <!-- CURRENT COST -->
 
                         <td>
 
                             <strong>
 
                                 {{
-                                product.salePrice
+                                product.currentCalculatedCost
                                 | currency:'BRL'
                                 }}
 
@@ -228,77 +218,38 @@
 
                         </td>
 
-                        <!-- PROFIT -->
+                        <!-- PRODUCTION WEIGHT -->
 
                         <td>
 
-                            <span class="badge bg-success-subtle text-success">
-
-                                {{ product.profitMargin }}%
-
-                            </span>
+                            {{
+                            product.productionWeight
+                            }} g
 
                         </td>
 
-                        <!-- PRODUCTION -->
+                        <!-- SHIPPING WEIGHT -->
 
                         <td>
 
-                            <div>
-
-                                <strong>
-
-                                    {{ product.productionType }}
-
-                                </strong>
-
-                                <div class="small text-muted">
-
-                                    {{ product.productionTime }}
-                                    min
-
-                                </div>
-
-                            </div>
+                            {{
+                            product.shippingWeight
+                            }} g
 
                         </td>
 
-                        <!-- COMPOSITION -->
+                        <!-- MATERIALS -->
 
                         <td>
 
                             <span class="badge bg-primary-subtle text-primary">
 
                                 {{
-                                product.compositionCount
+                                product.materials.length || 0
                                 }}
                                 itens
 
                             </span>
-
-                        </td>
-
-                        <!-- STATUS -->
-
-                        <td>
-
-                            @if(product.active) {
-
-                            <span class="badge bg-success-subtle text-success">
-
-                                Ativo
-
-                            </span>
-
-                            } @else {
-
-                            <span class="badge bg-danger-subtle text-danger">
-
-                                Inativo
-
-                            </span>
-
-                            }
 
                         </td>
 
@@ -308,13 +259,17 @@
 
                             <div class="d-flex justify-content-end gap-2">
 
-                                <button class="btn btn-sm btn-outline-primary" (click)="editProduct(product)">
+                                <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    (click)="editProduct(product)">
 
                                     <i class="bi bi-pencil"></i>
 
                                 </button>
 
-                                <button class="btn btn-sm btn-outline-danger" (click)="removeProduct(product)">
+                                <button
+                                    class="btn btn-sm btn-outline-danger"
+                                    (click)="removeProduct(product)">
 
                                     <i class="bi bi-trash"></i>
 
@@ -334,10 +289,31 @@
 
         </div>
 
+        <!-- EMPTY -->
+
+        @if(products.length === 0) {
+
+        <div class="text-center py-5">
+
+            <i class="bi bi-box-seam fs-1 text-muted"></i>
+
+            <h5 class="mt-3">
+                Nenhum produto encontrado
+            </h5>
+
+            <p class="text-muted mb-0">
+                Cadastre o primeiro produto para começar
+            </p>
+
+        </div>
+
+        }
+
         <!-- PAGINATION -->
 
-        <div class="d-flex justify-content-between
-      align-items-center mt-4">
+        <div
+            class="d-flex justify-content-between
+            align-items-center mt-4">
 
             <small class="text-muted">
 
@@ -350,13 +326,17 @@
 
             <div class="d-flex gap-2">
 
-                <button class="btn btn-outline-primary btn-sm" (click)="changePage(currentPage - 1)">
+                <button
+                    class="btn btn-outline-primary btn-sm"
+                    (click)="changePage(currentPage - 1)">
 
                     <i class="bi bi-chevron-left"></i>
 
                 </button>
 
-                <button class="btn btn-outline-primary btn-sm" (click)="changePage(currentPage + 1)">
+                <button
+                    class="btn btn-outline-primary btn-sm"
+                    (click)="changePage(currentPage + 1)">
 
                     <i class="bi bi-chevron-right"></i>
 
@@ -372,5 +352,24 @@
 
 <!-- MODAL -->
 
-<app-product-modal [produtoSelecionado]="produtoSelecionado" (save)="reloadProducts()">
+<app-product-modal
+    [produtoSelecionado]="produtoSelecionado"
+    (save)="reloadProducts()">
+
 </app-product-modal>
+
+<div class="modal fade" id="productImageModal" data-bs-keyboard="true" aria-labelledby="inventoryImageModal"
+    aria-hidden="true" data-bs-backdrop="true" data-bs-dismiss="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-transparent border-0 shadow-none">
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-0">
+                <img *ngIf="selectedImagePreview" [src]="selectedImagePreview"
+                    class="img-fluid rounded shadow-lg inventory-preview-image">
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -234,7 +234,23 @@
                         </tbody>
                     </table>
                 </div>
+                @if(categorias.length === 0) {
 
+                <div class="empty-state">
+
+                    <i class="bi bi-box-seam"></i>
+
+                    <h5>
+                        Nenhum item encontrado
+                    </h5>
+
+                    <p>
+                        Cadastre itens para iniciar o controle de categorias
+                    </p>
+
+                </div>
+
+                }
                 <!-- PAGINATION -->
                 <div class="d-flex justify-content-between align-items-center mt-4">
 
@@ -296,8 +312,7 @@
     </div>
 </div>
 
-<div  class="modal fade" id="modalExclusao" aria-labelledby="modalExclusao"
-    aria-hidden="true" tabindex="-1">
+<div class="modal fade" id="modalExclusao" aria-labelledby="modalExclusao" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

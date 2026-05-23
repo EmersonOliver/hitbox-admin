@@ -1,26 +1,92 @@
 <div class="modal fade" id="productModal" tabindex="-1">
+
     <div class="modal-dialog modal-dialog-centered modal-xl">
+
         <div class="modal-content app-modal">
+
+            <!-- =====================================================
+                 HEADER
+            ====================================================== -->
+
             <div class="modal-header border-0">
+
                 <div>
+
                     <h4 class="modal-title fw-bold mb-1">
+
                         Novo Produto
+
                     </h4>
+
                     <p class="text-muted mb-0">
                         Produto comercial + ficha técnica
                     </p>
+
                 </div>
+
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+
                 </button>
+
             </div>
 
-            <!-- TABS -->
+            <!-- =====================================================
+                 TABS
+            ====================================================== -->
+            <div class="row d-flex flex-column flex-lg-row align-items-lg-center mb-4">
+
+                <!-- BASE COST -->
+
+                <div class="col-md-4 m-3">
+                    <div class="pricing-card">
+                        <span class="text-muted d-block mb-2">
+                            Custo de produção
+                        </span>
+                        <h3 class="fw-bold mb-0">
+
+                            {{
+                            totalCompositionCost
+                            | currency:'BRL'
+                            }}
+
+                        </h3>
+                    </div>
+                </div>
+
+                <!-- CALCULATED -->
+
+                <div class="col-md-4 m-3">
+
+                    <div class="pricing-card">
+
+                        <span class="text-muted d-block mb-2">
+
+                            Custo calculado
+
+                        </span>
+
+                        <h3 class="fw-bold mb-0">
+
+                            {{
+                            totalCompositionCost
+                            | currency:'BRL'
+                            }}
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
             <div class="modal-tabs px-4">
 
                 <button type="button" class="tab-btn" [class.active]="activeTab === 'general'"
                     (click)="activeTab = 'general'">
 
                     <i class="bi bi-grid me-2"></i>
+
                     Geral
 
                 </button>
@@ -29,14 +95,16 @@
                     (click)="activeTab = 'composition'">
 
                     <i class="bi bi-box-seam me-2"></i>
+
                     Composição
 
                 </button>
 
-                <button type="button" class="tab-btn" [class.active]="activeTab === 'pricing'"
+                <button *ngIf="false" type="button" class="tab-btn" [class.active]="activeTab === 'pricing'"
                     (click)="activeTab = 'pricing'">
 
                     <i class="bi bi-currency-dollar me-2"></i>
+
                     Precificação
 
                 </button>
@@ -44,14 +112,17 @@
                 <button type="button" class="tab-btn" [class.active]="activeTab === 'production'"
                     (click)="activeTab = 'production'">
 
-                    <i class="bi bi-cpu me-2"></i>
+                    <i class="bi bi-rulers me-2"></i>
+
                     Produção
 
                 </button>
 
             </div>
 
-            <!-- BODY -->
+            <!-- =====================================================
+                 BODY
+            ====================================================== -->
 
             <div class="modal-body pt-0">
 
@@ -64,7 +135,9 @@
                     @if(activeTab === 'general') {
 
                     <div class="row g-4">
+
                         <!-- IMAGE -->
+
                         <div class="col-12 col-lg-4">
 
                             <div class="product-image-card" #pasteArea tabindex="0" (paste)="onPaste($event)">
@@ -76,12 +149,15 @@
                                     <img [src]="imagePreview" alt="Produto">
 
                                     } @else {
+
                                     <div class="image-placeholder">
 
                                         <i class="bi bi-box-seam"></i>
 
                                         <small>
+
                                             CTRL + V ou selecione uma imagem
+
                                         </small>
 
                                     </div>
@@ -93,6 +169,7 @@
                                 <label class="btn btn-outline-primary w-100 mt-3">
 
                                     <i class="bi bi-upload me-2"></i>
+
                                     Selecionar imagem
 
                                     <input hidden type="file" accept="image/*" (change)="onImageChange($event)">
@@ -104,344 +181,571 @@
                         </div>
 
                         <!-- FORM -->
+
                         <div class="col-12 col-lg-8">
+
                             <div class="row g-3">
+
                                 <!-- NAME -->
+
                                 <div class="col-12">
+
                                     <label class="form-label">
+
                                         Nome do produto
+
                                     </label>
+
                                     <input type="text" class="form-control" formControlName="name"
                                         placeholder="Ex: Chaveiro Switch Azul">
+
                                 </div>
-                               
+
                                 <!-- CATEGORY -->
-                                <div class="col-12 col-md-12">
-                                    <label class="form-label">
-                                        Categoria
-                                    </label>
-                                    <select class="form-select" formControlName="categoriaId">
-                                        <option [value]="null" disabled>
-                                            Selecione
-                                        </option>
-                                        <option *ngFor="let c of categorias" value="c.id">{{c.nome}}</option>
-                                    </select>
-                                </div>
-                                <!-- DESCRIPTION -->
+
                                 <div class="col-12">
+
                                     <label class="form-label">
-                                        Descrição
+
+                                        Categoria
+
                                     </label>
+
+                                    <select class="form-select" formControlName="categoryId">
+
+                                        <option [ngValue]="null" disabled>
+
+                                            Selecione
+
+                                        </option>
+
+                                        <option *ngFor="let c of categorias" [ngValue]="c.id">
+
+                                            {{ c.nome }}
+
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <!-- DESCRIPTION -->
+
+                                <div class="col-12">
+
+                                    <label class="form-label">
+
+                                        Descrição
+
+                                    </label>
+
                                     <textarea rows="5" class="form-control" formControlName="description"
                                         placeholder="Descrição do produto...">
+
                                     </textarea>
+
                                 </div>
-                                <!-- ACTIVE -->
-                                <div class="col-12">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" formControlName="active">
-                                        <label class="form-check-label">
-                                            Produto ativo
-                                        </label>
-                                    </div>
-                                </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
                     }
+
                     <!-- =====================================================
                          COMPOSITION TAB
                     ====================================================== -->
+
                     @if(activeTab === 'composition') {
+
                     <div class="d-flex justify-content-between align-items-center mb-4">
+
                         <div>
+
                             <h5 class="fw-bold mb-1">
+
                                 Ficha Técnica
+
                             </h5>
+
                             <p class="text-muted mb-0">
+
                                 Recursos utilizados na produção
+
                             </p>
+
                         </div>
 
                         <button type="button" class="btn btn-primary" (click)="addCompositionItem()">
+
                             <i class="bi bi-plus-lg me-2"></i>
+
                             Adicionar recurso
+
                         </button>
+
                     </div>
 
-                    <div formArrayName="composition" class="composition-list">
+                    <div formArrayName="materials" class="composition-list">
+
                         @for(
-                        item of composition.controls;
+                        item of materials.controls;
                         track $index
                         ) {
-                        <div class="composition-card" [formGroupName]="$index" [formGroup]="asFormGroup(item)">
+
+                        <div class="composition-card" [formGroupName]="$index">
+
                             <div class="row g-3 align-items-end">
+
                                 <!-- RESOURCE -->
+
                                 <div class="col-lg-5">
+
                                     <label class="form-label">
+
                                         Recurso
+
                                     </label>
-                                    <select name="inventoryItemId" id="inventoryItemId"
-                                        (change)="selecionarRecurso($index)" formControlName="inventoryItemId"
-                                        class="form-select">
-                                        <option [value]="null" disabled>Selecione</option>
-                                        <option *ngFor="let item of inventoryDataResponse" [value]="item.id">
-                                            {{item.name}} - {{item.cost / item.quantity | currency: 'BRL'}}
+
+                                    <select class="form-select" formControlName="inventoryId"
+                                        (change)="selecionarRecurso($index)">
+
+                                        <option [ngValue]="null" disabled>
+
+                                            Selecione
+
                                         </option>
+
+                                        <option *ngFor="let item of inventoryDataResponse" [ngValue]="item.id">
+
+                                            {{ item.name }}
+                                            -
+                                            {{
+                                            (item.cost / item.quantity)
+                                            | currency:'BRL'
+                                            }}
+
+                                        </option>
+
                                     </select>
+
                                 </div>
+
                                 <!-- QUANTITY -->
+
                                 <div class="col-lg-3">
+
                                     <label class="form-label">
+
                                         Quantidade
+
                                     </label>
+
                                     <input type="number" class="form-control" formControlName="quantity">
+
                                 </div>
-                                <!-- UNIT -->
+
+                                <!-- CONSUMPTION -->
+
                                 <div class="col-lg-2">
+
                                     <label class="form-label">
-                                        Unidade
+
+                                        Consumo
+
                                     </label>
-                                    <select class="form-select" formControlName="unit">
-                                        <option value="g">
-                                            g
+
+                                    <select class="form-select" formControlName="consumptionType">
+
+                                        <option value="FIXED">
+
+                                            Fixo
+
                                         </option>
-                                        <option value="kg">
-                                            kg
+
+                                        <option value="PER_UNIT">
+
+                                            Por Unidade
+
                                         </option>
-                                        <option value="un">
-                                            un
+
+                                        <option value="OPTIONAL">
+
+                                            Opcional
+
                                         </option>
+
                                     </select>
+
                                 </div>
+
                                 <!-- REMOVE -->
+
                                 <div class="col-lg-2">
+
                                     <button type="button" class="btn btn-outline-danger w-100"
                                         (click)="removeCompositionItem($index)">
+
                                         <i class="bi bi-trash"></i>
+
                                     </button>
+
                                 </div>
+
                             </div>
+
                         </div>
+
                         }
+
                     </div>
+
                     }
 
                     <!-- =====================================================
                          PRICING TAB
                     ====================================================== -->
+
                     @if(activeTab === 'pricing') {
+
                     <div class="row g-4">
-                        <!-- COST -->
-                        <div class="col-md-4">
+
+                        <!-- BASE COST -->
+
+                        <div class="col-md-6">
+
                             <div class="pricing-card">
+
                                 <span class="text-muted d-block mb-2">
-                                    Custo produção
+
+                                    Custo de produção
+
                                 </span>
+
                                 <h3 class="fw-bold mb-0">
-                                    R$
+
                                     {{
                                     totalCompositionCost
-                                    | number:'1.2-2'
+                                    | currency:'BRL'
                                     }}
+
                                 </h3>
+
                             </div>
+
                         </div>
-                        <!-- EXTRA -->
-                        <div class="col-md-4">
+
+                        <!-- CALCULATED -->
+
+                        <div class="col-md-6">
+
                             <div class="pricing-card">
-                                <label class="form-label">
-                                    Custos adicionais
-                                </label>
-                                <div class="input-group mt-2">
-                                    <span class="input-group-text">
-                                        R$
-                                    </span>
-                                    <input type="number" class="form-control" formControlName="additionalCost">
-                                </div>
+
+                                <span class="text-muted d-block mb-2">
+
+                                    Custo calculado
+
+                                </span>
+
+                                <h3 class="fw-bold mb-0">
+
+                                    {{
+                                    totalCompositionCost
+                                    | currency:'BRL'
+                                    }}
+
+                                </h3>
+
                             </div>
+
                         </div>
-                        <!-- SALE -->
-                        <div class="col-md-4">
-                            <div class="pricing-card">
-                                <label class="form-label">
-                                    Preço venda
-                                </label>
-                                <div class="input-group mt-2">
-                                    <span class="input-group-text">
-                                        R$
-                                    </span>
-                                    <input type="number" class="form-control" formControlName="price">
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
+
+                    <!-- SUGGESTIONS -->
+
+                    @if(suggestedPrices.length > 0) {
+
                     <div class="mt-4">
+
                         <h5 class="fw-bold mb-3">
+
                             Sugestões inteligentes
+
                         </h5>
+
                         <div class="row g-3">
+
                             @for(
                             suggestion of suggestedPrices;
                             track suggestion.ruleId
                             ) {
+
                             <div class="col-12 col-lg-4">
+
                                 <div class="pricing-suggestion-card" (click)="applySuggestedPrice(suggestion)">
+
                                     <div class="d-flex justify-content-between align-items-start mb-3">
+
                                         <div>
+
                                             <small class="text-muted">
+
                                                 Regra
+
                                             </small>
+
                                             <h6 class="fw-bold mb-0">
+
                                                 {{ suggestion.ruleName }}
+
                                             </h6>
+
                                         </div>
+
                                         <span class="badge bg-primary-subtle text-primary">
+
                                             SUGERIDO
+
                                         </span>
+
                                     </div>
+
                                     <div class="mb-3">
+
                                         <small class="text-muted d-block">
+
                                             Preço sugerido
+
                                         </small>
+
                                         <h3 class="fw-bold text-success mb-0">
+
                                             {{
                                             suggestion.suggestedPrice
                                             | currency:'BRL'
                                             }}
+
                                         </h3>
+
                                     </div>
+
                                     <div class="small text-muted">
+
                                         <div class="d-flex justify-content-between">
+
                                             <span>
+
                                                 Lucro
+
                                             </span>
+
                                             <strong>
+
                                                 {{
                                                 suggestion.profitValue
                                                 | currency:'BRL'
                                                 }}
+
                                             </strong>
+
                                         </div>
 
                                         <div class="d-flex justify-content-between">
+
                                             <span>
+
                                                 Marketplace
+
                                             </span>
+
                                             <strong>
+
                                                 {{
                                                 suggestion.marketplaceFeeValue
                                                 | currency:'BRL'
                                                 }}
+
                                             </strong>
+
                                         </div>
+
                                         <div class="d-flex justify-content-between">
+
                                             <span>
+
                                                 Cartão
+
                                             </span>
+
                                             <strong>
+
                                                 {{
                                                 suggestion.cardFeeValue
                                                 | currency:'BRL'
                                                 }}
+
                                             </strong>
+
                                         </div>
+
                                     </div>
+
                                 </div>
+
                             </div>
+
                             }
+
                         </div>
+
                     </div>
+
                     }
+
+                    }
+
                     <!-- =====================================================
                          PRODUCTION TAB
                     ====================================================== -->
+
                     @if(activeTab === 'production') {
 
                     <div class="row g-4">
 
-                        <!-- TIME -->
+                        <!-- PRODUCTION WEIGHT -->
 
                         <div class="col-md-6">
 
                             <label class="form-label">
-                                Tempo produção
+
+                                Peso produção
+
                             </label>
 
                             <div class="input-group">
 
-                                <input type="number" class="form-control" formControlName="productionTime">
+                                <input type="number" class="form-control" formControlName="productionWeight">
 
                                 <span class="input-group-text">
-                                    min
+
+                                    g
+
                                 </span>
 
                             </div>
 
                         </div>
 
-                        <!-- TYPE -->
+                        <!-- SHIPPING WEIGHT -->
 
                         <div class="col-md-6">
 
                             <label class="form-label">
-                                Tipo produção
+
+                                Peso envio
+
                             </label>
 
-                            <select class="form-select" formControlName="productionType">
+                            <div class="input-group">
 
-                                <option value="3d-print">
-                                    Impressão 3D
-                                </option>
+                                <input type="number" class="form-control" formControlName="shippingWeight">
 
-                                <option value="manual">
-                                    Manual
-                                </option>
+                                <span class="input-group-text">
 
-                                <option value="laser">
-                                    Corte Laser
-                                </option>
+                                    g
 
-                            </select>
+                                </span>
+
+                            </div>
 
                         </div>
-                        <div class="col-md-3">
+
+                        <!-- WIDTH -->
+
+                        <div class="col-md-4">
+
                             <label class="form-label">
-                                Unidade de medida
-                            </label>
-                            <select name="unitMedida" id="unitMedida" class="form-select">
-                                <option value="null" disabled>Selecione</option>
-                                <option value="">cm</option>
-                                <option value="">mm</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">
-                                Altura
-                            </label>
-                            <input type="number" placeholder="cm" class="form-control">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">
-                                Profundidade
-                            </label>
-                            <input type="number" placeholder="cm" class="form-control">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">
+
                                 Largura
+
                             </label>
-                            <input type="number" placeholder="cm" class="form-control">
+
+                            <div class="input-group">
+
+                                <input type="number" class="form-control" formControlName="width">
+
+                                <span class="input-group-text">
+
+                                    cm
+
+                                </span>
+
+                            </div>
+
                         </div>
 
+                        <!-- HEIGHT -->
+
+                        <div class="col-md-4">
+
+                            <label class="form-label">
+
+                                Altura
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <input type="number" class="form-control" formControlName="height">
+
+                                <span class="input-group-text">
+
+                                    cm
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <!-- DEPTH -->
+
+                        <div class="col-md-4">
+
+                            <label class="form-label">
+
+                                Profundidade
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <input type="number" class="form-control" formControlName="depth">
+
+                                <span class="input-group-text">
+
+                                    cm
+
+                                </span>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
                     }
+
                 </form>
+
             </div>
 
-            <!-- FOOTER -->
+            <!-- =====================================================
+                 FOOTER
+            ====================================================== -->
 
             <div class="modal-footer border-0 pt-0">
 
@@ -454,14 +758,10 @@
                 <button type="submit" class="btn btn-primary" [disabled]="loading" (click)="submit()">
 
                     @if(loading) {
-
                     <span class="spinner-border spinner-border-sm me-2">
                     </span>
-
                     }
-
                     Salvar produto
-
                 </button>
 
             </div>

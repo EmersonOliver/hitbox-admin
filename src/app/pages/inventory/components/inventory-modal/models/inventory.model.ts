@@ -9,6 +9,7 @@ export interface InventoryModel {
   unit: InventoryUnit;
   minimumStock: number;
   cost: number;
+  unitCost:number;
   supplier: string;
   location: string;
   imageUrl: string;

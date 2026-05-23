@@ -1,28 +1,25 @@
+import { ProductMaterialResponse } from "./product.materials.model";
+
 export interface ProductResponse {
 
-  id: number;
+  productId: number;
 
   name: string;
 
-  sku: string;
-
-  category: string;
+  categoryName: string;
+  categoriaId: number;
 
   imageUrl: string;
 
-  salePrice: number;
+  sku: string;
 
-  costPrice: number;
+  description: string;
 
-  profitMargin: number;
+  currentCalculatedCost: number;
 
-  stock: number;
+  productionWeight: number;
 
-  productionTime: number;
+  shippingWeight: number;
 
-  active: boolean;
-
-  compositionCount: number;
-
-  productionType: string;
+  materials: ProductMaterialResponse[];
 }

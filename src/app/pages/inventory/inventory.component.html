@@ -119,6 +119,12 @@
                                 [class.bi-arrow-down]="sortDirection === 'desc'">
                             </i>
                         </th>
+                        <th role="button" (click)="sort('unitCost')">
+                            Custo Unit.
+                            <i *ngIf="sortField === 'cost'" class="bi" [class.bi-arrow-up]="sortDirection === 'asc'"
+                                [class.bi-arrow-down]="sortDirection === 'desc'">
+                            </i>
+                        </th>
                         <th role="button" (click)="sort('active')">
                             Status
                             <i *ngIf="sortField === 'active'" class="bi" [class.bi-arrow-up]="sortDirection === 'asc'"
@@ -211,7 +217,7 @@
                                     }}%
 
                                 </small>
-                                
+
                             </div>
 
                         </td>
@@ -224,6 +230,10 @@
                         <!-- COST -->
                         <td>
                             {{ item.cost | currency:'BRL'}}
+                        </td>
+                         <!-- UNIT COST -->
+                        <td>
+                            {{ item.unitCost | currency:'BRL'}}
                         </td>
                         <!-- STATUS -->
                         <td>
@@ -279,7 +289,25 @@
             </table>
 
         </div>
+  <!-- EMPTY -->
 
+        @if(inventory.length === 0) {
+
+        <div class="empty-state">
+
+            <i class="bi bi-box-seam"></i>
+
+            <h5>
+                Nenhum item encontrado
+            </h5>
+
+            <p>
+                Cadastre itens para iniciar o controle de inventário
+            </p>
+
+        </div>
+
+        }
         <!-- PAGINATION -->
 
         <div class="d-flex justify-content-between align-items-center mt-4">

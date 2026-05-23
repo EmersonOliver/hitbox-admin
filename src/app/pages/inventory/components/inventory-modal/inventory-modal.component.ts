@@ -129,29 +129,29 @@ export class InventoryModalComponent implements OnInit, OnChanges {
   }
 
   fecharModal() {
- const modalElement =
-    document.getElementById(
-      'inventoryModal'
-    );
+    const modalElement =
+      document.getElementById(
+        'inventoryModal'
+      );
 
-  if (!modalElement) {
-    return;
-  }
+    if (!modalElement) {
+      return;
+    }
 
-  const modal =
-    bootstrap.Modal.getInstance(
-      modalElement
-    );
+    const modal =
+      bootstrap.Modal.getInstance(
+        modalElement
+      );
 
-  modal?.hide();
+    modal?.hide();
 
-  this.imagePreview = null;
-  this.selectedFile = undefined!;
-  this.editar = false;
-  this.inventorySelected = null;
-  this.form.reset({
-    active: true
-  });
+    this.imagePreview = null;
+    this.selectedFile = undefined!;
+    this.editar = false;
+    this.inventorySelected = null;
+    this.form.reset({
+      active: true
+    });
   }
   async onImageChange(
     event: Event

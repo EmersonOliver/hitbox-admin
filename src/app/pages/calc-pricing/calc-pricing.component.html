@@ -510,7 +510,23 @@
                     }
 
                 </div>
+                @if(rules.length === 0) {
 
+                <div class="empty-state">
+
+                    <i class="bi bi-box-seam"></i>
+
+                    <h5>
+                        Nenhum item encontrado
+                    </h5>
+
+                    <p>
+                        Cadastre itens para iniciar o controle de regras de precificação
+                    </p>
+
+                </div>
+
+                }
             </div>
 
         </div>
