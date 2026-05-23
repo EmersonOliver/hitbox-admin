@@ -70,4 +70,9 @@ export class InventarioService {
   delete(id?: number): Observable<any> {
     return this.http.delete<any>(`api/hitbox/inventory/delete/${id}`).pipe();
   }
+
+  movementStock(payload: any, inventoryId?: number): Observable<any> {
+    return this.http.post<any>(`api/hitbox/inventory/movements/${inventoryId}`, payload).pipe();
+
+  }
 }

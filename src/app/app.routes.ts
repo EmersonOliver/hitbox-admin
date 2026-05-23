@@ -8,7 +8,6 @@ export const routes: Routes = [
     { path: 'categorias', loadComponent: () => import('./pages/categorias/categorias.component').then(m => m.CategoriasComponent) },
     { path: 'calculos', loadComponent: () => import('./pages/calc-pricing/calc-pricing.component').then(m => m.CalcPricingComponent) },
     { path: 'catalogo', loadComponent: () => import('./pages/pricing-catalog/pricing-catalog.component').then(m => m.PricingCatalogComponent) },
-    { path: 'estoque', loadComponent: () => import('./pages/stock/stock.component').then(m => m.StockComponent) },
     { path: 'inventario', loadComponent: () => import('./pages/inventory/inventory.component').then(m => m.InventoryComponent) },
     { path: 'relatorios', loadComponent: () => import('./pages/reports/reports.component').then(m => m.ReportsComponent) },
     { path: 'producao', loadComponent: () => import('./pages/producao/producao.component').then(m => m.ProducaoComponent) }

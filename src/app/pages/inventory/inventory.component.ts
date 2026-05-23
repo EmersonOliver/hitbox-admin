@@ -19,6 +19,7 @@ import { ToastService } from '../components/toast/toast.service';
 import { ToastComponent } from "../components/toast/toast.component";
 import { InventoryModalComponent } from './components/inventory-modal/inventory-modal.component';
 import { InventoryModel } from './components/inventory-modal/models/inventory.model';
+import { StockModalComponent } from "./components/stock-modal/stock-modal.component";
 
 declare var bootstrap: any;
 
@@ -32,7 +33,8 @@ declare var bootstrap: any;
     FormsModule,
     InventoryModalComponent,
     UnitLabelPipe,
-    ToastComponent
+    ToastComponent,
+    StockModalComponent
   ],
 
   templateUrl:
@@ -276,6 +278,24 @@ export class InventoryComponent implements OnInit {
 
   abrirModalRemoveInventario(item: InventoryModel) {
     this.inventorySelecionado = item;
+    const modal =
+      new bootstrap.Modal(
+        document.getElementById(
+          'inventarioModalExclusao'
+        )
+      );
+    modal.show();
+  }
+
+  abrirModalStock(item: InventoryModel) {
+    this.inventorySelecionado = item;
+    const modal =
+      new bootstrap.Modal(
+        document.getElementById(
+          'stockMovementModal'
+        )
+      );
+    modal.show();
   }
   sort(field: string): void {
 

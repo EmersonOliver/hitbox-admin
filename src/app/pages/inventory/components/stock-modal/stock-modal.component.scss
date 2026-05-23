@@ -1,0 +1,101 @@
+.stock-modal {
+
+    background: #16181d;
+    border: 1px solid rgba(255,255,255,.05);
+    border-radius: 24px;
+    color: #fff;
+
+    .modal-header {
+
+        padding: 1.5rem 1.5rem 1rem;
+    }
+
+    .modal-body {
+
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+
+        padding: 1rem 1.5rem 1.5rem;
+    }
+
+    .form-label {
+
+        font-weight: 600;
+        margin-bottom: .5rem;
+    }
+
+    .form-control,
+    .form-select,
+    .input-group-text {
+
+        background: #1f2229;
+        border: 1px solid rgba(255,255,255,.06);
+        color: #fff;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+
+        border-color: #4f8cff;
+        box-shadow: none;
+    }
+
+    .inventory-preview {
+
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        padding: 1rem;
+
+        border-radius: 18px;
+
+        background: #1f2229;
+
+        img {
+
+            width: 70px;
+            height: 70px;
+
+            border-radius: 14px;
+
+            object-fit: cover;
+        }
+    }
+
+    .movement-preview {
+
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 1rem;
+    }
+
+    .preview-item {
+
+        background: #1f2229;
+
+        border-radius: 18px;
+
+        padding: 1rem;
+
+        text-align: center;
+
+        small {
+
+            display: block;
+
+            color: #9ca3af;
+
+            margin-bottom: .4rem;
+        }
+
+        strong {
+
+            font-size: 1.1rem;
+        }
+    }
+}

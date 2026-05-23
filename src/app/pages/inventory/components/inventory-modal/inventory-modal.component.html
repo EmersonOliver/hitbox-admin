@@ -144,11 +144,8 @@
               Quantidade
             </label>
 
-            <input type="number" class="form-control" formControlName="quantity"
-              [class.is-invalid]="form.get('quantity')?.invalid && form.get('quantity')?.touched">
-            <div class="invalid-feedback">
-              Quantidade é obrigatório
-            </div>
+            <input type="number" class="form-control " formControlName="quantity">
+
           </div>
 
           <!-- MINIMUM -->

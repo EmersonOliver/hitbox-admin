@@ -11,6 +11,7 @@ import {
 
 import {
   FormBuilder,
+  FormControl,
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
@@ -71,7 +72,7 @@ export class InventoryModalComponent implements OnInit, OnChanges {
     id: [null as number | null],
     name: ['', Validators.required],
     categoriaId: [null as number | null, Validators.required],
-    quantity: [0, Validators.required],
+    quantity: new FormControl({value: 0, disabled: true}),
     unit: ['g', Validators.required],
     minimumStock: [0, Validators.required],
     cost: [0, Validators.required],

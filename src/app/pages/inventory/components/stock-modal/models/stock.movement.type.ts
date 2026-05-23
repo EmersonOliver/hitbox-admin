@@ -1,0 +1,12 @@
+export enum StockMovementType {
+
+  ENTRY = 'ENTRY',
+
+  OUTPUT = 'OUTPUT',
+
+  ADJUSTMENT = 'ADJUSTMENT',
+
+  LOSS = 'LOSS',
+
+  PRODUCTION_CONSUMPTION = 'PRODUCTION_CONSUMPTION'
+}

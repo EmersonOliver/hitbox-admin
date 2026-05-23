@@ -1,19 +1,41 @@
 import { CategoriaModel } from "../../../../categorias/model/categoria.model";
 
 export interface InventoryModel {
-  id?: number;
+ id?: number;
+
   name: string;
-  categoriaId:number;
-  categoria: CategoriaModel;
+
+  categoriaId: number;
+
+  categoria?: CategoriaModel;
+
   quantity: number;
+
   unit: InventoryUnit;
+
   minimumStock: number;
+
   cost: number;
-  unitCost:number;
+
+  unitCost: number;
+
   supplier: string;
+
   location: string;
+
   imageUrl: string;
+
   active: boolean;
+
+  /**
+   * INDICADORES
+   */
+
+  stockLow?: boolean;
+
+  stockPercentage?: number;
+
+  movementCount?: number;
 }
 
 export enum InventoryUnit {

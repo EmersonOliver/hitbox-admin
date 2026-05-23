@@ -166,7 +166,7 @@
 
                         <td>
 
-                            {{ item.categoria.nome }}
+                            {{ item.categoria?.nome }}
 
                         </td>
 
@@ -231,7 +231,7 @@
                         <td>
                             {{ item.cost | currency:'BRL'}}
                         </td>
-                         <!-- UNIT COST -->
+                        <!-- UNIT COST -->
                         <td>
                             {{ item.unitCost | currency:'BRL'}}
                         </td>
@@ -264,16 +264,19 @@
 
                             <div class="d-flex justify-content-end gap-2">
 
-                                <button class="btn btn-sm btn-outline-primary" (click)="selectInventoryEdit(item)">
-
+                                <button class="btn btn-sm btn-outline-primary" title="Editar"
+                                    (click)="selectInventoryEdit(item)">
                                     <i class="bi bi-pencil"></i>
-
                                 </button>
 
-                                <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                                    (click)="abrirModalRemoveInventario(item)"
-                                    data-bs-target="#inventarioModalExclusao">
+                                <button class="btn btn-sm btn-outline-danger" title="Excluir"
+                                    (click)="abrirModalRemoveInventario(item)">
                                     <i class="bi bi-trash"></i>
+                                </button>
+
+                                <button class="btn btn-sm btn-outline-success" title="Entrada de Estoque"
+                                    (click)="abrirModalStock(item)">
+                                    <i class="bi bi-box-arrow-in-down"></i>
                                 </button>
 
                             </div>
@@ -289,7 +292,7 @@
             </table>
 
         </div>
-  <!-- EMPTY -->
+        <!-- EMPTY -->
 
         @if(inventory.length === 0) {
 
@@ -379,6 +382,7 @@
 <!-- MODAL -->
 
 <app-inventory-modal (save)="reloadInventory()" [inventorySelected]="inventorySelecionado"></app-inventory-modal>
+<app-stock-modal (save)="loadInventory()" [inventorySelected]="inventorySelecionado"></app-stock-modal>
 
 
 <div class="modal fade" id="inventarioModalExclusao" aria-labelledby="inventarioModalExclusao" aria-hidden="true"
