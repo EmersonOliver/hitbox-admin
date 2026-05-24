@@ -20,6 +20,7 @@ import { ToastComponent } from "../components/toast/toast.component";
 import { InventoryModalComponent } from './components/inventory-modal/inventory-modal.component';
 import { InventoryModel } from './components/inventory-modal/models/inventory.model';
 import { StockModalComponent } from "./components/stock-modal/stock-modal.component";
+import { StockMovementHistoricalComponent } from "./components/stock-movement-historical/stock-movement-historical.component";
 
 declare var bootstrap: any;
 
@@ -34,7 +35,8 @@ declare var bootstrap: any;
     InventoryModalComponent,
     UnitLabelPipe,
     ToastComponent,
-    StockModalComponent
+    StockModalComponent,
+    StockMovementHistoricalComponent
   ],
 
   templateUrl:
@@ -44,6 +46,7 @@ declare var bootstrap: any;
     './inventory.component.scss'
 })
 export class InventoryComponent implements OnInit {
+
 
   sortField = 'name';
   sortDirection: 'asc' | 'desc' = 'asc';
@@ -352,6 +355,17 @@ export class InventoryComponent implements OnInit {
         )
       );
 
+    modal.show();
+  }
+
+  abrirModalStockMovements(item: InventoryModel) {
+     this.inventorySelecionado = item;
+    const modal =
+      new bootstrap.Modal(
+        document.getElementById(
+          'stockMovementHistoricalModal'
+        )
+      );
     modal.show();
   }
 

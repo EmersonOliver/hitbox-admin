@@ -72,10 +72,8 @@ export class InventoryModalComponent implements OnInit, OnChanges {
     id: [null as number | null],
     name: ['', Validators.required],
     categoriaId: [null as number | null, Validators.required],
-    quantity: new FormControl({value: 0, disabled: true}),
     unit: ['g', Validators.required],
     minimumStock: [0, Validators.required],
-    cost: [0, Validators.required],
     supplier: [''],
     location: [''],
     active: [true]
@@ -99,7 +97,6 @@ export class InventoryModalComponent implements OnInit, OnChanges {
         changes['inventorySelected']
           .currentValue
       );
-
     } else {
       this.form.reset({
         active: true
@@ -146,13 +143,7 @@ export class InventoryModalComponent implements OnInit, OnChanges {
 
     modal?.hide();
 
-    this.imagePreview = null;
-    this.selectedFile = undefined!;
     this.editar = false;
-    this.inventorySelected = null;
-    this.form.reset({
-      active: true
-    });
   }
   async onImageChange(
     event: Event
@@ -259,14 +250,11 @@ export class InventoryModalComponent implements OnInit, OnChanges {
           inventory.name,
         categoriaId:
           inventory.categoriaId,
-        quantity:
-          inventory.quantity,
         unit:
           inventory.unit,
         minimumStock:
           inventory.minimumStock,
-        cost:
-          inventory.cost,
+
         supplier:
           inventory.supplier,
         location:

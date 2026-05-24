@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   OnInit
 } from '@angular/core';
@@ -68,7 +69,7 @@ declare var bootstrap: any;
   styleUrl:
     './calc-pricing.component.scss'
 })
-export class CalcPricingComponent implements OnInit {
+export class CalcPricingComponent implements OnInit, AfterViewInit {
   resetSimulationForm() {
     this.simulationResults = []
     this.simulationForm.reset({
@@ -103,7 +104,49 @@ export class CalcPricingComponent implements OnInit {
 
   editar: boolean = false;
   ruleSelected?: PricingRuleResponse;
+  ngAfterViewInit(): void {
 
+    this.initializeTooltips();
+  }
+
+
+initializeTooltips(): void {
+
+  setTimeout(() => {
+
+    const tooltipList =
+      document.querySelectorAll(
+        '[data-bs-toggle="tooltip"]'
+      );
+
+    tooltipList.forEach((el: any) => {
+
+      bootstrap.Tooltip.getOrCreateInstance(el);
+
+    });
+
+  });
+}
+  
+  private loadTooltips(): void {
+
+    setTimeout(() => {
+
+      const tooltipTriggerList =
+        document.querySelectorAll(
+          '[data-bs-toggle="tooltip"]'
+        );
+
+      tooltipTriggerList.forEach(
+        (el: any) => {
+
+          bootstrap.Tooltip
+            .getOrCreateInstance(el);
+        }
+      );
+
+    });
+  }
   form: FormGroup = this.fb.group({
     name: [null, Validators.required],
     salesChannel: [null, Validators.required],

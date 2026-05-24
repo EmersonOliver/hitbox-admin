@@ -206,7 +206,6 @@ export class StockModalComponent implements OnChanges {
   resolveImage(
     image?: string
   ): string {
-    console.log(this.inventorySelected)
     if (!image) {
       return 'assets/no-image.png';
     }

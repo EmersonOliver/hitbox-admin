@@ -1,4 +1,5 @@
 import { CategoriaModel } from "../../../../categorias/model/categoria.model";
+import { StockMovementModel } from "../../stock-modal/models/stock.movement.model";
 
 export interface InventoryModel {
  id?: number;
@@ -36,6 +37,7 @@ export interface InventoryModel {
   stockPercentage?: number;
 
   movementCount?: number;
+  movements:StockMovementModel[];
 }
 
 export enum InventoryUnit {

@@ -138,15 +138,7 @@
 
           <!-- QUANTITY -->
 
-          <div class="col-md-6">
-
-            <label class="form-label">
-              Quantidade
-            </label>
-
-            <input type="number" class="form-control " formControlName="quantity">
-
-          </div>
+         
 
           <!-- MINIMUM -->
 
@@ -163,28 +155,6 @@
             </div>
           </div>
 
-          <!-- COST -->
-
-          <div class="col-md-6">
-
-            <label class="form-label">
-              Custo
-            </label>
-
-            <div class="input-group">
-
-              <span class="input-group-text">
-                R$
-              </span>
-
-              <input type="number" class="form-control" formControlName="cost"
-                [class.is-invalid]="form.get('cost')?.invalid && form.get('cost')?.touched">
-              <div class="invalid-feedback">
-                Custo é obrigatório
-              </div>
-            </div>
-
-          </div>
 
           <!-- SUPPLIER -->
 

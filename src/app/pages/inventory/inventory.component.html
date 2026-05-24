@@ -7,7 +7,7 @@
     <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
         <div>
             <h2 class="fw-bold mb-1">
-                Inventário
+                Inventário/Estoque
             </h2>
             <p class="text-muted mb-0">
                 Gerencie recursos de produção
@@ -81,7 +81,7 @@
 
     <div class="inventory-card">
         <div class="table-responsive">
-            <table class="table align-middle">
+            <table class="table align-middle ">
                 <thead>
                     <tr>
                         <th role="button" (click)="sort('name')">
@@ -114,7 +114,7 @@
                             Local
                         </th>
                         <th role="button" (click)="sort('cost')">
-                            Custo
+                            Valor do Estoque
                             <i *ngIf="sortField === 'cost'" class="bi" [class.bi-arrow-up]="sortDirection === 'asc'"
                                 [class.bi-arrow-down]="sortDirection === 'desc'">
                             </i>
@@ -131,7 +131,7 @@
                                 [class.bi-arrow-down]="sortDirection === 'desc'">
                             </i>
                         </th>
-                        <th class="text-end">
+                        <th class="text-center">
                             Ações
                         </th>
                     </tr>
@@ -269,16 +269,18 @@
                                     <i class="bi bi-pencil"></i>
                                 </button>
 
-                                <button class="btn btn-sm btn-outline-danger" title="Excluir"
+                                <button class="btn btn-sm btn-outline-success" title="Movimentação de Estoque"
+                                    (click)="abrirModalStock(item)">
+                                     <i class="bi bi-arrow-left-right"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-info" title="Histórico de E/S"
+                                    (click)="abrirModalStockMovements(item)">
+                                    <i class="bi bi-clock-history"></i>
+                                </button>
+                                  <button class="btn btn-sm btn-outline-danger" title="Excluir"
                                     (click)="abrirModalRemoveInventario(item)">
                                     <i class="bi bi-trash"></i>
                                 </button>
-
-                                <button class="btn btn-sm btn-outline-success" title="Entrada de Estoque"
-                                    (click)="abrirModalStock(item)">
-                                    <i class="bi bi-box-arrow-in-down"></i>
-                                </button>
-
                             </div>
 
                         </td>
@@ -383,6 +385,8 @@
 
 <app-inventory-modal (save)="reloadInventory()" [inventorySelected]="inventorySelecionado"></app-inventory-modal>
 <app-stock-modal (save)="loadInventory()" [inventorySelected]="inventorySelecionado"></app-stock-modal>
+<app-stock-movement-historical [inventoryName]="inventorySelecionado?.name"
+    [movements]="inventorySelecionado?.movements"></app-stock-movement-historical>
 
 
 <div class="modal fade" id="inventarioModalExclusao" aria-labelledby="inventarioModalExclusao" aria-hidden="true"

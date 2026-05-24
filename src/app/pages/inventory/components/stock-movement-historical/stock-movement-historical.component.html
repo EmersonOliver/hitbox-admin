@@ -1,0 +1,287 @@
+<div class="modal fade" id="stockMovementHistoricalModal" tabindex="-1">
+
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+
+        <div class="modal-content historical-modal">
+
+            <!-- HEADER -->
+
+            <div class="modal-header-custom">
+
+                <div class="header-content">
+
+                    <div>
+                        <h2 class="modal-title">
+                            Histórico de Movimentações
+                        </h2>
+
+                        <p class="modal-subtitle">
+                            Acompanhe todas as entradas e saídas do estoque
+                        </p>
+                    </div>
+
+                    <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Fechar">
+
+                        <i class="bi bi-x-lg"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- BODY -->
+
+            <div class="modal-body pt-0">
+
+                @if(loading) {
+
+                <div class="loading-container">
+
+                    <div class="spinner-border text-primary"></div>
+
+                </div>
+
+                } @else {
+
+                <div class="table-responsive">
+
+                    <table class="table align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Tipo
+                                </th>
+
+                                <th>
+                                    Quantidade
+                                </th>
+
+                                <th>
+                                    Custo Unitário
+                                </th>
+
+                                <th>
+                                    Valor Total
+                                </th>
+
+                                <th>
+                                    Observação
+                                </th>
+
+                                <th>
+                                    Data
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @for(
+                            movement of movements;
+                            track movement.stockMovementId
+                            ) {
+
+                            <tr>
+
+                                <!-- TYPE -->
+
+                                <td>
+
+                                    <div class="movement-type">
+
+                                        <span class="movement-icon" [ngClass]="
+                                              'bg-' +
+                                              getMovementConfig(movement.type).class +
+                                              '-subtle'
+                                            ">
+
+                                            <i class="bi" [ngClass]="
+                                               getMovementConfig(movement.type).icon
+                                             ">
+                                            </i>
+
+                                        </span>
+
+                                        <div>
+
+                                            <strong>
+
+                                                {{
+                                                getMovementConfig(movement.type).label
+                                                }}
+
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <!-- QUANTITY -->
+
+                                <td>
+
+                                    <strong>
+
+                                        {{
+                                        movement.quantity
+                                        | number:'1.2-4'
+                                        }}
+
+                                    </strong>
+
+                                </td>
+
+                                <!-- UNIT COST -->
+
+                                <td>
+
+                                    {{
+                                    movement.unitCost
+                                    | currency:'BRL'
+                                    }}
+
+                                </td>
+
+                                <!-- TOTAL -->
+
+                                <td>
+
+                                    <strong>
+
+                                        {{
+                                        movement.totalCost
+                                        | currency:'BRL'
+                                        }}
+
+                                    </strong>
+
+                                </td>
+
+                                <!-- OBSERVATION -->
+
+                                <td>
+
+                                    <span class="text-muted">
+
+                                        {{
+                                        movement.observation || '-'
+                                        }}
+
+                                    </span>
+
+                                </td>
+
+                                <!-- DATE -->
+
+                                <td>
+
+                                    <div>
+
+                                        <strong>
+
+                                            {{
+                                            movement.movementDate
+                                            | date:'dd/MM/yyyy'
+                                            }}
+
+                                        </strong>
+
+                                        <div class="small text-muted">
+
+                                            {{
+                                            movement.movementDate
+                                            | date:'HH:mm'
+                                            }}
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                @if(movements?.length === 0) {
+
+                <div class="empty-state">
+
+                    <i class="bi bi-clock-history"></i>
+
+                    <h5>
+
+                        Nenhuma movimentação encontrada
+
+                    </h5>
+
+                    <p>
+
+                        Esse item ainda não possui histórico.
+
+                    </p>
+
+                </div>
+
+                }
+
+                }
+
+            </div>
+
+            <!-- FOOTER -->
+
+            <div class="modal-footer border-0">
+
+                <div class="pagination-container">
+
+                    <small class="text-muted">
+
+                        Página
+                        {{ currentPage + 1 }}
+                        de
+                        {{ totalPages }}
+
+                    </small>
+
+                    <div class="d-flex gap-2">
+
+                        <button class="btn btn-outline-primary btn-sm" [disabled]="currentPage === 0"
+                            (click)="previousPage()">
+
+                            <i class="bi bi-chevron-left"></i>
+
+                        </button>
+
+                        <button class="btn btn-outline-primary btn-sm" [disabled]="currentPage + 1 >= totalPages"
+                            (click)="nextPage()">
+
+                            <i class="bi bi-chevron-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
