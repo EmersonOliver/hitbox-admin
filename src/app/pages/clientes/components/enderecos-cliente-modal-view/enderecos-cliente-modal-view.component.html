@@ -1,0 +1,259 @@
+<div
+  class="modal fade"
+  id="enderecosClienteModalView"
+  tabindex="-1"
+  aria-hidden="true"
+>
+
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+
+    <div class="modal-content">
+
+      <!-- HEADER -->
+
+      <div class="modal-header border-0">
+
+        <div>
+
+          <h4 class="fw-bold mb-1">
+
+            Endereços do Cliente
+
+          </h4>
+
+          <p class="text-muted mb-0">
+
+            {{ clienteSelecionado?.nome }}
+
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+
+      </div>
+
+      <!-- BODY -->
+
+      <div class="modal-body">
+
+        @if(
+          clienteSelecionado?.enderecos?.length
+        ) {
+
+          <div class="row g-4">
+
+            @for(
+              endereco of clienteSelecionado?.enderecos;
+              track endereco.id
+            ) {
+
+              <div class="col-12 col-lg-6">
+
+                <div class="address-card">
+
+                  <!-- TOP -->
+
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-4"
+                  >
+
+                    <div
+                      class="d-flex align-items-center gap-2"
+                    >
+
+                      <div class="address-icon">
+
+                        <i class="bi bi-geo-alt-fill"></i>
+
+                      </div>
+
+                      <div>
+
+                        <h6 class="mb-0">
+
+                          {{
+                            getTipoEndereco(
+                              endereco.tipo
+                            )
+                          }}
+
+                        </h6>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <!-- CONTENT -->
+
+                  <div class="address-content">
+
+                    <div class="info-item">
+
+                      <span class="label">
+                        Endereço
+                      </span>
+
+                      <span class="value">
+
+                        {{ endereco.endereco }}
+
+                      </span>
+
+                    </div>
+
+                    <div class="info-grid">
+
+                      <div class="info-item">
+
+                        <span class="label">
+                          Número
+                        </span>
+
+                        <span class="value">
+
+                          {{ endereco.numero || '-' }}
+
+                        </span>
+
+                      </div>
+
+                      <div class="info-item">
+
+                        <span class="label">
+                          CEP
+                        </span>
+
+                        <span class="value">
+
+                          {{ endereco.cep || '-' }}
+
+                        </span>
+
+                      </div>
+
+                    </div>
+
+                    <div class="info-grid">
+
+                      <div class="info-item">
+
+                        <span class="label">
+                          Bairro
+                        </span>
+
+                        <span class="value">
+
+                          {{ endereco.bairro || '-' }}
+
+                        </span>
+
+                      </div>
+
+                      <div class="info-item">
+
+                        <span class="label">
+                          Cidade
+                        </span>
+
+                        <span class="value">
+
+                          {{ endereco.cidade || '-' }}
+
+                        </span>
+
+                      </div>
+
+                    </div>
+
+                    <div
+                      class="info-item"
+                      *ngIf="endereco.complemento"
+                    >
+
+                      <span class="label">
+                        Complemento
+                      </span>
+
+                      <span class="value">
+
+                        {{ endereco.complemento }}
+
+                      </span>
+
+                    </div>
+
+                    <div
+                      class="info-item"
+                      *ngIf="endereco.observacoes"
+                    >
+
+                      <span class="label">
+                        Observações
+                      </span>
+
+                      <span class="value">
+
+                        {{ endereco.observacoes }}
+
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        } @else {
+
+          <div class="empty-state">
+
+            <i class="bi bi-geo-alt"></i>
+
+            <h5>
+              Nenhum endereço encontrado
+            </h5>
+
+            <p>
+              Este cliente ainda não possui endereços cadastrados
+            </p>
+
+          </div>
+
+        }
+
+      </div>
+
+      <!-- FOOTER -->
+
+      <div class="modal-footer border-0">
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+
+          Fechar
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

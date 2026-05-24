@@ -1,0 +1,112 @@
+.cliente-card {
+
+  background:
+    rgba(var(--bs-body-bg-rgb), 1);
+
+  border:
+    1px solid rgba(var(--bs-border-color-rgb), .4);
+
+  border-radius: 1.5rem;
+
+  padding: 1.5rem;
+}
+
+.table {
+
+  margin-bottom: 0;
+}
+
+.table td,
+.table th {
+
+  vertical-align: middle;
+
+  border-color:
+    rgba(var(--bs-border-color-rgb), .25);
+}
+
+.cliente-avatar {
+
+  width: 52px;
+
+  height: 52px;
+
+  min-width: 52px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-weight: 700;
+
+  font-size: 1rem;
+
+  background:
+    rgba(var(--bs-primary-rgb), .15);
+
+  color:
+    var(--bs-primary);
+}
+
+.form-control,
+.form-select {
+
+  height: 48px;
+
+  border-radius: 14px;
+}
+
+.empty-state {
+
+  padding: 5rem 2rem;
+
+  text-align: center;
+
+  color:
+    var(--bs-secondary-color);
+
+  i {
+
+    font-size: 4rem;
+
+    opacity: .5;
+
+    margin-bottom: 1rem;
+
+    display: block;
+  }
+
+  h5 {
+
+    color:
+      var(--bs-body-color);
+  }
+}
+
+.modal-content {
+
+  background:
+    var(--bs-body-bg);
+
+  border:
+    1px solid rgba(var(--bs-border-color-rgb), .3);
+
+  border-radius: 1.25rem;
+}
+
+@media (max-width: 991px) {
+
+  .cliente-card {
+
+    padding: 1rem;
+  }
+
+  .table {
+
+    min-width: 900px;
+  }
+}

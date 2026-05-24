@@ -1,0 +1,388 @@
+<div class="container-fluid py-4">
+
+    <app-toast></app-toast>
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Clientes
+            </h2>
+
+            <p class="text-muted mb-0">
+                Gerencie seus clientes e endereços
+            </p>
+
+        </div>
+
+        <button class="btn btn-primary" (click)="openClienteModal()">
+
+            <i class="bi bi-plus-circle me-2"></i>
+
+            Novo cliente
+
+        </button>
+
+    </div>
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <div class="cliente-card mb-4">
+
+        <div class="row g-3">
+
+            <!-- SEARCH -->
+
+            <div class="col-12 col-lg-8">
+
+                <input type="text" class="form-control" placeholder="Buscar por nome, telefone ou e-mail..."
+                    [(ngModel)]="search" (keyup)="loadClientes()">
+
+            </div>
+
+            <!-- STATUS -->
+
+            <div class="col-12 col-lg-4">
+
+                <select class="form-select" [(ngModel)]="filterType" (change)="loadClientes()">
+
+                    <option value="">
+                        Todos os clientes
+                    </option>
+
+                    <option value="WITH_ADDRESS">
+                        Com endereço
+                    </option>
+
+                    <option value="WITHOUT_ADDRESS">
+                        Sem endereço
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         TABLE
+    ====================================================== -->
+
+    <div class="cliente-card">
+
+        <div class="table-responsive">
+
+            <table class="table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th role="button" (click)="sort('nome')">
+
+                            Cliente
+
+                            <i *ngIf="sortField === 'nome'" class="bi" [class.bi-arrow-up]="sortDirection === 'asc'"
+                                [class.bi-arrow-down]="sortDirection === 'desc'">
+                            </i>
+
+                        </th>
+
+                        <th role="button" (click)="sort('documento')">
+
+                            Documento
+
+                            <i *ngIf="sortField === 'documento'" class="bi"
+                                [class.bi-arrow-up]="sortDirection === 'asc'"
+                                [class.bi-arrow-down]="sortDirection === 'desc'">
+                            </i>
+
+                        </th>
+
+                        <th role="button" (click)="sort('telefone')">
+
+                            Contato
+
+                            <i *ngIf="sortField === 'telefone'" class="bi" [class.bi-arrow-up]="sortDirection === 'asc'"
+                                [class.bi-arrow-down]="sortDirection === 'desc'">
+                            </i>
+
+                        </th>
+
+                        <th>
+                            Endereços
+                        </th>
+
+                        <th class="text-center">
+                            Ações
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @for(
+                    cliente of clientes;
+                    track cliente.id
+                    ) {
+
+                    <tr>
+
+                        <!-- CLIENTE -->
+
+                        <td>
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <div class="cliente-avatar">
+
+                                    {{ getInitials(cliente.nome) }}
+
+                                </div>
+
+                                <div>
+
+                                    <h6 class="mb-1">
+
+                                        {{ cliente.nome }}
+
+                                    </h6>
+
+                                    <small class="text-muted">
+
+                                        {{ cliente.email || 'Sem e-mail' }}
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <!-- DOCUMENTO -->
+
+                        <td>
+
+                            <span class="fw-semibold">
+
+                                {{ cliente.documento || '-' }}
+
+                            </span>
+
+                        </td>
+
+                        <!-- CONTATO -->
+
+                        <td>
+
+                            <div>
+
+                                <strong>
+
+                                    {{ cliente.telefone || '-' }}
+
+                                </strong>
+
+                            </div>
+
+                        </td>
+
+                        <!-- ENDEREÇOS -->
+
+                        <td>
+
+                            <span class="badge" [class.bg-success-subtle]="cliente.enderecos?.length"
+                                [class.text-success]="cliente.enderecos?.length"
+                                [class.bg-secondary-subtle]="!cliente.enderecos?.length"
+                                [class.text-secondary]="!cliente.enderecos?.length">
+
+                                {{ cliente.enderecos?.length || 0 }}
+                                endereço(s)
+
+                            </span>
+
+                        </td>
+
+                        <!-- ACTIONS -->
+
+                        <td class="text-end">
+
+                            <div class="d-flex justify-content-end gap-2">
+
+                                <button class="btn btn-sm btn-outline-primary" title="Editar cliente"
+                                    (click)="editarCliente(cliente)">
+
+                                    <i class="bi bi-pencil"></i>
+
+                                </button>
+
+                                <button class="btn btn-sm btn-outline-info" title="Visualizar endereços"
+                                    (click)="visualizarEnderecos(cliente)">
+                                    <i class="bi bi-geo-alt"></i>
+                                </button>
+
+                                <button class="btn btn-sm btn-outline-danger" title="Excluir cliente"
+                                    (click)="abrirModalRemocao(cliente)">
+
+                                    <i class="bi bi-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- EMPTY -->
+
+        @if(clientes.length === 0) {
+
+        <div class="empty-state">
+
+            <i class="bi bi-people"></i>
+
+            <h5>
+                Nenhum cliente encontrado
+            </h5>
+
+            <p>
+                Cadastre clientes para iniciar suas vendas
+            </p>
+
+        </div>
+
+        }
+
+        <!-- PAGINATION -->
+
+        <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
+
+            <small class="text-muted">
+
+                Exibindo
+
+                {{ clientes.length }}
+
+                de
+
+                {{ totalElements }}
+
+                registros
+
+            </small>
+
+            <div class="d-flex gap-2">
+
+                <button class="btn btn-outline-primary btn-sm" [disabled]="currentPage === 1"
+                    (click)="changePage(currentPage - 1)">
+
+                    <i class="bi bi-chevron-left"></i>
+
+                </button>
+
+                <button *ngFor="let page of pages" class="btn btn-sm" [class.btn-primary]="page === currentPage"
+                    [class.btn-outline-primary]="page !== currentPage" (click)="changePage(page)">
+
+                    {{ page }}
+
+                </button>
+
+                <button class="btn btn-outline-primary btn-sm" [disabled]="currentPage === totalPages"
+                    (click)="changePage(currentPage + 1)">
+
+                    <i class="bi bi-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     MODAL CLIENTE
+====================================================== -->
+
+<app-cliente-modal [clienteSelecionado]="clienteSelecionado" (save)="reloadClientes()">
+</app-cliente-modal>
+<app-enderecos-cliente-modal-view [clienteSelecionado]="clienteSelecionado" >
+</app-enderecos-cliente-modal-view>
+
+<!-- =====================================================
+     MODAL EXCLUSÃO
+====================================================== -->
+
+<div class="modal fade" id="clienteModalExclusao" tabindex="-1" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Excluir Cliente
+                </h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p class="mb-0">
+
+                    Tem certeza que deseja remover o cliente
+                    <strong>"{{ clienteSelecionado?.nome }}"</strong>?
+
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                    (click)="removerCliente(clienteSelecionado?.id)">
+
+                    Confirmar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,306 @@
+<div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="clienteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content client-modal">
+
+      <!-- HEADER -->
+
+      <div class="modal-header border-0 pb-0">
+
+        <div>
+          <h4 class="modal-title fw-bold" id="clienteModalLabel">
+
+            @if(clienteSelecionado?.id) {
+
+            Editar Cliente
+
+            } @else {
+
+            Novo Cliente
+
+            }
+
+          </h4>
+
+          <p class="text-muted mb-0">
+            Gerencie informações do cliente e endereços
+          </p>
+        </div>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      </div>
+
+      <!-- BODY -->
+
+      <div class="modal-body">
+
+        <form [formGroup]="form">
+
+          <!-- CLIENT DATA -->
+
+          <div class="inventory-card mb-4">
+
+            <div class="row g-3">
+
+              <!-- NOME -->
+
+              <div class="col-12 col-lg-6">
+
+                <label class="form-label">
+                  Nome
+                </label>
+
+                <input type="text" class="form-control" formControlName="nome" placeholder="Digite o nome do cliente">
+
+              </div>
+
+              <!-- DOCUMENTO -->
+
+              <div class="col-12 col-lg-3">
+
+                <label class="form-label">
+                  Documento
+                </label>
+
+                <input type="text" class="form-control" formControlName="documento" placeholder="CPF/CNPJ">
+
+              </div>
+
+              <!-- TELEFONE -->
+
+              <div class="col-12 col-lg-3">
+
+                <label class="form-label">
+                  Telefone
+                </label>
+
+                <input type="text" class="form-control" formControlName="telefone" placeholder="(11) 99999-9999">
+
+              </div>
+
+              <!-- EMAIL -->
+
+              <div class="col-12">
+
+                <label class="form-label">
+                  Email
+                </label>
+
+                <input type="email" class="form-control" formControlName="email" placeholder="cliente@email.com">
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- ENDEREÇOS -->
+
+          <div class="inventory-card">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+              <div>
+                <h5 class="fw-semibold mb-0">
+                  Endereços
+                </h5>
+
+                <small class="text-muted">
+                  Cadastre múltiplos endereços
+                </small>
+              </div>
+
+              <button type="button" class="btn btn-primary" (click)="adicionarEndereco()">
+
+                <i class="bi bi-plus-circle me-2"></i>
+
+                Adicionar endereço
+
+              </button>
+
+            </div>
+
+            <div formArrayName="enderecos" class="d-flex flex-column gap-4">
+
+              <div class="address-card" *ngFor="let endereco of enderecos.controls; let i = index" [formGroupName]="i">
+                <!-- TOP -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                  <div class="d-flex align-items-center gap-2">
+
+                    <div class="address-badge">
+
+                      {{ i + 1 }}
+
+                    </div>
+
+                    <h6 class="mb-0">
+                      Endereço
+                    </h6>
+
+                  </div>
+
+                  <button type="button" class="btn btn-sm btn-outline-danger" (click)="removerEndereco(i)">
+
+                    <i class="bi bi-trash"></i>
+
+                  </button>
+
+                </div>
+
+                <!-- FORM -->
+
+                <div class="row g-3">
+
+                  <!-- TIPO -->
+
+                  <div class="col-12 col-lg-3">
+
+                    <label class="form-label">
+                      Tipo
+                    </label>
+
+                    <select class="form-select" formControlName="tipo">
+
+                      <option value="RESIDENCIAL">
+                        Residencial
+                      </option>
+
+                      <option value="COMERCIAL">
+                        Comercial
+                      </option>
+
+                      <option value="ENTREGA">
+                        Entrega
+                      </option>
+
+                      <option value="COBRANCA">
+                        Cobrança
+                      </option>
+
+                    </select>
+
+                  </div>
+
+                  <!-- CEP -->
+
+                  <div class="col-12 col-lg-3">
+
+                    <label class="form-label">
+                      CEP
+                    </label>
+
+                    <input type="text" class="form-control" formControlName="cep" placeholder="00000-000">
+
+                  </div>
+
+                  <!-- NUMERO -->
+
+                  <div class="col-12 col-lg-2">
+
+                    <label class="form-label">
+                      Número
+                    </label>
+
+                    <input type="number" class="form-control" formControlName="numero">
+
+                  </div>
+
+                  <!-- CIDADE -->
+
+                  <div class="col-12 col-lg-4">
+
+                    <label class="form-label">
+                      Cidade
+                    </label>
+
+                    <input type="text" class="form-control" formControlName="cidade">
+
+                  </div>
+
+                  <!-- ENDEREÇO -->
+
+                  <div class="col-12">
+
+                    <label class="form-label">
+                      Endereço
+                    </label>
+
+                    <input type="text" class="form-control" formControlName="endereco" placeholder="Rua, avenida...">
+
+                  </div>
+
+                  <!-- BAIRRO -->
+
+                  <div class="col-12 col-lg-4">
+
+                    <label class="form-label">
+                      Bairro
+                    </label>
+
+                    <input type="text" class="form-control" formControlName="bairro">
+
+                  </div>
+
+                  <!-- COMPLEMENTO -->
+
+                  <div class="col-12 col-lg-4">
+
+                    <label class="form-label">
+                      Complemento
+                    </label>
+
+                    <input type="text" class="form-control" formControlName="complemento">
+
+                  </div>
+
+                  <!-- OBSERVAÇÃO -->
+
+                  <div class="col-12 col-lg-4">
+
+                    <label class="form-label">
+                      Observações
+                    </label>
+
+                    <input type="text" class="form-control" formControlName="observacoes">
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </form>
+
+      </div>
+
+      <!-- FOOTER -->
+
+      <div class="modal-footer border-0 pt-0">
+
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+
+          Cancelar
+
+        </button>
+
+        <button *ngIf="!clienteSelecionado?.id"  type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="submit()">
+          <i class="bi bi-check-circle me-2"></i>
+          Salvar cliente
+        </button>
+
+         <button *ngIf="clienteSelecionado?.id"  type="button" class="btn btn-info" [disabled]="form.invalid" (click)="submit()">
+          <i class="bi bi-check-circle me-2"></i>
+          Salvar Alterações
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
