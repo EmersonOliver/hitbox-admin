@@ -21,6 +21,12 @@ declare var $: any;
   styleUrl: './produtos.component.scss'
 })
 export class ProdutosComponent implements OnInit {
+  sendToProduction(_t53: ProductResponse) {
+    throw new Error('Method not implemented.');
+  }
+  openProductionHistory(_t53: ProductResponse) {
+    throw new Error('Method not implemented.');
+  }
 
   search = '';
   categorias: CategoriaModel[] = []

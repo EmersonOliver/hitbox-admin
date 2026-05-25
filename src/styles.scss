@@ -10,12 +10,53 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
+
+/* =========================================================
+   FONTS
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Space+Grotesk:wght@300..700&display=swap');
+
+:root {
+
+  /* =====================================================
+     FONTES
+  ===================================================== */
+
+  --font-primary:
+    'Space Grotesk',
+    sans-serif;
+
+  --font-title:
+    'Orbitron',
+    sans-serif;
+
+  --font-mono:
+    'JetBrains Mono',
+    monospace;
+
+  --bs-body-font-family:
+    var(--font-primary);
+
+  /* PRIMARY */
+  --bs-primary: #f5684b;
+  --bs-primary-rgb: 255, 138, 0;
+
+  /* ... restante */
+}
+
+
 /* =========================================================
    LIGHT THEME
 ========================================================= */
 
-:root {
 
+
+
+:root {
+  --bs-body-font-family:
+    'Space Grotesk',
+    sans-serif;
   /* PRIMARY */
   // --bs-primary: #ff8a00;
   --bs-primary: #f5684b;
@@ -100,6 +141,7 @@
 
   --app-sidebar-bg: #0d1218;
 
+
   --app-card-shadow:
     0 4px 30px rgba(0, 0, 0, 0.3);
 
@@ -115,14 +157,40 @@
 ========================================================= */
 
 body {
-
+  font-family:
+    var(--font-primary);
   background:
     radial-gradient(circle at top left,
       rgba(var(--bs-primary-rgb), 0.08),
       transparent 25%),
     var(--app-bg);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+h1,
+h2,
+h3,
+.page-title,
+.sidebar-brand {
+
+  font-family:
+    var(--font-title);
+
+  letter-spacing: .04em;
+
+  font-weight: 700;
+}
+.code-font,
+.sku-text,
+.uuid-text {
+
+  font-family:
+    var(--font-mono);
+
+  letter-spacing: .03em;
+}
 /* =========================================================
    CARD
 ========================================================= */

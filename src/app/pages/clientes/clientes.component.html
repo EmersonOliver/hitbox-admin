@@ -203,12 +203,12 @@
 
                         <td>
 
-                            <span class="badge" [class.bg-success-subtle]="cliente.enderecos?.length"
-                                [class.text-success]="cliente.enderecos?.length"
-                                [class.bg-secondary-subtle]="!cliente.enderecos?.length"
-                                [class.text-secondary]="!cliente.enderecos?.length">
+                            <span class="badge" [class.bg-success-subtle]="cliente.enderecos.length"
+                                [class.text-success]="cliente.enderecos.length"
+                                [class.bg-secondary-subtle]="!cliente.enderecos.length"
+                                [class.text-secondary]="!cliente.enderecos.length">
 
-                                {{ cliente.enderecos?.length || 0 }}
+                                {{ cliente.enderecos.length || 0 }}
                                 endereço(s)
 
                             </span>
