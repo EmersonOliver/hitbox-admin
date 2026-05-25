@@ -11,7 +11,10 @@ export const routes: Routes = [
     { path: 'catalogo', loadComponent: () => import('./pages/pricing-catalog/pricing-catalog.component').then(m => m.PricingCatalogComponent) },
     { path: 'inventario', loadComponent: () => import('./pages/inventory/inventory.component').then(m => m.InventoryComponent) },
     { path: 'relatorios', loadComponent: () => import('./pages/reports/reports.component').then(m => m.ReportsComponent) },
-    { path: 'producao', loadComponent: () => import('./pages/producao/producao.component').then(m => m.ProducaoComponent) }
+    { path: 'producao', loadComponent: () => import('./pages/producao/producao.component').then(m => m.ProducaoComponent) },
+    { path: 'kanban', loadComponent: () => import('./pages/producao/components/production-kanban/production-kanban.component')
+        .then(m => m.ProductionKanbanComponent) }
+
 
 
 
