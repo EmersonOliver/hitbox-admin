@@ -63,7 +63,6 @@ export class InventoryModalComponent implements OnInit, OnChanges {
   selectedFile!: File;
   categorias: CategoriaModel[] = []
 
-  editar = false;
 
   imagePreview:
     string | ArrayBuffer | null = null;
@@ -143,7 +142,6 @@ export class InventoryModalComponent implements OnInit, OnChanges {
 
     modal?.hide();
 
-    this.editar = false;
   }
   async onImageChange(
     event: Event
@@ -215,12 +213,13 @@ export class InventoryModalComponent implements OnInit, OnChanges {
     this.loading = true;
 
     this.buildFormData().then(formData => {
-      const request = this.editar ?
+      const request = this.inventorySelected?.id ?
         this.inventarioService.edit(
-          this.inventorySelected!.id!,
+          this.inventorySelected?.id!,
           formData
         ) : this.inventarioService
           .save(formData);
+
       request.subscribe({
         next: () => {
           this.loading = false;
@@ -231,8 +230,8 @@ export class InventoryModalComponent implements OnInit, OnChanges {
           this.selectedFile = undefined!;
           this.toast.show('Salvo com sucesso!', 'success');
           this.save.emit();
-          this.editar = false;
           this.fecharModal();
+          this.inventorySelected = null;
         },
         error: (error) => {
           this.loading = false;
@@ -265,7 +264,6 @@ export class InventoryModalComponent implements OnInit, OnChanges {
 
     this.imagePreview =
       ImageUtil.resolve(inventory.imageUrl);
-    this.editar = true;
   }
 
   private async urlToFile(
@@ -330,7 +328,7 @@ export class InventoryModalComponent implements OnInit, OnChanges {
     ========================== */
 
     if (
-      this.editar &&
+      this.inventorySelected?.id &&
       this.imagePreview &&
       typeof this.imagePreview === 'string'
     ) {

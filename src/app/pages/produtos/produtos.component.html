@@ -140,7 +140,7 @@
                             Materiais
                         </th>
 
-                        <th class="text-end">
+                        <th class="text-center">
                             Ações
                         </th>
 
@@ -247,9 +247,9 @@
 
                         <!-- ACTIONS -->
 
-                        <td class="text-end">
+                        <td class="text-center">
 
-                            <div class="d-flex justify-content-end gap-2">
+                            <div class="d-flex justify-content-center gap-2">
 
                                 <!-- EDITAR -->
 
@@ -262,7 +262,7 @@
 
                                 <!-- HISTÓRICO PRODUÇÕES -->
 
-                                <button class="btn btn-sm btn-outline-success" title="Histórico de Produções"
+                                <button class="btn btn-sm btn-outline-warning" title="Histórico de Produções"
                                     (click)="openProductionHistory(product)">
 
                                     <i class="bi bi-clock-history"></i>
@@ -271,10 +271,10 @@
 
                                 <!-- ENVIAR PRODUÇÃO -->
 
-                                <button class="btn btn-sm btn-outline-warning" title="Enviar para Produção"
+                                <button class="btn btn-sm btn-outline-success" title="Criar Produção"
                                     (click)="sendToProduction(product)">
 
-                                    <i class="bi bi-hammer"></i>
+                                  <i class="bi bi-play"></i>
 
                                 </button>
 
@@ -360,9 +360,9 @@
 <!-- MODAL -->
 
 <app-product-modal [produtoSelecionado]="produtoSelecionado" (save)="reloadProducts()">
-
 </app-product-modal>
-
+<app-produtos-historico-producao-modal>
+</app-produtos-historico-producao-modal>
 <div class="modal fade" id="productImageModal" data-bs-keyboard="true" aria-labelledby="inventoryImageModal"
     aria-hidden="true" data-bs-backdrop="true" data-bs-dismiss="modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -375,6 +375,29 @@
                     class="img-fluid rounded shadow-lg inventory-preview-image">
             </div>
 
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="productModalExclusaoConfirm" aria-labelledby="productModalExclusaoConfirm" aria-hidden="true"
+    tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Excluir</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja remover este Produto?
+                    <strong>"{{produtoSelecionado?.name}}"</strong>
+                </p>
+                <small class="text-danger">Essa operação não poderá ser desfeita após de realizada.</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                    (click)="confirmDeleteProduct(produtoSelecionado?.productId)">Confirmar</button>
+            </div>
         </div>
     </div>
 </div>

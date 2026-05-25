@@ -1,0 +1,352 @@
+<div
+  class="modal fade"
+  id="produtoHistoricoProducaoModal"
+  tabindex="-1"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+
+    <div class="modal-content production-history-modal">
+
+      <!-- HEADER -->
+
+      <div class="modal-header border-0">
+
+        <div>
+
+          <h4 class="fw-bold mb-1">
+
+            <i class="bi bi-clock-history me-2"></i>
+            Histórico de Produções
+
+          </h4>
+
+          <p class="text-muted mb-0">
+
+            Histórico completo de produções realizadas
+
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal">
+        </button>
+
+      </div>
+
+      <!-- FILTERS -->
+
+      <div class="px-4 pb-3">
+
+        <div class="row g-3">
+
+          <!-- SEARCH -->
+
+          <div class="col-12 col-lg-4">
+
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Buscar produção..."
+              [(ngModel)]="search"
+              (input)="applyFilters()">
+
+          </div>
+
+          <!-- STATUS -->
+
+          <div class="col-12 col-lg-3">
+
+            <select
+              class="form-select"
+              [(ngModel)]="selectedStatus"
+              (change)="applyFilters()">
+
+              <option value="">
+                Todos status
+              </option>
+
+              <option value="FINALIZADO">
+                Finalizado
+              </option>
+
+              <option value="EM_PRODUCAO">
+                Em Produção
+              </option>
+
+              <option value="FALHA">
+                Falha
+              </option>
+
+              <option value="CANCELADO">
+                Cancelado
+              </option>
+
+            </select>
+
+          </div>
+
+          <!-- PAGE SIZE -->
+
+          <div class="col-12 col-lg-2">
+
+            <select
+              class="form-select"
+              [(ngModel)]="pageSize"
+              (change)="changePageSize()">
+
+              <option [ngValue]="5">
+                5 itens
+              </option>
+
+              <option [ngValue]="10">
+                10 itens
+              </option>
+
+              <option [ngValue]="20">
+                20 itens
+              </option>
+
+            </select>
+
+          </div>
+
+          <!-- TOTAL -->
+
+          <div class="col-12 col-lg-3">
+
+            <div class="history-total">
+
+              <i class="bi bi-box-seam me-2"></i>
+
+              {{ filteredHistory.length }}
+              registros
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- BODY -->
+
+      <div class="modal-body">
+
+        <div
+          class="production-history-card"
+          *ngFor="let item of paginatedHistory">
+
+          <!-- TOP -->
+
+          <div class="d-flex flex-column flex-xl-row justify-content-between gap-4">
+
+            <!-- LEFT -->
+
+            <div class="flex-grow-1">
+
+              <div class="d-flex align-items-center gap-2 mb-2">
+
+                <h5 class="fw-bold mb-0">
+
+                  {{ item.productName }}
+
+                </h5>
+
+                <span
+                  class="badge"
+                  [class.bg-success-subtle]="item.status === 'FINALIZADO'"
+                  [class.text-success]="item.status === 'FINALIZADO'"
+
+                  [class.bg-warning-subtle]="item.status === 'EM_PRODUCAO'"
+                  [class.text-warning]="item.status === 'EM_PRODUCAO'"
+
+                  [class.bg-danger-subtle]="item.status === 'FALHA'"
+                  [class.text-danger]="item.status === 'FALHA'"
+
+                  [class.bg-secondary-subtle]="item.status === 'CANCELADO'"
+                  [class.text-secondary]="item.status === 'CANCELADO'">
+
+                  {{ item.status }}
+
+                </span>
+
+              </div>
+
+              <div class="text-muted small mb-3">
+
+                <i class="bi bi-calendar-event me-1"></i>
+
+                {{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}
+
+              </div>
+
+              <!-- DESCRIPTION -->
+
+              <div
+                class="production-observation"
+                *ngIf="item.observation">
+
+                <i class="bi bi-chat-left-text me-2"></i>
+
+                {{ item.observation }}
+
+              </div>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="production-details">
+
+              <div class="production-detail-item">
+
+                <small>
+                  Quantidade
+                </small>
+
+                <strong>
+
+                  {{ item.quantity }}
+
+                </strong>
+
+              </div>
+
+              <div class="production-detail-item">
+
+                <small>
+                  Impressora
+                </small>
+
+                <strong>
+
+                  {{ item.printerName }}
+
+                </strong>
+
+              </div>
+
+              <div class="production-detail-item">
+
+                <small>
+                  Operador
+                </small>
+
+                <strong>
+
+                  {{ item.operator }}
+
+                </strong>
+
+              </div>
+
+              <div class="production-detail-item">
+
+                <small>
+                  Tempo
+                </small>
+
+                <strong>
+
+                  {{ item.productionTime }}
+
+                </strong>
+
+              </div>
+
+              <div class="production-detail-item">
+
+                <small>
+                  Custo
+                </small>
+
+                <strong class="text-primary">
+
+                  {{ item.totalCost | currency:'BRL' }}
+
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- EMPTY -->
+
+        <div
+          class="empty-history"
+          *ngIf="paginatedHistory.length === 0">
+
+          <i class="bi bi-clock-history"></i>
+
+          <h5 class="fw-bold mt-3">
+
+            Nenhum histórico encontrado
+
+          </h5>
+
+          <p class="text-muted mb-0">
+
+            Não existem produções registradas
+
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+
+      <div class="modal-footer border-0">
+
+        <div
+          class="d-flex justify-content-between align-items-center w-100">
+
+          <small class="text-muted">
+
+            Página
+            {{ currentPage }}
+            de
+            {{ totalPages }}
+
+          </small>
+
+          <div class="d-flex gap-2">
+
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              [disabled]="currentPage === 1"
+              (click)="changePage(currentPage - 1)">
+
+              <i class="bi bi-chevron-left"></i>
+
+            </button>
+
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              [disabled]="currentPage === totalPages"
+              (click)="changePage(currentPage + 1)">
+
+              <i class="bi bi-chevron-right"></i>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

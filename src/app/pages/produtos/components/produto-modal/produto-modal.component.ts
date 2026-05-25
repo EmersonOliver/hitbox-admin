@@ -4,8 +4,10 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 
@@ -29,6 +31,7 @@ import { ToastService } from '../../../components/toast/toast.service';
 import { SuggestedPriceResult } from '../../../calc-pricing/models/suggested.pricing.model';
 import { InventoryModel } from '../../../inventory/components/inventory-modal/models/inventory.model';
 import { ProductService } from '../../../../core/product/product.service';
+import { ImageUtil } from '../../../../core/utils/image.util';
 declare var bootstrap: any;
 
 @Component({
@@ -47,16 +50,16 @@ declare var bootstrap: any;
   styleUrl:
     './produto-modal.component.scss'
 })
-export class ProdutoModalComponent implements OnInit, AfterViewInit {
+export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   @Output()
   save = new EventEmitter();
 
   @Input()
-  produtoSelecionado?: ProductResponse;
+  produtoSelecionado?: ProductResponse |
+    null = null
 
-  
 
   suggestedPrices:
     SuggestedPriceResult[] = [];
@@ -75,7 +78,7 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit {
 
   inventoryDataResponse: InventoryModel[] = []
   categorias: CategoriaModel[] = []
-  editar: boolean =false;
+  editar: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -96,6 +99,59 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit {
       depth: [0],
       materials: this.fb.array([])
     });
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes['produtoSelecionado']?.currentValue) {
+      this.preencherFormulario();
+    }else{
+      this.form.reset();
+      this.imagePreview = null
+    }
+  }
+  preencherFormulario() {
+    this.form.reset();
+    this.materials.clear();
+
+    this.form.patchValue({
+      productId: this.produtoSelecionado?.productId,
+      name: this.produtoSelecionado?.name,
+      description: this.produtoSelecionado?.description,
+      categoryId: this.produtoSelecionado?.categoriaId,
+      productionWeight: this.produtoSelecionado?.productionWeight,
+      shippingWeight: this.produtoSelecionado?.shippingWeight,
+      width: 0,
+      height: 0,
+      depth: 0
+    });
+    if (this.produtoSelecionado?.materials?.length) {
+      this.produtoSelecionado?.materials.forEach(item => {
+        this.materials.push(
+
+          this.fb.group({
+            inventoryId: [
+              item.inventoryId,
+              Validators.required
+            ],
+
+            quantity: [
+              item.quantity,
+              Validators.required
+            ],
+
+            consumptionType: [
+              item.consumptionType
+            ],
+
+            unitCostSnapshot: [
+              item.unitCostSnapshot
+            ]
+          })
+        )
+      });
+      this.imagePreview =
+        ImageUtil.resolve(this.produtoSelecionado.imageUrl);
+    }
   }
   ngOnInit(): void {
     this.loadAllInventory();
@@ -345,25 +401,113 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit {
       );
     }
 
-    console.log(payload);
-    this.productService.save(multipart).subscribe({
-      next: response => {
-        this.toast.show('Cadastrado com sucesso!', 'success');
-        console.log(response)
-        this.loading = false
-        this.save.emit();
-        this.fecharModal();
-      },
-      error: (error) => {
-        console.log(error)
-        this.toast.show('Erro ao cadastrar! ' + error.error.message, 'danger');
-        this.loading = false
+    this.buildFormData().then(formData => {
+      const request = this.produtoSelecionado?.productId ?
+        this.productService.edit(formData, this.produtoSelecionado.productId) :
+        this.productService.save(formData);
 
+      request.subscribe({
+        next: response => {
+          this.toast.show('Cadastrado com sucesso!', 'success');
+          console.log(response)
+          this.loading = false
+          this.save.emit();
+          this.fecharModal();
+        },
+        error: (error) => {
+          console.log(error)
+          this.toast.show('Erro ao cadastrar! ' + error.error.message, 'danger');
+          this.loading = false
+
+        }
+      })
+    });
+  }
+  private async urlToFile(
+    url: string,
+    fileName: string
+  ): Promise<File> {
+
+    const response =
+      await fetch(url);
+
+    const blob =
+      await response.blob();
+
+    return new File(
+      [blob],
+      fileName,
+      {
+        type: blob.type
       }
-    })
+    );
+  }
+  private async buildFormData():
+    Promise<FormData> {
+
+    const formData =
+      new FormData();
+
+    formData.append(
+
+      'data',
+
+      new Blob(
+        [
+          JSON.stringify(
+            this.form.getRawValue()
+          )
+        ],
+        {
+          type:
+            'application/json'
+        }
+      )
+    );
+
+    /* ==========================
+       NOVA IMAGEM
+    ========================== */
+
+    if (this.selectedFile) {
+
+      formData.append(
+        'image',
+        this.selectedFile
+      );
+
+      return formData;
+    }
+
+
+    /* ==========================
+       IMAGEM EXISTENTE
+    ========================== */
+
+    if (
+      this.produtoSelecionado?.productId &&
+      this.imagePreview &&
+      typeof this.imagePreview === 'string'
+    ) {
+
+      const file =
+        await this.urlToFile(
+
+          this.imagePreview,
+
+          'inventory.webp'
+        );
+
+      formData.append(
+        'image',
+        file
+      );
+    }
+
+    return formData;
   }
 
-   fecharModal() {
+  fecharModal() {
     const modalElement =
       document.getElementById(
         'productModal'

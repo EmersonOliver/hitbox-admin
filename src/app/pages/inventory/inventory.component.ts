@@ -179,6 +179,7 @@ export class InventoryComponent implements OnInit {
   }
 
   loadInventory(): void {
+    this.inventorySelecionado = null;
     this.inventoryService
       .getPage(
         this.currentPage - 1,

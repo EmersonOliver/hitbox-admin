@@ -23,7 +23,7 @@ import {
 })
 export class ProducaoModalComponent {
 
-  currentStep = 3;
+  currentStep = 1;
 
   items = [
     {

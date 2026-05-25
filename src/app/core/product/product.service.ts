@@ -15,6 +15,10 @@ export class ProductService {
     return this.http.post<any>(`api/hitbox/products/save`, payload).pipe();
   }
 
+  edit(payload: FormData, id: number): Observable<ProductResponse> {
+    return this.http.put<any>(`api/hitbox/products/edit/${id}`, payload).pipe();
+  }
+
   page(page: number, size: number, idCategorias?: number[],
     sortField?: string,
     sortDirection?: string,
@@ -48,5 +52,9 @@ export class ProductService {
     return this.http.get<ApiPage<ProductResponse>>('api/hitbox/products/page', {
       params
     });
+  }
+
+  delete(id?: number): Observable<any> {
+    return this.http.delete<any>(`api/hitbox/products/delete/${id}`).pipe();
   }
 }

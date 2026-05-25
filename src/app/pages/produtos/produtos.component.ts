@@ -10,13 +10,14 @@ import { CategoriaService } from '../../core/categoria/categoria.service';
 import { ToastService } from '../components/toast/toast.service';
 import { ImageUtil } from '../../core/utils/image.util';
 import { ProductService } from '../../core/product/product.service';
+import { ProdutosHistoricoProducaoModalComponent } from "./components/produtos-historico-producao-modal/produtos-historico-producao-modal.component";
 declare var bootstrap: any;
 
 declare var $: any;
 @Component({
   selector: 'app-produtos',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, ProdutoModalComponent, ToastComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ProdutoModalComponent, ToastComponent, ProdutosHistoricoProducaoModalComponent],
   templateUrl: './produtos.component.html',
   styleUrl: './produtos.component.scss'
 })
@@ -24,14 +25,20 @@ export class ProdutosComponent implements OnInit {
   sendToProduction(_t53: ProductResponse) {
     throw new Error('Method not implemented.');
   }
-  openProductionHistory(_t53: ProductResponse) {
-    throw new Error('Method not implemented.');
+  openProductionHistory(item: ProductResponse) {
+    const modal =
+      new bootstrap.Modal(
+        document.getElementById(
+          'produtoHistoricoProducaoModal'
+        )
+      );
+    modal.show();
   }
 
   search = '';
   categorias: CategoriaModel[] = []
   products: ProductResponse[] = []
-  produtoSelecionado!: ProductResponse;
+  produtoSelecionado?: ProductResponse | null = null;
   sortField = 'name';
   sortDirection: 'asc' | 'desc' = 'asc';
   currentPage = 1;
@@ -122,7 +129,7 @@ export class ProdutosComponent implements OnInit {
   }
 
   openProductModal() {
-
+    this.produtoSelecionado = null;
     const modal =
       new bootstrap.Modal(
         document.getElementById(
@@ -131,11 +138,37 @@ export class ProdutosComponent implements OnInit {
       );
     modal.show();
   }
-  removeProduct(_t66: any) {
-
+  removeProduct(item: ProductResponse) {
+    this.produtoSelecionado = item;
+    const modal =
+      new bootstrap.Modal(
+        document.getElementById(
+          'productModalExclusaoConfirm'
+        )
+      );
+    modal.show();
   }
-  editProduct(_t66: any) {
 
+  confirmDeleteProduct(id?: number) {
+    this.productService.delete(id).subscribe({
+      next: () => {
+        this.toast.show('Removido com sucesso!', 'success');
+        this.reloadProducts();
+        this.produtoSelecionado = null;
+      }, error: (error) => {
+        this.toast.show('Ocorreu um erro! ' + error.error.message, 'success');
+      }
+    })
+  }
+  editProduct(item: ProductResponse) {
+    this.produtoSelecionado = item;
+    const modal =
+      new bootstrap.Modal(
+        document.getElementById(
+          'productModal'
+        )
+      );
+    modal.show();
   }
   reloadProducts() {
     this.loadProductsPage();

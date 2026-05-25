@@ -60,13 +60,52 @@ canvas {
 
   &:hover {
     transform: translateY(-4px);
+    animation: pulse 2s infinite;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+
+    // box-shadow:  5px 2px 25px 1px rgba(247, 104, 78, 0.2);
+  }
+}
+
+/**
+PULSE
+**/
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4);
+  }
+
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+  }
+
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 var(--shadow-hover);
+    box-shadow: 0 0 0 0 var(--shadow-hover);
+  }
+
+  70% {
+    -moz-box-shadow: 0 0 0 10px var(--shadow-hover);
+    box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+  }
+
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
   }
 }
 
 /* VARIAÇÕES */
 .action-card.primary {
   border-left: 4px solid var(--bs-primary);
+
 
   i {
     color: var(--bs-primary);
@@ -149,6 +188,7 @@ canvas {
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 18px var(--shadow-hover);
+    animation: pulse 0.8s infinite;
   }
 
   &:active {

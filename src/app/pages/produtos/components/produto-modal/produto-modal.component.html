@@ -12,10 +12,12 @@
 
                 <div>
 
-                    <h4 class="modal-title fw-bold mb-1">
-
+                    <h4 *ngIf="!produtoSelecionado?.productId" class="modal-title fw-bold mb-1">
                         Novo Produto
+                    </h4>
 
+                      <h4 *ngIf="produtoSelecionado?.productId" class="modal-title fw-bold mb-1">
+                        Editar Produto
                     </h4>
 
                     <p class="text-muted mb-0">
@@ -755,13 +757,22 @@
 
                 </button>
 
-                <button type="submit" class="btn btn-primary" [disabled]="loading" (click)="submit()">
+                <button *ngIf="!produtoSelecionado?.productId" type="submit" class="btn btn-primary" [disabled]="loading" (click)="submit()">
 
                     @if(loading) {
                     <span class="spinner-border spinner-border-sm me-2">
                     </span>
                     }
                     Salvar produto
+                </button>
+
+                  <button *ngIf="produtoSelecionado?.productId" type="submit" class="btn btn-info" [disabled]="loading" (click)="submit()">
+
+                    @if(loading) {
+                    <span class="spinner-border spinner-border-sm me-2">
+                    </span>
+                    }
+                    Salvar Alterações
                 </button>
 
             </div>

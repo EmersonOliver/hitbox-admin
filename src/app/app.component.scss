@@ -26,22 +26,17 @@
 .sidebar-area {
 
   grid-area: sidebar;
-
   background: var(--app-sidebar);
-
   border-right:
     1px solid var(--app-border);
-
   position: sticky;
-
   top: 0;
-
   height: 100vh;
-
   overflow-y: auto;
-
   z-index: 1000;
+  // box-shadow:  5px 2px 25px 1px rgba(247, 104, 78, 0.2);
 }
+
 
 /* =========================================================
    HEADER
