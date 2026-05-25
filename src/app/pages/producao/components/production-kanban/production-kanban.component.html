@@ -1,0 +1,313 @@
+<div class="production-page">
+
+    <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+    <div class="d-flex flex-column flex-lg-row
+      justify-content-between align-items-lg-center
+      gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-grid-3x3-gap-fill me-2"></i>
+                Produção
+            </h2>
+            <p class="text-muted mb-0">
+                Workflow visual da produção 3D
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-primary" (click)="openModalColumn()">
+                <i class="bi bi-columns-gap me-2"></i>
+                Nova coluna
+            </button>
+
+            <button class="btn btn-primary" (click)="addCard()">
+                <i class="bi bi-plus-circle me-2"></i>
+                Nova produção
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+       BOARD
+  ====================================================== -->
+
+    <div class="kanban-board" cdkDropListGroup>
+
+        @for(
+        column of columns;
+        track column.id
+        ) {
+        <div class="kanban-column">
+            <!-- COLUMN HEADER -->
+            <div class="kanban-column-header" [style.borderColor]="column.color">
+
+                <div class="d-flex align-items-center gap-2">
+
+                    <div class="column-indicator" [style.background]="column.color">
+                    </div>
+
+                    <div>
+
+                        <h5 class="mb-0">
+
+                            {{ column.name }}
+
+                        </h5>
+
+                        <small class="text-muted">
+
+                            {{ column.cards.length }}
+                            cards
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="dropdown">
+
+                    <button class="btn btn-sm btn-icon" data-bs-toggle="dropdown">
+
+                        <i class="bi bi-three-dots"></i>
+
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li>
+
+                            <button class="dropdown-item" (click)="editColumn(column)">
+
+                                <i class="bi bi-pencil me-2"></i>
+                                Editar
+
+                            </button>
+
+                        </li>
+
+                        <li>
+
+                            <button class="dropdown-item text-danger" (click)="removeColumn(column.id)">
+
+                                <i class="bi bi-trash me-2"></i>
+                                Excluir
+
+                            </button>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <!-- COLUMN BODY -->
+
+            <div class="kanban-column-body" cdkDropList [id]="column.id" [cdkDropListData]="column.cards"
+                (cdkDropListDropped)="drop($event)">
+
+                @for(
+                card of column.cards;
+                track card.id
+                ) {
+
+                <div class="kanban-card" cdkDrag>
+
+                    <!-- PRIORITY -->
+
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+
+                        <span class="priority-badge" [class.priority-high]="card.priority === 'ALTA'"
+                            [class.priority-medium]="card.priority === 'MEDIA'"
+                            [class.priority-low]="card.priority === 'BAIXA'">
+
+                            {{ card.priority }}
+
+                        </span>
+
+                        <button class="btn btn-sm btn-icon">
+
+                            <i class="bi bi-three-dots"></i>
+
+                        </button>
+
+                    </div>
+
+                    <!-- PRODUCT -->
+
+                    <div class="mb-3">
+
+                        <h5 class="fw-bold mb-1">
+
+                            {{ card.product }}
+
+                        </h5>
+
+                        <small class="text-muted">
+
+                            {{ card.sku }}
+
+                        </small>
+
+                    </div>
+
+                    <!-- META -->
+
+                    <div class="kanban-meta">
+
+                        <div class="kanban-meta-item">
+
+                            <i class="bi bi-cpu"></i>
+
+                            <span>
+
+                                {{ card.printer }}
+
+                            </span>
+
+                        </div>
+
+                        <div class="kanban-meta-item">
+
+                            <i class="bi bi-clock"></i>
+
+                            <span>
+
+                                {{ card.time }}
+
+                            </span>
+
+                        </div>
+
+                        <div class="kanban-meta-item">
+
+                            <i class="bi bi-box-seam"></i>
+
+                            <span>
+
+                                {{ card.quantity }}
+                                un
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- PROGRESS -->
+
+                    <div class="mt-4">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <small class="text-muted">
+
+                                Progresso
+
+                            </small>
+
+                            <small class="fw-semibold">
+
+                                {{ card.progress }}%
+
+                            </small>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div class="progress-bar" [style.width.%]="card.progress">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- FOOTER -->
+
+                    <div class="kanban-footer">
+
+                        <div class="avatar-group">
+
+                            <div class="avatar">
+
+                                {{ card.operator[0] }}
+
+                            </div>
+
+                            <small>
+
+                                {{ card.operator }}
+
+                            </small>
+
+                        </div>
+
+                        <button class="btn btn-sm btn-outline-primary" (click)="openCard(card)">
+
+                            <i class="bi bi-eye"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
+
+        </div>
+
+        }
+
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="createColumnModal" tabindex="-1" aria-labelledby="createColumnModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createColumnModalLabel">Criar Coluna</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Nome:</label>
+                    <input type="text" class="form-control" placeholder="Nome da Coluna" [(ngModel)]="columnName">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">
+                        Cor da coluna
+                    </label>
+                    <div class="color-picker">
+                        @for(
+                        color of availableColors;
+                        track color
+                        ) {
+
+                        <button type="button" class="color-option" [class.active]="selectedColumnColor === color"
+                            [style.background]="color" (click)="selectedColumnColor = color">
+                            <i *ngIf="selectedColumnColor === color" class="bi bi-check-lg">
+                            </i>
+                        </button>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addColumn()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
