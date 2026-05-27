@@ -22,4 +22,6 @@ export interface ProductResponse {
   shippingWeight: number;
 
   materials: ProductMaterialResponse[];
+
+  estimatedMinutes:number;
 }

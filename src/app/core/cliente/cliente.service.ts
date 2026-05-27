@@ -51,5 +51,8 @@ export class ClienteService {
     }).pipe();
   }
 
+  findAll():Observable<ClienteResponse[]> {
+    return this.http.get<ClienteResponse[]>('api/hitbox/clientes/findAll').pipe();
+  }
 
 }

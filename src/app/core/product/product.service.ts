@@ -57,4 +57,8 @@ export class ProductService {
   delete(id?: number): Observable<any> {
     return this.http.delete<any>(`api/hitbox/products/delete/${id}`).pipe();
   }
+
+  findAll(): Observable<ProductResponse[]> {
+    return this.http.get<ProductResponse[]>('api/hitbox/products/findAll').pipe()
+  }
 }

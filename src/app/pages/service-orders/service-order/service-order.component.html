@@ -1,0 +1,453 @@
+<div class="service-order-page">
+
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h2 class="page-title">
+
+                <i class="bi bi-receipt-cutoff me-2"></i>
+
+                Ordens de Serviço
+
+            </h2>
+
+            <p class="page-subtitle">
+
+                Gestão operacional e produtiva
+
+            </p>
+
+        </div>
+
+        <button
+            class="btn btn-primary btn-lg"
+            (click)="openCreateModal()">
+
+            <i class="bi bi-plus-circle me-2"></i>
+
+            Nova Ordem
+
+        </button>
+
+    </div>
+
+    <!-- ==========================================
+         FILTERS
+    =========================================== -->
+
+    <div class="filter-card">
+
+        <div class="row g-3">
+
+            <!-- SEARCH -->
+
+            <div class="col-12 col-lg-4">
+
+                <label class="form-label">
+                    Buscar
+                </label>
+
+                <div class="search-input">
+
+                    <i class="bi bi-search"></i>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Cliente ou código"
+                        [(ngModel)]="searchText"
+                        (input)="applyFilters()">
+
+                </div>
+
+            </div>
+
+            <!-- STATUS -->
+
+            <div class="col-12 col-md-4 col-lg-2">
+
+                <label class="form-label">
+                    Status
+                </label>
+
+                <select
+                    class="form-select"
+                    [(ngModel)]="selectedStatus"
+                    (change)="applyFilters()">
+
+                    <option value="">
+                        Todos
+                    </option>
+
+                    @for(status of statusOptions; track status){
+
+                    <option [value]="status">
+
+                        {{ status }}
+
+                    </option>
+
+                    }
+
+                </select>
+
+            </div>
+
+            <!-- START DATE -->
+
+            <div class="col-12 col-md-4 col-lg-2">
+
+                <label class="form-label">
+                    Data inicial
+                </label>
+
+                <input
+                    type="date"
+                    class="form-control"
+                    [(ngModel)]="startDate"
+                    (change)="applyFilters()">
+
+            </div>
+
+            <!-- END DATE -->
+
+            <div class="col-12 col-md-4 col-lg-2">
+
+                <label class="form-label">
+                    Data final
+                </label>
+
+                <input
+                    type="date"
+                    class="form-control"
+                    [(ngModel)]="endDate"
+                    (change)="applyFilters()">
+
+            </div>
+
+            <!-- ACTION -->
+
+            <div class="col-12 col-md-4 col-lg-2 d-flex align-items-end">
+
+                <button
+                    class="btn btn-outline-secondary w-100"
+                    (click)="clearFilters()">
+
+                    <i class="bi bi-x-circle me-2"></i>
+
+                    Limpar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         TABLE
+    =========================================== -->
+
+    <div class="table-card">
+
+        <!-- LOADING -->
+
+        @if(loading){
+
+        <div class="loading-container">
+
+            <div class="spinner-border text-primary">
+            </div>
+
+        </div>
+
+        }
+
+        <!-- TABLE -->
+
+        @if(!loading){
+
+        <div class="table-responsive">
+
+            <table class="table service-table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Cliente</th>
+
+                        <th>Status</th>
+
+                        <th>Total</th>
+
+                        <th>Lucro</th>
+
+                        <th>Itens</th>
+
+                        <th>Tempo</th>
+
+                        <th>Criação</th>
+
+                        <th class="text-end">
+                            Ações
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @for(order of paginatedOrders; track order.id){
+
+                    <tr>
+
+                        <!-- ID -->
+
+                        <td>
+
+                            <strong>
+
+                                #{{ order.id }}
+
+                            </strong>
+
+                        </td>
+
+                        <!-- CLIENT -->
+
+                        <td>
+
+                            <div class="client-info">
+
+                                <div class="client-avatar">
+
+                                    {{ order.clienteName[0] }}
+
+                                </div>
+
+                                <div>
+
+                                    <strong>
+
+                                        {{ order.clienteName }}
+
+                                    </strong>
+
+                                    <small>
+
+                                        {{ order.clienteDocument }}
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            <span
+                                class="status-badge"
+                                [ngClass]="getStatusClass(order.status)">
+
+                                {{ order.status }}
+
+                            </span>
+
+                        </td>
+
+                        <!-- TOTAL -->
+
+                        <td>
+
+                            <strong>
+
+                                {{ formatCurrency(order.totalSalePrice) }}
+
+                            </strong>
+
+                        </td>
+
+                        <!-- PROFIT -->
+
+                        <td class="text-success fw-semibold">
+
+                            {{ formatCurrency(order.totalProfit) }}
+
+                        </td>
+
+                        <!-- ITEMS -->
+
+                        <td>
+
+                            {{ order.totalItems }}
+
+                        </td>
+
+                        <!-- TIME -->
+
+                        <td>
+
+                            {{ order.totalEstimatedMinutes }} min
+
+                        </td>
+
+                        <!-- DATE -->
+
+                        <td>
+
+                            {{ formatDate(order.createdAt) }}
+
+                        </td>
+
+                        <!-- ACTIONS -->
+
+                        <td>
+
+                            <div class="actions">
+
+                                <!-- VIEW -->
+
+                                <button
+                                    class="btn-action btn-view"
+                                    (click)="openViewModal(order)">
+
+                                    <i class="bi bi-eye"></i>
+
+                                </button>
+
+                                <!-- EDIT -->
+
+                                <button
+                                    class="btn-action btn-edit"
+                                    (click)="editOrder(order)">
+
+                                    <i class="bi bi-pencil"></i>
+
+                                </button>
+
+                                <!-- KANBAN -->
+
+                                <button
+                                    class="btn-action btn-kanban"
+                                    (click)="goToKanban(order)">
+
+                                    <i class="bi bi-kanban"></i>
+
+                                </button>
+
+                                <!-- DELETE -->
+
+                                <button
+                                    class="btn-action btn-delete"
+                                    (click)="deleteOrder(order.id)">
+
+                                    <i class="bi bi-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        }
+
+        <!-- EMPTY -->
+
+        @if(!loading && !filteredOrders.length){
+
+        <div class="empty-state">
+
+            <i class="bi bi-inbox"></i>
+
+            <h4>
+
+                Nenhuma ordem encontrada
+
+            </h4>
+
+            <p>
+
+                Ajuste os filtros ou crie uma nova ordem.
+
+            </p>
+
+        </div>
+
+        }
+
+    </div>
+
+    <!-- ==========================================
+         PAGINATION
+    =========================================== -->
+
+    @if(filteredOrders.length){
+
+    <div class="pagination-container">
+
+        <button
+            class="btn btn-outline-secondary"
+            [disabled]="currentPage === 1"
+            (click)="previousPage()">
+
+            <i class="bi bi-chevron-left"></i>
+
+        </button>
+
+        <span class="pagination-info">
+
+            Página
+            {{ currentPage }}
+            de
+            {{ totalPages }}
+
+        </span>
+
+        <button
+            class="btn btn-outline-secondary"
+            [disabled]="currentPage === totalPages"
+            (click)="nextPage()">
+
+            <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+    </div>
+
+    }
+
+</div>
+
+<!-- ==========================================
+     MODALS
+=========================================== -->
+
+<app-modal-service-order>
+</app-modal-service-order>
+
+<app-modal-service-viewer>
+</app-modal-service-viewer>

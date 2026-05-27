@@ -77,5 +77,15 @@ export class PricingRuleService {
         return this.http.delete<any>(`api/hitbox/pricing-rule/delete/${id}`).pipe();
     }
 
+    findAll():Observable<PricingRuleResponse[]> {
+        return this.http.get<PricingRuleResponse[]>('api/hitbox/pricing-rule/findAll').pipe();
+    }
+
+      ruleById(productionCost: any, ruleId:number) {
+        return this.http.post<SuggestedPriceResult>(
+            `api/hitbox/pricing-rule/ruleById/${ruleId}`, productionCost
+        );
+    }
+
 
 }

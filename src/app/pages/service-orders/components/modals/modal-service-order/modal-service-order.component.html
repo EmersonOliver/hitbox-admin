@@ -1,0 +1,303 @@
+<div class="modal fade" id="serviceOrderModal" tabindex="-1">
+
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+
+        <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header">
+                <div>
+                    <h4 class="fw-bold mb-1">
+                        Ordem de Serviço
+                    </h4>
+                    <small class="text-muted">
+                        Cadastro operacional
+                    </small>
+                </div>
+
+                <button class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+
+            <!-- BODY -->
+
+            <div class="modal-body">
+                <form [formGroup]="form">
+                    <!-- CLIENTE -->
+                    <div class="mb-4">
+                        <label class="form-label">
+                            Cliente
+                        </label>
+                        <select class="form-select" formControlName="clienteId">
+
+                            <option value="">
+                                Selecione
+                            </option>
+
+                            @for(cliente of clientes; track cliente.id){
+
+                            <option [value]="cliente.id">
+
+                                {{ cliente.nome }}
+
+                            </option>
+
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">
+                            Regras de Precificação
+                        </label>
+                        <select class="form-select" formControlName="ruleId" (change)="onProductChange(productIndex)" >
+
+                            <option value="">
+                                Selecione
+                            </option>
+
+                            @for(rule of rules; track rule.id){
+
+                            <option [value]="rule.id" >
+                                {{ rule.name }}
+                            </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <!-- OBS -->
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+
+                            Observações
+
+                        </label>
+
+                        <textarea rows="3" class="form-control" formControlName="observations">
+                    </textarea>
+
+                    </div>
+
+                    <!-- ITEMS -->
+
+                    <div formArrayName="items" class="items-container">
+
+                        @for(
+                        item of items.controls;
+                        track $index
+                        ) {
+                        <div class="item-card" [formGroupName]="$index">
+
+                            <!-- PRODUCT -->
+
+                            <div class="row g-3">
+
+                                <div class="col-lg-4">
+
+                                    <label class="form-label">
+
+                                        Produto
+
+                                    </label>
+
+                                    <select class="form-select" formControlName="productId"
+                                        (change)="onProductChange($index)">
+
+                                        <option value="0">
+
+                                            Selecione
+
+                                        </option>
+
+                                        @for(
+                                        product of produtos;
+                                        track product.productId
+                                        ){
+
+                                        <option [value]="product.productId">
+
+                                            {{ product.name }}
+
+                                        </option>
+
+                                        }
+
+                                    </select>
+
+                                </div>
+
+                                <!-- QUANTITY -->
+
+                                <div class="col-lg-2">
+
+                                    <label class="form-label">
+
+                                        Quantidade
+
+                                    </label>
+
+                                    <input (change)="onProductChange($index)" type="number" class="form-control"
+                                        formControlName="quantity">
+
+                                </div>
+
+                                <!-- SALE -->
+
+                                <div class="col-lg-2">
+
+                                    <label class="form-label">
+
+                                        Venda
+
+                                    </label>
+
+                                    <input (change)="onProductChange($index)" type="number" class="form-control"
+                                        formControlName="salePriceUnit">
+
+                                </div>
+
+                                <!-- MINUTES -->
+
+                                <div class="col-lg-2">
+
+                                    <label class="form-label">
+
+                                        Minutos
+
+                                    </label>
+
+                                    <input type="text" class="form-control" formControlName="estimatedMinutes"
+                                        (change)="onProductChange($index)">
+
+                                </div>
+
+                                <!-- REMOVE -->
+
+                                <div class="col-lg-2 d-flex align-items-end">
+                                    <button class="btn btn-outline-danger w-100" type="button"
+                                        (click)="removeItem($index)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        }
+
+                    </div>
+
+                    <!-- ADD ITEM -->
+                    <button class="btn btn-outline-primary mt-3" type="button" (click)="addItem()">
+                        <i class="bi bi-plus-circle me-2"></i>
+                        Adicionar Produto
+                    </button>
+
+                    <!-- TOTALS -->
+
+                    <div class="totals-container">
+
+                        <div class="total-card">
+
+                            <span>Total Venda</span>
+
+                            <strong>
+                                {{
+                                form.get('totalSalePrice')?.value
+                                | currency:'BRL'
+                                }}
+                            </strong>
+
+                        </div>
+
+                        <div class="total-card">
+
+                            <span>Lucro</span>
+
+                            <strong class="text-success">
+
+                                {{
+                                form.get('totalProfit')?.value
+                                | currency:'BRL'
+                                }}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="total-card">
+
+                            <span>Tempo Estimado</span>
+
+                            <strong>
+
+                                {{
+                                form.get('totalEstimatedMinutes')?.value
+                                }}
+
+                            </strong>
+
+                        </div>
+                    </div>
+                    <ng-container *ngIf="ruleSelected">
+                        <div class="totals-container">
+                            <div class="total-card">
+
+                                <span>Custo Operacional</span>
+                                <strong>
+                                    {{
+                                    ruleSelected.operationalCost | currency: 'BRL'
+                                    }}
+                                </strong>
+                            </div>
+
+                            <div class="total-card">
+                                <span>Taxa Cartão de Crédito</span>
+                                <strong>
+                                    {{
+                                    ruleSelected.cardFee | currency: 'BRL'
+                                    }}
+                                </strong>
+                            </div>
+                            <div class="total-card">
+                                <span>Custo comercial</span>
+                                <strong>
+                                    {{
+                                    ruleSelected.commercialCost| currency: 'BRL'
+                                    }}
+                                </strong>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                </form>
+            </div>
+
+            <!-- FOOTER -->
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+                <button class="btn btn-primary" (click)="saveOrder()">
+                    <i class="bi bi-floppy me-2"></i>
+                    Salvar Ordem
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
