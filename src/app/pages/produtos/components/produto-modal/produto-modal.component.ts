@@ -97,14 +97,19 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
       width: [0],
       height: [0],
       depth: [0],
-      materials: this.fb.array([])
+      materials: this.fb.array([]),
+      estimatedMinutes: [
+        null, [Validators.pattern(
+          /^(\d+d)?(\d+h)?(\d+m)?(\d+s)?$/
+        )]
+      ]
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (
       changes['produtoSelecionado']?.currentValue) {
       this.preencherFormulario();
-    }else{
+    } else {
       this.form.reset();
       this.imagePreview = null
     }
@@ -122,7 +127,8 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
       shippingWeight: this.produtoSelecionado?.shippingWeight,
       width: 0,
       height: 0,
-      depth: 0
+      depth: 0,
+      estimatedMinutes: this.formatHoursToDuration(this.produtoSelecionado!.estimatedMinutes)
     });
     if (this.produtoSelecionado?.materials?.length) {
       this.produtoSelecionado?.materials.forEach(item => {
@@ -334,50 +340,41 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
   /* =====================================================
      SUBMIT
   ===================================================== */
-
+  createPayloadAsString(formValue: any): string {
+    const payload = {
+      name:
+        formValue.name,
+      description:
+        formValue.description,
+      categoryId:
+        formValue.categoryId,
+      productionWeight:
+        formValue.productionWeight,
+      shippingWeight:
+        formValue.shippingWeight,
+      width:
+        formValue.width,
+      height:
+        formValue.height,
+      depth:
+        formValue.depth,
+      materials:
+        formValue.materials,
+      estimatedMinutes:
+        this.parseDurationToHours(
+          formValue.estimatedMinutes
+        )
+    };
+    return JSON.stringify(payload);
+  }
   submit(): void {
 
     if (this.form.invalid) {
-
       this.form.markAllAsTouched();
       return;
     }
 
     this.loading = true;
-
-    const formValue =
-      this.form.getRawValue();
-
-    const payload = {
-
-      name:
-        formValue.name,
-
-      description:
-        formValue.description,
-
-      categoryId:
-        formValue.categoryId,
-
-      productionWeight:
-        formValue.productionWeight,
-
-      shippingWeight:
-        formValue.shippingWeight,
-
-      width:
-        formValue.width,
-
-      height:
-        formValue.height,
-
-      depth:
-        formValue.depth,
-
-      materials:
-        formValue.materials
-    };
-
     const multipart =
       new FormData();
 
@@ -385,7 +382,7 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
       'data',
       new Blob(
         [
-          JSON.stringify(payload)
+          this.createPayloadAsString(this.form.getRawValue())
         ],
         {
           type: 'application/json'
@@ -423,6 +420,97 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
       })
     });
   }
+
+
+  private parseDurationToHours(value: string | null): number {
+
+    if (!value) {
+      return 0;
+    }
+
+    const normalized =
+      value.toLowerCase().trim();
+
+    const days =
+      this.extract(normalized, /(\d+)d/);
+
+    const hours =
+      this.extract(normalized, /(\d+)h/);
+
+    const minutes =
+      this.extract(normalized, /(\d+)m/);
+
+    const seconds =
+      this.extract(normalized, /(\d+)s/);
+
+    return (
+      (days * 24)
+      + hours
+      + (minutes / 60)
+      + (seconds / 3600)
+    );
+  }
+
+  private extract(
+    value: string,
+    regex: RegExp
+  ): number {
+
+    const match =
+      value.match(regex);
+
+    return match
+      ? Number(match[1])
+      : 0;
+  }
+
+  private formatHoursToDuration(
+    value: number | null
+  ): string {
+
+    if (!value || value <= 0) {
+      return '';
+    }
+
+    let totalSeconds =
+      Math.round(value * 3600);
+
+    const days =
+      Math.floor(totalSeconds / 86400);
+
+    totalSeconds %= 86400;
+
+    const hours =
+      Math.floor(totalSeconds / 3600);
+
+    totalSeconds %= 3600;
+
+    const minutes =
+      Math.floor(totalSeconds / 60);
+
+    const seconds =
+      totalSeconds % 60;
+
+    const parts: string[] = [];
+
+    if (days > 0) {
+      parts.push(`${days}d`);
+    }
+
+    if (hours > 0) {
+      parts.push(`${hours}h`);
+    }
+
+    if (minutes > 0) {
+      parts.push(`${minutes}m`);
+    }
+
+    if (seconds > 0) {
+      parts.push(`${seconds}s`);
+    }
+
+    return parts.join('');
+  }
   private async urlToFile(
     url: string,
     fileName: string
@@ -449,14 +537,10 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
       new FormData();
 
     formData.append(
-
       'data',
-
       new Blob(
         [
-          JSON.stringify(
-            this.form.getRawValue()
-          )
+          this.createPayloadAsString(this.form.getRawValue())
         ],
         {
           type:
@@ -468,9 +552,7 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
     /* ==========================
        NOVA IMAGEM
     ========================== */
-
     if (this.selectedFile) {
-
       formData.append(
         'image',
         this.selectedFile

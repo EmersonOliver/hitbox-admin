@@ -1,0 +1,387 @@
+.service-order-page {
+  padding: 2rem;
+  background: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  min-height: 100vh;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--bs-heading-color);
+}
+
+.page-subtitle {
+  color: var(--bs-secondary-color);
+  margin-top: 0.4rem;
+}
+
+/* ==========================================
+   FILTER CARD
+========================================== */
+
+.filter-card {
+  background: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 24px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  box-shadow:
+    0 4px 20px rgba(15, 23, 42, 0.05);
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* ==========================================
+   SEARCH
+========================================== */
+
+.search-input {
+  position: relative;
+}
+
+.search-input i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--bs-secondary-color);
+}
+
+.search-input input {
+  padding-left: 40px;
+}
+
+/* ==========================================
+   TABLE CARD
+========================================== */
+
+.table-card {
+  background: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 24px;
+  overflow: hidden;
+
+  box-shadow:
+    0 4px 20px rgba(15, 23, 42, 0.05);
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.service-table {
+  margin: 0;
+  color: var(--bs-body-color);
+}
+
+.service-table thead {
+  background: var(--bs-tertiary-bg);
+}
+
+.service-table th {
+  padding: 1rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  border: none;
+  white-space: nowrap;
+}
+
+.service-table td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-color: var(--bs-border-color);
+}
+
+/* ==========================================
+   CLIENT INFO
+========================================== */
+
+.client-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.client-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    #6366f1,
+    #8b5cf6
+  );
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ==========================================
+   STATUS
+========================================== */
+
+.status-badge {
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.status-open {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+.status-production {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+.status-partial {
+  background: rgba(139, 92, 246, 0.15);
+  color: #c4b5fd;
+}
+
+.status-finished {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+}
+
+.status-delivered {
+  background: rgba(20, 184, 166, 0.15);
+  color: #2dd4bf;
+}
+
+.status-canceled {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+/* ==========================================
+   ACTIONS
+========================================== */
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.btn-action {
+  width: 38px;
+  height: 38px;
+
+  border: none;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.btn-action:hover {
+  transform: translateY(-2px);
+}
+
+.btn-view {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+.btn-edit {
+  background: rgba(139, 92, 246, 0.15);
+  color: #c4b5fd;
+}
+
+.btn-kanban {
+  background: rgba(20, 184, 166, 0.15);
+  color: #2dd4bf;
+}
+
+.btn-delete {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+}
+
+/* ==========================================
+   EMPTY
+========================================== */
+
+.empty-state {
+  padding: 4rem;
+  text-align: center;
+}
+
+.empty-state i {
+  font-size: 4rem;
+  color: var(--bs-secondary-color);
+  opacity: 0.5;
+}
+
+.empty-state h4 {
+  margin-top: 1rem;
+  font-weight: 700;
+  color: var(--bs-heading-color);
+}
+
+.empty-state p {
+  color: var(--bs-secondary-color);
+}
+
+/* ==========================================
+   PAGINATION
+========================================== */
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.pagination-info {
+  font-weight: 600;
+  color: var(--bs-secondary-color);
+}
+
+/* ==========================================
+   TABLE HOVER
+========================================== */
+
+.service-table tbody tr {
+  transition:
+    background-color 0.2s ease;
+}
+
+.service-table tbody tr:hover {
+  background: rgba(var(--bs-emphasis-color-rgb), 0.03);
+}
+
+/* ==========================================
+   FORM ELEMENTS
+========================================== */
+
+.form-control,
+.form-select {
+  background-color: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
+  color: var(--bs-body-color);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #6366f1;
+  box-shadow:
+    0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+}
+
+/* ==========================================
+   DARK MODE IMPROVEMENTS
+========================================== */
+
+[data-bs-theme="dark"] {
+
+  .filter-card,
+  .table-card {
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .service-table thead {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .service-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .btn-action:hover {
+    opacity: 0.9;
+  }
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 992px) {
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+
+  .table-card {
+    overflow-x: auto;
+  }
+
+  .service-table {
+    min-width: 1000px;
+  }
+}
+
+@media (max-width: 576px) {
+
+  .service-order-page {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .filter-card {
+    padding: 1rem;
+  }
+}

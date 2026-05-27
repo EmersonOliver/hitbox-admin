@@ -223,6 +223,15 @@
    PROGRESS
 ========================================================= */
 
+h5 {
+    font-family:
+        var(--font-title);
+
+    letter-spacing: .04em;
+
+    font-weight: 700;
+}
+
 .progress {
 
     height: 10px;
@@ -371,4 +380,35 @@
     padding: 1ch;
     border-style: none;
     margin-right: 1%;
+}
+
+.kanban-editor {
+
+    width: 480px !important;
+
+    background:
+        var(--app-surface);
+
+    border-left:
+        1px solid var(--app-border);
+
+    .offcanvas-header {
+
+        background:
+            rgba(var(--bs-primary-rgb), .03);
+
+        backdrop-filter:
+            blur(10px);
+    }
+
+    .form-control,
+    .form-range {
+
+        margin-top: .4rem;
+    }
+
+    textarea {
+
+        resize: none;
+    }
 }

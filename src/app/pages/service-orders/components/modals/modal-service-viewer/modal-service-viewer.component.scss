@@ -1,0 +1,221 @@
+/* ==========================================
+   MODAL
+========================================== */
+
+.modal-content {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 24px;
+  background: var(--bs-body-bg);
+  color: var(--bs-body-color);
+
+  box-shadow:
+    0 10px 40px rgba(15, 23, 42, 0.08);
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--bs-border-color);
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--bs-border-color);
+  padding: 1rem 1.5rem;
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+/* ==========================================
+   ITEMS
+========================================== */
+
+.items-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.item-card {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 18px;
+  padding: 1rem;
+
+  background: var(--bs-tertiary-bg);
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.item-card:hover {
+  transform: translateY(-2px);
+}
+
+/* ==========================================
+   TOTALS
+========================================== */
+
+.totals-container {
+  margin-top: 2rem;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+
+  gap: 1rem;
+}
+
+.total-card {
+  background: var(--bs-body-bg);
+
+  border-radius: 18px;
+  padding: 1.2rem;
+
+  border: 1px solid var(--bs-border-color);
+
+  display: flex;
+  flex-direction: column;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.total-card:hover {
+  transform: translateY(-2px);
+}
+
+.total-card span {
+  color: var(--bs-secondary-color);
+  margin-bottom: 0.4rem;
+}
+
+.total-card strong {
+  font-size: 1.3rem;
+  color: var(--bs-heading-color);
+}
+
+/* ==========================================
+   VIEWER
+========================================== */
+
+.viewer-section {
+  margin-bottom: 2rem;
+}
+
+.viewer-section h5 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--bs-heading-color);
+}
+
+.viewer-totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.viewer-total-card {
+  background: var(--bs-tertiary-bg);
+
+  border: 1px solid var(--bs-border-color);
+
+  border-radius: 18px;
+
+  padding: 1rem 1.5rem;
+
+  min-width: 220px;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.viewer-total-card:hover {
+  transform: translateY(-2px);
+}
+
+.viewer-total-card span {
+  display: block;
+  color: var(--bs-secondary-color);
+  margin-bottom: 0.35rem;
+}
+
+.viewer-total-card strong {
+  font-size: 1.5rem;
+  color: var(--bs-heading-color);
+}
+
+/* ==========================================
+   FORM ELEMENTS
+========================================== */
+
+.modal-content .form-control,
+.modal-content .form-select,
+.modal-content textarea {
+  background-color: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
+  color: var(--bs-body-color);
+}
+
+.modal-content .form-control:focus,
+.modal-content .form-select:focus,
+.modal-content textarea:focus {
+  border-color: #6366f1;
+
+  box-shadow:
+    0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+}
+
+/* ==========================================
+   DARK MODE
+========================================== */
+
+[data-bs-theme="dark"] {
+
+  .modal-content {
+    box-shadow:
+      0 10px 50px rgba(0, 0, 0, 0.45);
+  }
+
+  .item-card,
+  .viewer-total-card {
+    background:
+      rgba(255, 255, 255, 0.03);
+  }
+
+  .total-card {
+    background:
+      rgba(255, 255, 255, 0.02);
+  }
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 768px) {
+
+  .modal-body {
+    padding: 1.25rem;
+  }
+
+  .viewer-totals {
+    flex-direction: column;
+  }
+
+  .viewer-total-card {
+    min-width: 100%;
+  }
+}

@@ -1,0 +1,179 @@
+<div
+    class="modal fade"
+    id="serviceViewerModal"
+    tabindex="-1">
+
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h4 class="fw-bold">
+
+                        Ordem #{{ order?.id }}
+
+                    </h4>
+
+                    <small class="text-muted">
+
+                        Visualização detalhada
+
+                    </small>
+
+                </div>
+
+                <button
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                @if(order){
+
+                <!-- CLIENT -->
+
+                <div class="viewer-section">
+
+                    <h5>
+
+                        Cliente
+
+                    </h5>
+
+                    <p>
+
+                        {{ order.clienteName }}
+
+                    </p>
+
+                </div>
+
+                <!-- ITEMS -->
+
+                <div class="viewer-section">
+
+                    <h5>
+
+                        Produtos
+
+                    </h5>
+
+                    <div class="table-responsive">
+
+                        <table class="table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Produto</th>
+                                    <th>Qtd</th>
+                                    <th>Venda</th>
+                                    <th>Total</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                @for(
+                                  item of order.items;
+                                  track item.id
+                                ){
+
+                                <tr>
+
+                                    <td>
+
+                                        {{ item.productName }}
+
+                                    </td>
+
+                                    <td>
+
+                                        {{ item.quantity }}
+
+                                    </td>
+
+                                    <td>
+
+                                        {{
+                                        item.salePriceUnit
+                                        | currency:'BRL'
+                                        }}
+
+                                    </td>
+
+                                    <td>
+
+                                        {{
+                                        item.totalSalePrice
+                                        | currency:'BRL'
+                                        }}
+
+                                    </td>
+
+                                </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <!-- TOTALS -->
+
+                <div class="viewer-totals">
+
+                    <div class="viewer-total-card">
+
+                        <span>Total</span>
+
+                        <strong>
+
+                            {{
+                            order.totalSalePrice
+                            | currency:'BRL'
+                            }}
+
+                        </strong>
+
+                    </div>
+
+                    <div class="viewer-total-card">
+
+                        <span>Lucro</span>
+
+                        <strong class="text-success">
+
+                            {{
+                            order.totalProfit
+                            | currency:'BRL'
+                            }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

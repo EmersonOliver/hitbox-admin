@@ -13,7 +13,11 @@ export const routes: Routes = [
     { path: 'relatorios', loadComponent: () => import('./pages/reports/reports.component').then(m => m.ReportsComponent) },
     { path: 'producao', loadComponent: () => import('./pages/producao/producao.component').then(m => m.ProducaoComponent) },
     { path: 'kanban', loadComponent: () => import('./pages/producao/components/production-kanban/production-kanban.component')
-        .then(m => m.ProductionKanbanComponent) }
+        .then(m => m.ProductionKanbanComponent) },
+    {path:'orderService', loadComponent:()=> 
+        import('./pages/service-orders/service-order/service-order.component')
+        .then(m=> m.ServiceOrderComponent)
+    }
 
 
 

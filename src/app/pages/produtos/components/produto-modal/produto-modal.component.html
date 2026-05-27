@@ -619,7 +619,7 @@
 
                         <!-- PRODUCTION WEIGHT -->
 
-                        <div class="col-md-6">
+                        <div class="col-md-3">
 
                             <label class="form-label">
 
@@ -641,33 +641,36 @@
 
                         </div>
 
-                        <!-- SHIPPING WEIGHT -->
-
-                        <div class="col-md-6">
-
+                         <div class="col-md-3">
                             <label class="form-label">
-
-                                Peso envio
-
+                                Tempo produção
                             </label>
 
                             <div class="input-group">
-
-                                <input type="number" class="form-control" formControlName="shippingWeight">
-
+                                <input type="text" class="form-control" formControlName="estimatedMinutes">
                                 <span class="input-group-text">
-
-                                    g
-
+                                    1d1h1m1s
                                 </span>
-
                             </div>
+                        </div>
 
+                        <!-- SHIPPING WEIGHT -->
+
+                        <div class="col-md-3">
+                            <label class="form-label">
+                                Peso envio
+                            </label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" formControlName="shippingWeight">
+                                <span class="input-group-text">
+                                    g
+                                </span>
+                            </div>
                         </div>
 
                         <!-- WIDTH -->
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
 
                             <label class="form-label">
 
@@ -690,59 +693,34 @@
                         </div>
 
                         <!-- HEIGHT -->
-
-                        <div class="col-md-4">
-
+                        <div class="col-md-3">
                             <label class="form-label">
-
                                 Altura
-
                             </label>
-
                             <div class="input-group">
-
                                 <input type="number" class="form-control" formControlName="height">
-
                                 <span class="input-group-text">
-
                                     cm
-
                                 </span>
-
                             </div>
-
                         </div>
 
                         <!-- DEPTH -->
 
-                        <div class="col-md-4">
-
+                        <div class="col-md-3">
                             <label class="form-label">
-
                                 Profundidade
-
                             </label>
-
                             <div class="input-group">
-
                                 <input type="number" class="form-control" formControlName="depth">
-
                                 <span class="input-group-text">
-
                                     cm
-
                                 </span>
-
                             </div>
-
                         </div>
-
                     </div>
-
                     }
-
                 </form>
-
             </div>
 
             <!-- =====================================================

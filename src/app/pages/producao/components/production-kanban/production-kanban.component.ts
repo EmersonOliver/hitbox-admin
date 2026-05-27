@@ -1,5 +1,6 @@
 import {
-  Component
+  Component,
+  OnInit
 } from '@angular/core';
 
 import {
@@ -13,6 +14,16 @@ import {
   transferArrayItem
 } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
+import { KanbanColumnResponse } from './models/response/kanban.column.response';
+import { KanbanColumnService } from '../../../../core/kanban/kanban-column.service';
+import { KanbanCardResponse } from './models/response/kanban.card.response';
+import { KanbanCardService } from '../../../../core/kanban/kanban-card.service';
+import { KanbanCardMovementService } from '../../../../core/kanban/kanban-card-movement.service';
+import { ClienteService } from '../../../../core/cliente/cliente.service';
+import { ClienteResponse } from '../../../clientes/models/cliente.response';
+import { ToastService } from '../../../components/toast/toast.service';
+import { ProductService } from '../../../../core/product/product.service';
+import { ProductResponse } from '../../../produtos/components/produto-modal/models/produto.model';
 
 declare var bootstrap: any;
 @Component({
@@ -26,93 +37,11 @@ declare var bootstrap: any;
   templateUrl: './production-kanban.component.html',
   styleUrls: ['./production-kanban.component.scss']
 })
-export class ProductionKanbanComponent {
+export class ProductionKanbanComponent implements OnInit {
+
   columnName = '';
-  columns = [
-    {
-      id: 'pendente',
-      name: 'Fila',
-      color: '#6b7280',
-      cards: [
-        {
-          id: 1,
-          product: 'Batman Bust',
-          sku: 'BAT-001',
-          printer: 'K1 Max',
-          time: '5h',
-          quantity: 2,
-          progress: 0,
-          priority: 'ALTA',
-          operator: 'Emerson'
-        },
-        {
-          id: 2,
-          product: 'Iron Man Helmet',
-          sku: 'MARVEL-88',
-          printer: 'Bambu Lab',
-          time: '12h',
-          quantity: 1,
-          progress: 0,
-          priority: 'MEDIA',
-          operator: 'Lucas'
-        }
-      ]
-    },
-    {
-      id: 'configuracao',
-      name: 'Configuração',
-      color: '#06b6d4',
-      cards: [
-        {
-          id: 3,
-          product: 'Deadpool Figure',
-          sku: 'DP-777',
-          printer: 'Kobra 2',
-          time: '3h',
-          quantity: 4,
-          progress: 15,
-          priority: 'MEDIA',
-          operator: 'Fernanda'
-        }
-      ]
-    },
-    {
-      id: 'producao',
-      name: 'Produzindo',
-      color: '#f59e0b',
-      cards: [
-        {
-          id: 4,
-          product: 'Darth Vader',
-          sku: 'STAR-01',
-          printer: 'K1C',
-          time: '8h',
-          quantity: 1,
-          progress: 72,
-          priority: 'ALTA',
-          operator: 'Marcos'
-        }
-      ]
-    },
-    {
-      id: 'finalizado',
-      name: 'Finalizado',
-      color: '#22c55e',
-      cards: [
-        {
-          id: 5,
-          product: 'Thor Hammer',
-          sku: 'MJOLNIR',
-          printer: 'Bambu X1',
-          time: '6h',
-          quantity: 1,
-          progress: 100,
-          priority: 'BAIXA',
-          operator: 'Amanda'
-        }
-      ]
-    }
-  ];
+  columns: KanbanColumnResponse[] = [];
+  loading: boolean = false;
 
   availableColors: string[] = [
     '#8b5cf6', // roxo
@@ -128,11 +57,85 @@ export class ProductionKanbanComponent {
   ];
 
   selectedColumnColor: string = '#8b5cf6';
+  selectedCard!: KanbanCardResponse;
+  clientes: ClienteResponse[] = []
+  products: ProductResponse[] = []
 
-  drop(event: CdkDragDrop<any[]>): void {
+  constructor(private columnService: KanbanColumnService,
+    private cardService: KanbanCardService,
+    private movementService: KanbanCardMovementService,
+    private clienteService: ClienteService,
+    private productService: ProductService,
+    private toast: ToastService) { }
+
+  ngOnInit(): void {
+
+    this.loadKanban();
+    this.carregarCliente();
+    this.carregarProdutos();
+  }
+
+  carregarCliente() {
+    this.clienteService.findAll().subscribe({
+      next: res => {
+        this.clientes = res;
+      },
+      error: (error) => {
+        this.toast.show('Ocorreu um erro ao carregar os clientes! ' + error.error.message, 'danger');
+      }
+    })
+  }
+
+  carregarProdutos() {
+    this.productService.findAll().subscribe({
+      next: res=> {
+        this.products = res;
+      },error: (error)=> {
+        this.toast.show('Ocorreu um erro ao carregar produtos! ' + error.error.message, 'danger')
+      } 
+    });
+  }
+
+  loadKanban(): void {
+
+    this.loading = true;
+
+    this.columnService
+      .findAll()
+      .subscribe({
+
+        next: response => {
+
+          this.columns =
+            response.sort(
+              (a, b) =>
+                a.columnOrder - b.columnOrder
+            );
+
+          this.loading = false;
+        },
+
+        error: () => {
+          this.loading = false;
+        }
+      });
+  }
+
+
+
+
+  drop(
+    event: CdkDragDrop<KanbanCardResponse[]>,
+    targetColumn: KanbanColumnResponse
+  ): void {
+
+    // =====================================================
+    // MESMA COLUNA
+    // =====================================================
 
     if (
-      event.previousContainer === event.container
+      event.previousContainer ===
+      event.container
     ) {
 
       moveItemInArray(
@@ -140,16 +143,119 @@ export class ProductionKanbanComponent {
         event.previousIndex,
         event.currentIndex
       );
-      console.log('opa')
-      console.log(event)
+
+      this.updateCardOrders(
+        targetColumn
+      );
+
       return;
     }
+
+    // =====================================================
+    // COLUNA ORIGEM
+    // =====================================================
+
+    const previousColumn =
+      this.columns.find(
+        column =>
+          column.id ===
+          Number(event.previousContainer.id)
+      );
+
+    if (!previousColumn) {
+      return;
+    }
+
+    // =====================================================
+    // MOVE CARD
+    // =====================================================
 
     transferArrayItem(
       event.previousContainer.data,
       event.container.data,
       event.previousIndex,
       event.currentIndex
+    );
+
+    const movedCard =
+      event.container.data[
+      event.currentIndex
+      ];
+
+    // =====================================================
+    // UPDATE CARD
+    // =====================================================
+
+    movedCard.kanbanColumnId =
+      targetColumn.id;
+
+    movedCard.cardOrder =
+      event.currentIndex;
+
+    this.cardService.update({
+
+      id: movedCard.id,
+
+      itemProductId:
+        movedCard.itemProductId,
+
+      serviceOrderId:
+        movedCard.serviceOrderId,
+
+      kanbanColumnId:
+        targetColumn.id,
+
+      cardOrder:
+        movedCard.cardOrder,
+
+      productionProgress:
+        movedCard.productionProgress,
+
+      estimatedMinutes:
+        movedCard.estimatedMinutes,
+
+      blocked:
+        movedCard.blocked,
+
+      blockedReason:
+        movedCard.blockedReason,
+
+      notes:
+        movedCard.notes,
+      clienteId:
+        movedCard.clienteId
+
+    }).subscribe();
+
+    // =====================================================
+    // SAVE MOVEMENT
+    // =====================================================
+
+    this.movementService.create({
+
+      id: 0,
+
+      cardId:
+        movedCard.id,
+
+      fromColumnId:
+        previousColumn.id,
+
+      toColumnId:
+        targetColumn.id
+
+    }).subscribe();
+
+    // =====================================================
+    // UPDATE ORDERS
+    // =====================================================
+
+    this.updateCardOrders(
+      previousColumn
+    );
+
+    this.updateCardOrders(
+      targetColumn
     );
   }
 
@@ -162,66 +268,306 @@ export class ProductionKanbanComponent {
       );
     modal.show();
   }
-  
+
   addColumn(): void {
-    const name =
-      this.columnName
-    if (!this.columnName) {
+
+    if (!this.columnName.trim()) {
       return;
     }
 
-    this.columns.push({
-      id: crypto.randomUUID(),
-      name,
-      color: this.selectedColumnColor,
-      cards: []
+    this.columnService.create({
+
+      columnName: this.columnName,
+      columnColor: this.selectedColumnColor,
+      columnOrder: this.columns.length
+
+    }).subscribe({
+
+      next: response => {
+
+        this.columns.push({
+          ...response,
+          cards: []
+        });
+
+        this.columnName = '';
+        this.selectedColumnColor = '#8b5cf6';
+      }
     });
-
-    this.selectedColumnColor = '#8b5cf6';
-    this.columnName = ''
-
   }
 
-  removeColumn(columnId: string): void {
+  removeColumn(columnId: number): void {
 
-    this.columns =
-      this.columns.filter(
-        col => col.id !== columnId
-      );
+    this.columnService
+      .delete(columnId)
+      .subscribe({
+
+        next: () => {
+
+          this.columns =
+            this.columns.filter(
+              c => c.id !== columnId
+            );
+        }
+      });
   }
 
-  editColumn(column: any): void {
+  get connectedDropListsIds(): string[] {
+    return this.columns.map(
+      column => `column-${column.id}`
+    );
+  }
+
+  editColumn(column: KanbanColumnResponse): void {
 
     const newName =
       prompt(
         'Novo nome',
-        column.name
+        column.columnName
       );
 
     if (!newName) {
       return;
     }
 
-    column.name = newName;
+    this.columnService.update({
+
+      id: column.id,
+      columnName: newName,
+      columnColor: column.columnColor,
+      columnOrder: column.columnOrder
+
+    }).subscribe({
+
+      next: updated => {
+
+        column.columnName =
+          updated.columnName;
+      }
+    });
   }
 
   addCard(): void {
 
-    this.columns[0].cards.push({
-      id: Date.now(),
-      product: 'Novo Produto',
-      sku: 'SKU-NEW',
-      printer: 'K1 Max',
-      time: '0h',
-      quantity: 1,
-      progress: 0,
-      priority: 'MEDIA',
-      operator: 'Operador'
-    });
+    if (!this.columns.length) {
+      return;
+    }
+
+    const newCard: KanbanCardResponse = {
+
+      id: 0,
+      itemProductId: 0,
+      clienteId: 0,
+      serviceOrderId: 0,
+      kanbanColumnId:
+        this.columns[0].id,
+
+      cardOrder:
+        this.columns[0].cards.length,
+
+      productionProgress: 0,
+      estimatedMinutes: 0,
+      actualMinutes: 0,
+      blocked: false,
+      blockedReason: '',
+      notes: '',
+      startDatetime: new Date(),
+      finishDatetime: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      productName: '',
+      productImage: '',
+      clientName: '',
+      quantity: 1
+    };
+
+    this.editCard(newCard);
   }
 
   openCard(card: any): void {
 
     console.log(card);
   }
+  updateCardOrders(
+    column: KanbanColumnResponse
+  ): void {
+
+    column.cards.forEach(
+      (card, index) => {
+
+        card.cardOrder = index;
+
+        this.cardService.update({
+
+          id: card.id,
+          itemProductId: card.itemProductId,
+          serviceOrderId: card.serviceOrderId,
+          kanbanColumnId: card.kanbanColumnId,
+          cardOrder: index,
+          productionProgress:
+            card.productionProgress,
+          estimatedMinutes:
+            card.estimatedMinutes,
+          blocked:
+            card.blocked,
+          blockedReason:
+            card.blockedReason,
+          notes:
+            card.notes,
+          clienteId: card.clienteId
+
+        }).subscribe();
+      }
+    );
+  }
+
+  editCard(card: KanbanCardResponse): void {
+
+    this.selectedCard = {
+      ...card
+    };
+
+    const offcanvas =
+      new bootstrap.Offcanvas(
+        document.getElementById(
+          'editCardOffcanvas'
+        )
+      );
+
+    offcanvas.show();
+  }
+
+  saveCard(): void {
+
+    const payload = {
+
+      id:
+        this.selectedCard.id,
+
+      itemProductId:
+        this.selectedCard.itemProductId,
+
+      clienteId:
+        this.selectedCard.clienteId,
+
+      serviceOrderId:
+        this.selectedCard.serviceOrderId,
+
+      kanbanColumnId:
+        this.selectedCard.kanbanColumnId,
+
+      cardOrder:
+        this.selectedCard.cardOrder,
+
+      productionProgress:
+        this.selectedCard.productionProgress,
+
+      estimatedMinutes:
+        this.selectedCard.estimatedMinutes,
+
+      blocked:
+        this.selectedCard.blocked,
+
+      blockedReason:
+        this.selectedCard.blockedReason,
+
+      notes:
+        this.selectedCard.notes
+    };
+
+    // =========================================
+    // CREATE
+    // =========================================
+
+    if (
+      !this.selectedCard.id ||
+      this.selectedCard.id === 0
+    ) {
+
+      this.cardService
+        .create(payload)
+        .subscribe({
+
+          next: created => {
+
+            const column =
+              this.columns.find(
+                c =>
+                  c.id ===
+                  created.kanbanColumnId
+              );
+
+            if (!column) {
+              return;
+            }
+
+            column.cards.push(created);
+          }
+        });
+
+      return;
+    }
+
+    // =========================================
+    // UPDATE
+    // =========================================
+
+    this.cardService
+      .update(payload)
+      .subscribe({
+
+        next: updated => {
+
+          const column =
+            this.columns.find(
+              c =>
+                c.id ===
+                updated.kanbanColumnId
+            );
+
+          if (!column) {
+            return;
+          }
+
+          const index =
+            column.cards.findIndex(
+              c =>
+                c.id ===
+                updated.id
+            );
+
+          if (index !== -1) {
+
+            column.cards[index] =
+              updated;
+          }
+        }
+      });
+  }
+  removeCard(arg0: number) {
+    throw new Error('Method not implemented.');
+  }
+
+  onProductChange(): void {
+
+  const product =
+    this.products.find(
+      p =>
+        p.productId ===
+        this.selectedCard.itemProductId
+    );
+
+  if (!product) {
+    return;
+  }
+
+  this.selectedCard.productName =
+    product.name;
+
+  this.selectedCard.productImage =
+    product.imageUrl;
+
+  this.selectedCard.estimatedMinutes =
+    product.estimatedMinutes;
+}
 }
