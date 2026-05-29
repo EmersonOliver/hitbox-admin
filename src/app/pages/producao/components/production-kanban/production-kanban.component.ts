@@ -94,7 +94,7 @@ export class ProductionKanbanComponent implements OnInit {
   ngOnInit(): void {
     this.loadKanban();
     this.carregarCliente();
-    this.carregarOrdemServicoByStatus();
+    this.carregarOrdemServicoByStatus('OPEN');
   }
 
   carregarCliente() {
@@ -108,14 +108,15 @@ export class ProductionKanbanComponent implements OnInit {
     })
   }
 
-  carregarOrdemServicoByStatus() {
-    this.orderService.findByStatus('OPEN').subscribe({
+  carregarOrdemServicoByStatus(status?: string) {
+    this.orderService.findByStatus(status).subscribe({
       next: res => {
         this.ordersComboOpen = res
-        console.log(res)
+        this.changeOrder();
       }
     })
   }
+
 
   changeOrder() {
     this.serviceOrderSelected = this.ordersComboOpen.find(r => r.id == this.formCard.get('serviceOrderId')?.value);
@@ -173,18 +174,10 @@ export class ProductionKanbanComponent implements OnInit {
       });
   }
 
-
-
-
   drop(
     event: CdkDragDrop<KanbanCardResponse[]>,
     targetColumn: KanbanColumnResponse
   ): void {
-
-    // =====================================================
-    // MESMA COLUNA
-    // =====================================================
-
     if (
       event.previousContainer ===
       event.container
@@ -202,25 +195,15 @@ export class ProductionKanbanComponent implements OnInit {
 
       return;
     }
-
-    // =====================================================
-    // COLUNA ORIGEM
-    // =====================================================
-
     const previousColumn =
       this.columns.find(
         column =>
           column.id ===
-          Number(event.previousContainer.id)
+          Number(event.previousContainer.id.replace('column-', ''))
       );
-
     if (!previousColumn) {
       return;
     }
-
-    // =====================================================
-    // MOVE CARD
-    // =====================================================
 
     transferArrayItem(
       event.previousContainer.data,
@@ -234,15 +217,47 @@ export class ProductionKanbanComponent implements OnInit {
       event.currentIndex
       ];
 
-    // =====================================================
-    // UPDATE CARD
-    // =====================================================
 
     movedCard.kanbanColumnId =
       targetColumn.id;
 
     movedCard.cardOrder =
       event.currentIndex;
+
+    const payload = {
+      id: movedCard.id,
+
+      itemProductId:
+        movedCard.itemProductId,
+
+      serviceOrderId:
+        movedCard.serviceOrderId,
+
+      kanbanColumnId:
+        targetColumn.id,
+
+      cardOrder:
+        movedCard.cardOrder,
+
+      productionProgress:
+        movedCard.productionProgress,
+
+      estimatedMinutes:
+        movedCard.estimatedMinutes,
+
+      blocked:
+        movedCard.blocked,
+
+      blockedReason:
+        movedCard.blockedReason,
+
+      notes:
+        movedCard.notes,
+      clienteId:
+        movedCard.clienteId,
+      quantity:
+        movedCard.quantity
+    }
 
     this.cardService.update({
 
@@ -287,7 +302,6 @@ export class ProductionKanbanComponent implements OnInit {
 
     this.movementService.create({
 
-      id: 0,
 
       cardId:
         movedCard.id,
@@ -351,7 +365,6 @@ export class ProductionKanbanComponent implements OnInit {
   }
 
   removeColumn(columnId: number): void {
-
     this.columnService
       .delete(columnId)
       .subscribe({
@@ -450,6 +463,28 @@ export class ProductionKanbanComponent implements OnInit {
       (card, index) => {
 
         card.cardOrder = index;
+        const payload = {
+          id: card.id,
+          itemProductId: card.itemProductId,
+          serviceOrderId: card.serviceOrderId,
+          kanbanColumnId: card.kanbanColumnId,
+          cardOrder: index,
+          productionProgress:
+            card.productionProgress,
+          estimatedMinutes:
+            card.estimatedMinutes,
+          blocked:
+            card.blocked,
+          blockedReason:
+            card.blockedReason,
+          notes:
+            card.notes,
+          clienteId: card.clienteId,
+          quantity:
+            card.quantity
+        }
+        console.log('Mover o card')
+        console.log(payload)
 
         this.cardService.update({
 
@@ -471,7 +506,6 @@ export class ProductionKanbanComponent implements OnInit {
           clienteId: card.clienteId,
           quantity:
             card.quantity
-
         }).subscribe();
       }
     );
@@ -479,18 +513,34 @@ export class ProductionKanbanComponent implements OnInit {
 
   editCard(card: KanbanCardResponse): void {
 
-    this.selectedCard = {
-      ...card
-    };
+    this.selectedCard = card;
+    this.orderService.findById(card.serviceOrderId).subscribe({
+      next: res => {
 
-    const offcanvas =
-      new bootstrap.Offcanvas(
-        document.getElementById(
-          'editCardOffcanvas'
-        )
-      );
+        this.carregarOrdemServicoByStatus(res.status);
+        this.formCard.patchValue({
+          serviceOrderId: card.serviceOrderId,
+          itemProductId: card.itemProductId,
+          quantity: card.quantity,
+          clienteId: card.clienteId,
+          productionProgress: card.productionProgress,
+          estimatedMinutes: this.formatHoursToDuration(card.estimatedMinutes),
+          blocked: card.blocked,
+          blockedReason: card.blockedReason,
+          notes: card.notes,
+          kanbanColumnId: card.kanbanColumnId
+        });
+        const offcanvas =
+          new bootstrap.Offcanvas(
+            document.getElementById(
+              'editCardOffcanvas'
+            )
+          );
 
-    offcanvas.show();
+        offcanvas.show();
+      }
+    });
+
   }
   fecharCanvas() {
     const offcanvasElement =
@@ -511,6 +561,7 @@ export class ProductionKanbanComponent implements OnInit {
   saveCard(): void {
 
     const payload = {
+      id: this.selectedCard.id,
       itemProductId:
         this.formCard.get('itemProductId')?.value,
       clienteId:
@@ -534,13 +585,9 @@ export class ProductionKanbanComponent implements OnInit {
       quantity:
         this.formCard.get('quantity')?.value
     };
+    console.log(this.selectedCard)
 
-    // =========================================
-    // CREATE
-    // =========================================
-    console.log('iNiciando save')
     if (!this.selectedCard.id) {
-      console.log('Entrou no save')
       this.cardService
         .create(payload)
         .subscribe({
@@ -567,25 +614,17 @@ export class ProductionKanbanComponent implements OnInit {
       return;
     }
 
-
-
-    // =========================================
-    // UPDATE
-    // =========================================
-
     this.cardService
       .update(payload)
       .subscribe({
 
         next: updated => {
-
           const column =
             this.columns.find(
               c =>
                 c.id ===
                 updated.kanbanColumnId
             );
-
           if (!column) {
             return;
           }

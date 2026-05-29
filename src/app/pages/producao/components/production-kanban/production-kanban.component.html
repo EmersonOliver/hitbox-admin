@@ -89,25 +89,16 @@
                         <li>
 
                             <button class="dropdown-item" (click)="editColumn(column)">
-
                                 <i class="bi bi-pencil me-2"></i>
                                 Editar
-
                             </button>
-
                         </li>
-
                         <li>
-
                             <button class="dropdown-item text-danger" (click)="removeColumn(column.id)">
-
                                 <i class="bi bi-trash me-2"></i>
                                 Excluir
-
                             </button>
-
                         </li>
-
                     </ul>
 
                 </div>
@@ -245,11 +236,6 @@
                             {{ card.createdAt | date:'dd/MM/yyyy HH:mm' }}
 
                         </small>
-
-                        <button class="btn btn-sm btn-outline-primary" (click)="editCard(card)">
-                            <i class="bi bi-pencil-square"></i>
-                        </button>
-
                     </div>
 
                 </div>
@@ -429,19 +415,14 @@
             <!-- PROGRESS -->
 
             <div class="mb-4">
-
                 <div class="d-flex justify-content-between mb-2">
-
                     <label class="form-label mb-0">
                         Progresso
                     </label>
-
                     <strong>
-                        {{ selectedCard.productionProgress }}%
+                        {{ formCard.get('productionProgress')?.value }}%
                     </strong>
-
                 </div>
-
                 <input type="range" class="form-range" min="0" max="100" formControlName="productionProgress">
 
             </div>

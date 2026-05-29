@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class KanbanCardMovementService {
   private readonly API =
-    `api/hitbox/kanban/movement`;
+    `api/hitbox/kanban/card-movement`;
   constructor(private http: HttpClient) { }
 
   create(
