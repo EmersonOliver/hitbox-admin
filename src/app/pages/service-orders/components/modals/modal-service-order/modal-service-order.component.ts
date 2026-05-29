@@ -231,7 +231,7 @@ export class ModalServiceOrderComponent
 
       printHours:
         Number(
-          product.estimatedMinutes || 0
+          product.estimatedMinutes * quantity || 0
         ),
 
       machineHourCost: 0,
@@ -284,7 +284,7 @@ export class ModalServiceOrderComponent
 
             estimatedMinutes:
               this.formatHoursToDuration(
-                product.estimatedMinutes || 0
+                product.estimatedMinutes * quantity || 0
               )
 
           });

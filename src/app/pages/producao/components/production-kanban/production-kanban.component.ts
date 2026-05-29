@@ -13,7 +13,7 @@ import {
   moveItemInArray,
   transferArrayItem
 } from '@angular/cdk/drag-drop';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { KanbanColumnResponse } from './models/response/kanban.column.response';
 import { KanbanColumnService } from '../../../../core/kanban/kanban-column.service';
 import { KanbanCardResponse } from './models/response/kanban.card.response';
@@ -24,6 +24,8 @@ import { ClienteResponse } from '../../../clientes/models/cliente.response';
 import { ToastService } from '../../../components/toast/toast.service';
 import { ProductService } from '../../../../core/product/product.service';
 import { ProductResponse } from '../../../produtos/components/produto-modal/models/produto.model';
+import { ServiceOrderService } from '../../../../core/service-order/service-order.service';
+import { ServiceOrderResponse } from '../../../service-orders/models/response/service-order-response.model';
 
 declare var bootstrap: any;
 @Component({
@@ -32,7 +34,8 @@ declare var bootstrap: any;
   imports: [
     CommonModule,
     DragDropModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   templateUrl: './production-kanban.component.html',
   styleUrls: ['./production-kanban.component.scss']
@@ -60,19 +63,38 @@ export class ProductionKanbanComponent implements OnInit {
   selectedCard!: KanbanCardResponse;
   clientes: ClienteResponse[] = []
   products: ProductResponse[] = []
+  ordersComboOpen: ServiceOrderResponse[] = []
+  formCard: FormGroup;
 
+  serviceOrderSelected?: ServiceOrderResponse;
   constructor(private columnService: KanbanColumnService,
     private cardService: KanbanCardService,
     private movementService: KanbanCardMovementService,
     private clienteService: ClienteService,
     private productService: ProductService,
-    private toast: ToastService) { }
+    private orderService: ServiceOrderService,
+    private fb: FormBuilder,
+    private toast: ToastService) {
+
+    this.formCard = this.fb.group({
+      serviceOrderId: [null, Validators.required],
+      itemProductId: [null, Validators.required],
+      quantity: [1, [Validators.required, Validators.min(0.01)]],
+      clienteId: [null, Validators.required],
+      productionProgress: [0],
+      estimatedMinutes: [null],
+      blocked: [false],
+      blockedReason: [null],
+      notes: [null],
+      kanbanColumnId: [null]
+
+    })
+  }
 
   ngOnInit(): void {
-
     this.loadKanban();
     this.carregarCliente();
-    this.carregarProdutos();
+    this.carregarOrdemServicoByStatus();
   }
 
   carregarCliente() {
@@ -86,13 +108,42 @@ export class ProductionKanbanComponent implements OnInit {
     })
   }
 
+  carregarOrdemServicoByStatus() {
+    this.orderService.findByStatus('OPEN').subscribe({
+      next: res => {
+        this.ordersComboOpen = res
+        console.log(res)
+      }
+    })
+  }
+
+  changeOrder() {
+    this.serviceOrderSelected = this.ordersComboOpen.find(r => r.id == this.formCard.get('serviceOrderId')?.value);
+    let productItem = this.serviceOrderSelected?.items.find(i => i.id === this.formCard.get('itemProductId')?.value);
+    this.formCard.patchValue({
+      clienteId: this.serviceOrderSelected?.clienteId,
+    });
+
+    if (productItem) {
+      this.formCard.patchValue({
+        estimatedMinutes:
+          this.formatHoursToDuration(
+            productItem!.estimatedMinutes
+          )
+      });
+      console.log(this.formatHoursToDuration(
+        productItem!.estimatedMinutes
+      ))
+    }
+  }
+
   carregarProdutos() {
     this.productService.findAll().subscribe({
-      next: res=> {
+      next: res => {
         this.products = res;
-      },error: (error)=> {
+      }, error: (error) => {
         this.toast.show('Ocorreu um erro ao carregar produtos! ' + error.error.message, 'danger')
-      } 
+      }
     });
   }
 
@@ -111,6 +162,7 @@ export class ProductionKanbanComponent implements OnInit {
               (a, b) =>
                 a.columnOrder - b.columnOrder
             );
+
 
           this.loading = false;
         },
@@ -223,7 +275,9 @@ export class ProductionKanbanComponent implements OnInit {
       notes:
         movedCard.notes,
       clienteId:
-        movedCard.clienteId
+        movedCard.clienteId,
+      quantity:
+        movedCard.quantity
 
     }).subscribe();
 
@@ -414,7 +468,9 @@ export class ProductionKanbanComponent implements OnInit {
             card.blockedReason,
           notes:
             card.notes,
-          clienteId: card.clienteId
+          clienteId: card.clienteId,
+          quantity:
+            card.quantity
 
         }).subscribe();
       }
@@ -436,54 +492,55 @@ export class ProductionKanbanComponent implements OnInit {
 
     offcanvas.show();
   }
+  fecharCanvas() {
+    const offcanvasElement =
+      document.getElementById(
+        'editCardOffcanvas'
+      );
 
+    if (!offcanvasElement) {
+      return;
+    }
+    const offcanvas =
+      bootstrap.Offcanvas.getInstance(
+        offcanvasElement
+      );
+
+    offcanvas?.hide();
+  }
   saveCard(): void {
 
     const payload = {
-
-      id:
-        this.selectedCard.id,
-
       itemProductId:
-        this.selectedCard.itemProductId,
-
+        this.formCard.get('itemProductId')?.value,
       clienteId:
-        this.selectedCard.clienteId,
-
+        this.formCard.get('clienteId')?.value,
       serviceOrderId:
-        this.selectedCard.serviceOrderId,
-
+        this.formCard.get('serviceOrderId')?.value,
       kanbanColumnId:
-        this.selectedCard.kanbanColumnId,
-
+        this.formCard.get('kanbanColumnId')?.value,
       cardOrder:
-        this.selectedCard.cardOrder,
-
+        this.formCard.get('cardOrder')?.value,
       productionProgress:
-        this.selectedCard.productionProgress,
-
+        this.formCard.get('productionProgress')?.value,
       estimatedMinutes:
-        this.selectedCard.estimatedMinutes,
-
+        this.parseDurationToHours(this.formCard.get('estimatedMinutes')?.value),
       blocked:
-        this.selectedCard.blocked,
-
+        this.formCard.get('blocked')?.value,
       blockedReason:
-        this.selectedCard.blockedReason,
-
+        this.formCard.get('blockedReason')?.value,
       notes:
-        this.selectedCard.notes
+        this.formCard.get('notes')?.value,
+      quantity:
+        this.formCard.get('quantity')?.value
     };
 
     // =========================================
     // CREATE
     // =========================================
-
-    if (
-      !this.selectedCard.id ||
-      this.selectedCard.id === 0
-    ) {
-
+    console.log('iNiciando save')
+    if (!this.selectedCard.id) {
+      console.log('Entrou no save')
       this.cardService
         .create(payload)
         .subscribe({
@@ -500,13 +557,17 @@ export class ProductionKanbanComponent implements OnInit {
             if (!column) {
               return;
             }
-
             column.cards.push(created);
+            this.fecharCanvas();
+            this.loadKanban();
+            this.formCard.reset();
+
           }
         });
-
       return;
     }
+
+
 
     // =========================================
     // UPDATE
@@ -544,30 +605,110 @@ export class ProductionKanbanComponent implements OnInit {
         }
       });
   }
-  removeCard(arg0: number) {
-    throw new Error('Method not implemented.');
+  removeCard(id: number) {
+    this.cardService.delete(id).subscribe({
+      next: res => {
+        this.loadKanban()
+      }
+    })
   }
 
   onProductChange(): void {
-
-  const product =
-    this.products.find(
-      p =>
-        p.productId ===
-        this.selectedCard.itemProductId
-    );
-
-  if (!product) {
-    return;
+    let serviceOrder = this.serviceOrderSelected?.items
+      .find(i => i.id == this.formCard.get('itemProductId')?.value);
+    this.formCard.patchValue({
+      estimatedMinutes: this.formatHoursToDuration(serviceOrder!.estimatedMinutes),
+      quantity: serviceOrder?.quantity
+    });
   }
 
-  this.selectedCard.productName =
-    product.name;
 
-  this.selectedCard.productImage =
-    product.imageUrl;
+  private parseDurationToHours(value: string | null): number {
+    if (!value) {
+      return 0;
+    }
 
-  this.selectedCard.estimatedMinutes =
-    product.estimatedMinutes;
-}
+    const normalized =
+      value.toLowerCase().trim();
+
+    const days =
+      this.extract(normalized, /(\d+)d/);
+
+    const hours =
+      this.extract(normalized, /(\d+)h/);
+
+    const minutes =
+      this.extract(normalized, /(\d+)m/);
+
+    const seconds =
+      this.extract(normalized, /(\d+)s/);
+
+    return (
+      (days * 24)
+      + hours
+      + (minutes / 60)
+      + (seconds / 3600)
+    );
+  }
+
+  private extract(
+    value: string,
+    regex: RegExp
+  ): number {
+
+    const match =
+      value.match(regex);
+
+    return match
+      ? Number(match[1])
+      : 0;
+  }
+  formatHoursToDuration(
+    value: number | null
+  ): string {
+
+    if (!value || value <= 0) {
+      return '';
+    }
+
+    let totalSeconds =
+      Math.round(value * 3600);
+
+    const days =
+      Math.floor(totalSeconds / 86400);
+
+    totalSeconds %= 86400;
+
+    const hours =
+      Math.floor(totalSeconds / 3600);
+
+    totalSeconds %= 3600;
+
+    const minutes =
+      Math.floor(totalSeconds / 60);
+
+    const seconds =
+      totalSeconds % 60;
+
+    const parts: string[] = [];
+
+    if (days > 0) {
+      parts.push(`${days}d`);
+    }
+
+    if (hours > 0) {
+      parts.push(`${hours}h`);
+    }
+
+    if (minutes > 0) {
+      parts.push(`${minutes}m`);
+    }
+
+    if (seconds > 0) {
+      parts.push(`${seconds}s`);
+    }
+
+    return parts.join('');
+  }
+
 }

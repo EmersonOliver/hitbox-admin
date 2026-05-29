@@ -6,7 +6,7 @@ export interface ServiceOrderResponse {
 
   clienteId: string;
 
-  clienteName: string;
+  clienteNome: string;
 
   clientePhone?: string;
 

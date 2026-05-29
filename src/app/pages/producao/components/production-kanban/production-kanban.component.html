@@ -144,7 +144,7 @@
                                     </button>
                                 </li>
                                 <li>
-                                    <button class="dropdown-item text-danger" (click)="removeCard(column.id)">
+                                    <button class="dropdown-item text-danger" (click)="removeCard(card.id)">
                                         <i class="bi bi-trash me-2"></i>
                                         Excluir
                                     </button>
@@ -199,17 +199,11 @@
                         </div>
 
                         <div class="kanban-meta-item">
-
                             <i class="bi bi-clock-history"></i>
-
                             <span>
-
-                                {{ card.estimatedMinutes || 0 }} min
-
+                                {{ formatHoursToDuration(card.estimatedMinutes )   }} 
                             </span>
-
                         </div>
-
                     </div>
 
                     <!-- PROGRESS -->
@@ -360,153 +354,163 @@
 <div class="offcanvas offcanvas-end kanban-editor" tabindex="-1" id="editCardOffcanvas">
 
     <div class="offcanvas-header border-bottom">
-
         <div>
-
             <h4 class="fw-bold mb-1">
                 Editar Produção
             </h4>
-
             <small class="text-muted">
                 Atualize os dados do card
             </small>
-
         </div>
-
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas">
         </button>
-
     </div>
 
     <div class="offcanvas-body">
+        <form [formGroup]="formCard" (ngSubmit)="saveCard()">
 
-        @if(selectedCard){
+            @if(selectedCard){
 
-        <!-- PRODUTO -->
+            <div class="mb-4">
+                <label>OS</label>
+                <select name="orderSelect" id="orderSelect" class="form-select" (change)="changeOrder()"
+                    formControlName="serviceOrderId">
+                    <option [value]="null" disabled>Selecione</option>
+                    <option *ngFor="let o of ordersComboOpen" [value]="o.id">OS:{{o.id }}-{{o.clienteNome}}</option>
+                </select>
+            </div>
 
-        <div class="mb-4">
+            <div class="mb-4">
+                <label>Board</label>
+                <select name="columSelect" id="columSelect" class="form-select" (change)="changeOrder()"
+                    formControlName="kanbanColumnId">
+                    <option [value]="null" disabled>Selecione</option>
+                    <option *ngFor="let c of columns" [value]="c.id">{{c.columnName}}</option>
+                </select>
+            </div>
+            <!-- PRODUTO -->
 
-            <label class="form-label">
-                Produto
-            </label>
+            <div class="mb-4">
 
-            <select class="form-select" [(ngModel)]="selectedCard.itemProductId" (change)="onProductChange()">
-
-                <option [ngValue]="0" disabled>
-                    Selecione um produto
-                </option>
-
-                <option *ngFor="let p of products" [ngValue]="p.productId">
-                    {{ p.name }}
-                </option>
-
-            </select>
-
-        </div>
-        <div class="mb-4">
-            <label class="form-label">
-                Quantidade
-            </label>
-            <input type="number" class="form-control" [(ngModel)]="selectedCard.quantity">
-        </div>
-
-        <div class="mb-4">
-            <label class="form-label">
-                Cliente
-            </label>
-            <select name="clienteSelect" id="clienteSelect" [(ngModel)]="selectedCard.clienteId" class="form-select">
-                <option [value]="null" disabled>Selecione</option>
-                <option *ngFor="let c of clientes" [ngValue]="c.id">
-                    {{ c.nome }}
-                </option>
-            </select>
-        </div>
-
-        <!-- PROGRESS -->
-
-        <div class="mb-4">
-
-            <div class="d-flex justify-content-between mb-2">
-
-                <label class="form-label mb-0">
-                    Progresso
+                <label class="form-label">
+                    Produto
                 </label>
 
-                <strong>
-                    {{ selectedCard.productionProgress }}%
-                </strong>
+                <select class="form-select" formControlName="itemProductId" (change)="onProductChange()">
+                    <option [value]="null" disabled>
+                        Selecione um produto
+                    </option>
+                    <option *ngFor="let p of serviceOrderSelected?.items" [value]="p.id">
+                        {{ p.productName }}
+                    </option>
+
+                </select>
+
+            </div>
+            <div class="mb-4">
+                <label class="form-label">
+                    Quantidade
+                </label>
+                <input type="number" class="form-control" formControlName="quantity">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">
+                    Cliente
+                </label>
+                <select name="clienteSelect" id="clienteSelect" formControlName="clienteId" class="form-select">
+                    <option [value]="null" disabled>Selecione</option>
+                    <option *ngFor="let c of clientes" [ngValue]="c.id">
+                        {{ c.nome }}
+                    </option>
+                </select>
+            </div>
+
+            <!-- PROGRESS -->
+
+            <div class="mb-4">
+
+                <div class="d-flex justify-content-between mb-2">
+
+                    <label class="form-label mb-0">
+                        Progresso
+                    </label>
+
+                    <strong>
+                        {{ selectedCard.productionProgress }}%
+                    </strong>
+
+                </div>
+
+                <input type="range" class="form-range" min="0" max="100" formControlName="productionProgress">
 
             </div>
 
-            <input type="range" class="form-range" min="0" max="100" [(ngModel)]="selectedCard.productionProgress">
+            <!-- ESTIMATIVA -->
 
-        </div>
+            <div class="mb-4">
 
-        <!-- ESTIMATIVA -->
+                <label class="form-label">
+                    Tempo estimado 
+                </label>
 
-        <div class="mb-4">
+                <input type="text" class="form-control" formControlName="estimatedMinutes">
 
-            <label class="form-label">
-                Tempo estimado (min)
-            </label>
+            </div>
+            <!-- BLOQUEIO -->
 
-            <input type="number" class="form-control" [(ngModel)]="selectedCard.estimatedMinutes">
+            <div class="form-check form-switch mb-3">
 
-        </div>
-        <!-- BLOQUEIO -->
+                <input class="form-check-input" type="checkbox" formControlName="blocked">
 
-        <div class="form-check form-switch mb-3">
+                <label class="form-check-label">
+                    Card bloqueado
+                </label>
 
-            <input class="form-check-input" type="checkbox" [(ngModel)]="selectedCard.blocked">
+            </div>
 
-            <label class="form-check-label">
-                Card bloqueado
-            </label>
+            <!-- MOTIVO -->
 
-        </div>
+            @if(selectedCard.blocked){
 
-        <!-- MOTIVO -->
+            <div class="mb-4">
 
-        @if(selectedCard.blocked){
+                <label class="form-label">
+                    Motivo do bloqueio
+                </label>
 
-        <div class="mb-4">
-
-            <label class="form-label">
-                Motivo do bloqueio
-            </label>
-
-            <textarea class="form-control" rows="3" [(ngModel)]="selectedCard.blockedReason">
+                <textarea class="form-control" rows="3" formControlName="blockedReason">
       </textarea>
 
-        </div>
+            </div>
 
-        }
+            }
 
-        <!-- NOTES -->
+            <!-- NOTES -->
 
-        <div class="mb-4">
+            <div class="mb-4">
 
-            <label class="form-label">
-                Observações
-            </label>
+                <label class="form-label">
+                    Observações
+                </label>
 
-            <textarea class="form-control" rows="5" [(ngModel)]="selectedCard.notes">
+                <textarea class="form-control" rows="5" formControlName="notes">
       </textarea>
 
-        </div>
+            </div>
 
-        <!-- SAVE -->
+            <!-- SAVE -->
 
-        <button class="btn btn-primary w-100" (click)="saveCard()">
+            <button class="btn btn-primary w-100" type="submit">
 
-            <i class="bi bi-floppy me-2"></i>
+                <i class="bi bi-floppy me-2"></i>
 
-            Salvar alterações
+                Salvar alterações
 
-        </button>
+            </button>
 
-        }
-
+            }
+        </form>
     </div>
 
 </div>

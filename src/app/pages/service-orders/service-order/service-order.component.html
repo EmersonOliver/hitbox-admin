@@ -231,7 +231,7 @@
 
                                 <div class="client-avatar">
 
-                                    {{ order.clienteName[0] }}
+                                    {{ order.clienteNome[0] }}
 
                                 </div>
 
@@ -239,7 +239,7 @@
 
                                     <strong>
 
-                                        {{ order.clienteName }}
+                                        {{ order.clienteNome }}
 
                                     </strong>
 
@@ -446,7 +446,7 @@
      MODALS
 =========================================== -->
 
-<app-modal-service-order>
+<app-modal-service-order (save)="saveOrder($event)">
 </app-modal-service-order>
 
 <app-modal-service-viewer>

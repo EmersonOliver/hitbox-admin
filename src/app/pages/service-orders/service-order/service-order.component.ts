@@ -18,6 +18,8 @@ import { ServiceOrderResponse } from '../models/response/service-order-response.
 import { ServiceOrderService } from '../../../core/service-order/service-order.service';
 import { ModalServiceOrderComponent } from '../components/modals/modal-service-order/modal-service-order.component';
 import { ModalServiceViewerComponent } from '../components/modals/modal-service-viewer/modal-service-viewer.component';
+import { ServiceOrderRequest } from '../models/request/service-order-request.model';
+import { ToastService } from '../../components/toast/toast.service';
 
 
 declare var bootstrap: any;
@@ -71,7 +73,8 @@ export class ServiceOrderComponent implements OnInit {
 
   constructor(
     private serviceOrderService: ServiceOrderService,
-    private router: Router
+    private router: Router,
+    private toast: ToastService
   ) { }
 
 
@@ -113,6 +116,18 @@ export class ServiceOrderComponent implements OnInit {
       });
   }
 
+  saveOrder(payload: ServiceOrderRequest) {
+    this.serviceOrderService.create(payload).subscribe({
+      next: response => {
+        this.toast.show('Salvo com sucesso!', 'success');
+        this.loadOrders();
+      }, error: (error) => {
+        this.toast.show('Erro ao cadastrar ordem de serviço! ' + error.error.message, 'danger')
+      }
+    })
+
+  }
+
   applyFilters(): void {
 
     let result =
@@ -125,7 +140,7 @@ export class ServiceOrderComponent implements OnInit {
 
       result =
         result.filter(order =>
-          order.clienteName
+          order.clienteNome
             ?.toLowerCase()
             .includes(search)
           ||
