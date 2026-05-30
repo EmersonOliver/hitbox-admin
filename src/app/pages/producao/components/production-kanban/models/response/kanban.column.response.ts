@@ -7,4 +7,5 @@ export interface KanbanColumnResponse {
     columnOrder: number;
     totalCards: number;
     cards: KanbanCardResponse[];
+    typeColumn:string;
 }

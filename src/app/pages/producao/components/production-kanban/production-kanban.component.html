@@ -116,13 +116,13 @@
 
                     <!-- TOP -->
 
-                    <div class="d-flex justify-content-between mb-3">
-
+                    <div class="d-flex justify-content-between ">
                         <span class="status-badge">
-
                             #{{ card.id }}
-
                         </span>
+                        <h5 class="fw-bold mb-1">
+                            {{ card.productName }}
+                        </h5>
                         <div class="dropdown">
                             <button class="btn btn-sm btn-icon" data-bs-toggle="dropdown">
                                 <i class="bi bi-three-dots"></i>
@@ -144,102 +144,53 @@
                         </div>
                     </div>
 
-                    <!-- PRODUCT -->
-
-                    <div class="mb-3">
-
-                        <div class="d-flex align-items-center gap-3">
-
-                            <img *ngIf="card.productImage" [src]="card.productImage" class="product-thumb">
-
-                            <div>
-
-                                <h5 class="fw-bold mb-1">
-
-                                    {{ card.productName }}
-
-                                </h5>
-
-                                <small class="text-muted">
-
-                                    Cliente:
-                                    {{ card.clientName }}
-
-                                </small>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
                     <!-- META -->
 
                     <div class="kanban-meta">
-
-                        <div class="kanban-meta-item">
-
+                        <div class="kanban-meta-item col-md-3">
                             <i class="bi bi-box-seam"></i>
-
                             <span>
-
                                 {{ card.quantity }} un
-
                             </span>
-
                         </div>
 
-                        <div class="kanban-meta-item">
+                        <div class="kanban-meta-item col-md-3">
                             <i class="bi bi-clock-history"></i>
                             <span>
-                                {{ formatHoursToDuration(card.estimatedMinutes )   }} 
+                                {{ formatHoursToDuration(card.estimatedMinutes ) }}
                             </span>
                         </div>
+
                     </div>
-
-                    <!-- PROGRESS -->
-
-                    <div class="mt-4">
-
-                        <div class="d-flex justify-content-between mb-2">
-
+                    <div class="kanban-meta">
+                        <div class="kanban-meta-item col-md-12">
                             <small class="text-muted">
-
+                                <i class="bi bi-person me-2"></i> {{ card.clientName }}
+                            </small>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-between ">
+                            <small class="text-muted">
                                 Produção
-
                             </small>
-
                             <small class="fw-semibold">
-
                                 {{ card.productionProgress || 0 }}%
-
                             </small>
-
                         </div>
 
                         <div class="progress">
-
                             <div class="progress-bar" [style.width.%]="card.productionProgress || 0">
                             </div>
-
                         </div>
-
                     </div>
-
-                    <!-- FOOTER -->
-
                     <div class="kanban-footer">
-
                         <small class="text-muted">
-
                             Criado em
                             {{ card.createdAt | date:'dd/MM/yyyy HH:mm' }}
-
                         </small>
                     </div>
-
                 </div>
-
                 }
 
             </div>
@@ -276,35 +227,32 @@
             <div class="modal-body">
 
                 <div class="mb-3">
-
                     <label class="form-label">
-
                         Nome
-
                     </label>
-
                     <input type="text" class="form-control" placeholder="Nome da coluna" [(ngModel)]="columnName">
-
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">
+                        Column Status
+                    </label>
+                    <select name="" id="" class="form-select" [(ngModel)]="typeColumn">
+                        <option [ngValue]="''" disabled>Selecione</option>
+                        <option *ngFor="let ct of columnsTypes" [ngValue]="ct.id">{{ct.label}}</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
-
                     <label class="form-label">
-
                         Cor da coluna
-
                     </label>
-
                     <div class="color-picker">
-
                         @for (color of availableColors; track color) {
 
                         <button type="button" class="color-option" [class.active]="selectedColumnColor === color"
                             [style.background]="color" (click)="selectedColumnColor = color">
-
                             <i *ngIf="selectedColumnColor === color" class="bi bi-check-lg">
                             </i>
-
                         </button>
 
                         }
@@ -432,7 +380,7 @@
             <div class="mb-4">
 
                 <label class="form-label">
-                    Tempo estimado 
+                    Tempo estimado
                 </label>
 
                 <input type="text" class="form-control" formControlName="estimatedMinutes">

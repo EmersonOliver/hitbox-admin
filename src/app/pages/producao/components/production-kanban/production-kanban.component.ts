@@ -26,6 +26,7 @@ import { ProductService } from '../../../../core/product/product.service';
 import { ProductResponse } from '../../../produtos/components/produto-modal/models/produto.model';
 import { ServiceOrderService } from '../../../../core/service-order/service-order.service';
 import { ServiceOrderResponse } from '../../../service-orders/models/response/service-order-response.model';
+import { FormatProductionTime } from '../../../../core/utils/production.time.utils';
 
 declare var bootstrap: any;
 @Component({
@@ -43,6 +44,7 @@ declare var bootstrap: any;
 export class ProductionKanbanComponent implements OnInit {
 
   columnName = '';
+  typeColumn: string = '';
   columns: KanbanColumnResponse[] = [];
   loading: boolean = false;
 
@@ -65,6 +67,14 @@ export class ProductionKanbanComponent implements OnInit {
   products: ProductResponse[] = []
   ordersComboOpen: ServiceOrderResponse[] = []
   formCard: FormGroup;
+  columnsTypes = [
+    { id: 'OPEN', label: 'Aberto' },
+    { id: 'IN_PRODUCTION', label: 'Em Produção' },
+    { id: 'PARTIALLY_FINISHED', label: 'Em Montagem' },
+    { id: 'FINISHED', label: 'Finalizado' },
+    { id: 'DELIVERED', label: 'Entregue' },
+    { id: 'CANCELED', label: 'Cancelado' }
+  ];
 
   serviceOrderSelected?: ServiceOrderResponse;
   constructor(private columnService: KanbanColumnService,
@@ -92,9 +102,9 @@ export class ProductionKanbanComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.carregarOrdemServicoByStatus('OPEN');
     this.loadKanban();
     this.carregarCliente();
-    this.carregarOrdemServicoByStatus('OPEN');
   }
 
   carregarCliente() {
@@ -109,12 +119,14 @@ export class ProductionKanbanComponent implements OnInit {
   }
 
   carregarOrdemServicoByStatus(status?: string) {
+
+
     this.orderService.findByStatus(status).subscribe({
       next: res => {
-        this.ordersComboOpen = res
+        this.ordersComboOpen = res;
         this.changeOrder();
       }
-    })
+    });
   }
 
 
@@ -128,11 +140,11 @@ export class ProductionKanbanComponent implements OnInit {
     if (productItem) {
       this.formCard.patchValue({
         estimatedMinutes:
-          this.formatHoursToDuration(
+          FormatProductionTime.formatHoursToDuration(
             productItem!.estimatedMinutes
           )
       });
-      console.log(this.formatHoursToDuration(
+      console.log(FormatProductionTime.formatHoursToDuration(
         productItem!.estimatedMinutes
       ))
     }
@@ -163,7 +175,6 @@ export class ProductionKanbanComponent implements OnInit {
               (a, b) =>
                 a.columnOrder - b.columnOrder
             );
-
 
           this.loading = false;
         },
@@ -240,7 +251,7 @@ export class ProductionKanbanComponent implements OnInit {
         movedCard.cardOrder,
 
       productionProgress:
-        movedCard.productionProgress,
+        this.calculateProgressByColumn(targetColumn.id),
 
       estimatedMinutes:
         movedCard.estimatedMinutes,
@@ -259,50 +270,27 @@ export class ProductionKanbanComponent implements OnInit {
         movedCard.quantity
     }
 
-    this.cardService.update({
+    this.cardService.update(payload)
+      .subscribe({
+      next: updated => {
 
-      id: movedCard.id,
+      const index =
+        targetColumn.cards.findIndex(
+          c => c.id === updated.id
+        );
 
-      itemProductId:
-        movedCard.itemProductId,
+      if (index >= 0) {
 
-      serviceOrderId:
-        movedCard.serviceOrderId,
+        targetColumn.cards[index] =
+          updated;
 
-      kanbanColumnId:
-        targetColumn.id,
-
-      cardOrder:
-        movedCard.cardOrder,
-
-      productionProgress:
-        movedCard.productionProgress,
-
-      estimatedMinutes:
-        movedCard.estimatedMinutes,
-
-      blocked:
-        movedCard.blocked,
-
-      blockedReason:
-        movedCard.blockedReason,
-
-      notes:
-        movedCard.notes,
-      clienteId:
-        movedCard.clienteId,
-      quantity:
-        movedCard.quantity
-
-    }).subscribe();
-
-    // =====================================================
-    // SAVE MOVEMENT
-    // =====================================================
+        targetColumn.cards =
+          [...targetColumn.cards];
+      }
+    }
+  });
 
     this.movementService.create({
-
-
       cardId:
         movedCard.id,
 
@@ -312,11 +300,7 @@ export class ProductionKanbanComponent implements OnInit {
       toColumnId:
         targetColumn.id
 
-    }).subscribe();
-
-    // =====================================================
-    // UPDATE ORDERS
-    // =====================================================
+    }).subscribe( );
 
     this.updateCardOrders(
       previousColumn
@@ -344,11 +328,10 @@ export class ProductionKanbanComponent implements OnInit {
     }
 
     this.columnService.create({
-
       columnName: this.columnName,
       columnColor: this.selectedColumnColor,
-      columnOrder: this.columns.length
-
+      columnOrder: this.columns.length,
+      typeColumn: this.typeColumn
     }).subscribe({
 
       next: response => {
@@ -402,7 +385,8 @@ export class ProductionKanbanComponent implements OnInit {
       id: column.id,
       columnName: newName,
       columnColor: column.columnColor,
-      columnOrder: column.columnOrder
+      columnOrder: column.columnOrder,
+      typeColumn: column.typeColumn
 
     }).subscribe({
 
@@ -470,7 +454,7 @@ export class ProductionKanbanComponent implements OnInit {
           kanbanColumnId: card.kanbanColumnId,
           cardOrder: index,
           productionProgress:
-            card.productionProgress,
+            this.calculateProgressByColumn(column.id),
           estimatedMinutes:
             card.estimatedMinutes,
           blocked:
@@ -483,30 +467,8 @@ export class ProductionKanbanComponent implements OnInit {
           quantity:
             card.quantity
         }
-        console.log('Mover o card')
-        console.log(payload)
 
-        this.cardService.update({
-
-          id: card.id,
-          itemProductId: card.itemProductId,
-          serviceOrderId: card.serviceOrderId,
-          kanbanColumnId: card.kanbanColumnId,
-          cardOrder: index,
-          productionProgress:
-            card.productionProgress,
-          estimatedMinutes:
-            card.estimatedMinutes,
-          blocked:
-            card.blocked,
-          blockedReason:
-            card.blockedReason,
-          notes:
-            card.notes,
-          clienteId: card.clienteId,
-          quantity:
-            card.quantity
-        }).subscribe();
+        this.cardService.update(payload).subscribe();
       }
     );
   }
@@ -514,33 +476,34 @@ export class ProductionKanbanComponent implements OnInit {
   editCard(card: KanbanCardResponse): void {
 
     this.selectedCard = card;
-    this.orderService.findById(card.serviceOrderId).subscribe({
-      next: res => {
+    if (card.serviceOrderId != 0)
+      this.orderService.findById(card.serviceOrderId).subscribe({
+        next: res => {
 
-        this.carregarOrdemServicoByStatus(res.status);
-        this.formCard.patchValue({
-          serviceOrderId: card.serviceOrderId,
-          itemProductId: card.itemProductId,
-          quantity: card.quantity,
-          clienteId: card.clienteId,
-          productionProgress: card.productionProgress,
-          estimatedMinutes: this.formatHoursToDuration(card.estimatedMinutes),
-          blocked: card.blocked,
-          blockedReason: card.blockedReason,
-          notes: card.notes,
-          kanbanColumnId: card.kanbanColumnId
-        });
-        const offcanvas =
-          new bootstrap.Offcanvas(
-            document.getElementById(
-              'editCardOffcanvas'
-            )
-          );
+          this.carregarOrdemServicoByStatus(res.status);
+          this.formCard.patchValue({
+            serviceOrderId: card.serviceOrderId,
+            itemProductId: card.itemProductId,
+            quantity: card.quantity,
+            clienteId: card.clienteId,
+            productionProgress: card.productionProgress || 0,
+            estimatedMinutes: FormatProductionTime.formatHoursToDuration(card.estimatedMinutes),
+            blocked: card.blocked,
+            blockedReason: card.blockedReason,
+            notes: card.notes,
+            kanbanColumnId: card.kanbanColumnId
+          });
 
-        offcanvas.show();
-      }
-    });
+        }
+      });
+    const offcanvas =
+      new bootstrap.Offcanvas(
+        document.getElementById(
+          'editCardOffcanvas'
+        )
+      );
 
+    offcanvas.show();
   }
   fecharCanvas() {
     const offcanvasElement =
@@ -573,9 +536,11 @@ export class ProductionKanbanComponent implements OnInit {
       cardOrder:
         this.formCard.get('cardOrder')?.value,
       productionProgress:
-        this.formCard.get('productionProgress')?.value,
+        this.calculateProgressByColumn(
+          this.formCard.get('kanbanColumnId')?.value
+        ),
       estimatedMinutes:
-        this.parseDurationToHours(this.formCard.get('estimatedMinutes')?.value),
+        FormatProductionTime.parseDurationToHours(this.formCard.get('estimatedMinutes')?.value),
       blocked:
         this.formCard.get('blocked')?.value,
       blockedReason:
@@ -587,7 +552,7 @@ export class ProductionKanbanComponent implements OnInit {
     };
     console.log(this.selectedCard)
 
-    if (!this.selectedCard.id) {
+    if (!this.selectedCard.id ) {
       this.cardService
         .create(payload)
         .subscribe({
@@ -606,7 +571,9 @@ export class ProductionKanbanComponent implements OnInit {
             }
             column.cards.push(created);
             this.fecharCanvas();
-            this.loadKanban();
+             this.ngOnInit();
+            // this.carregarOrdemServicoByStatus('OPEN')
+            // this.loadKanban();
             this.formCard.reset();
 
           }
@@ -641,6 +608,10 @@ export class ProductionKanbanComponent implements OnInit {
             column.cards[index] =
               updated;
           }
+         
+          this.fecharCanvas();
+          this.loadKanban();
+          this.formCard.reset();
         }
       });
   }
@@ -656,98 +627,46 @@ export class ProductionKanbanComponent implements OnInit {
     let serviceOrder = this.serviceOrderSelected?.items
       .find(i => i.id == this.formCard.get('itemProductId')?.value);
     this.formCard.patchValue({
-      estimatedMinutes: this.formatHoursToDuration(serviceOrder!.estimatedMinutes),
+      estimatedMinutes: FormatProductionTime.formatHoursToDuration(serviceOrder!.estimatedMinutes),
       quantity: serviceOrder?.quantity
     });
   }
 
+  formatHoursToDuration(value: number | null): string {
+    return FormatProductionTime.formatHoursToDuration(value);
+  }
 
-  private parseDurationToHours(value: string | null): number {
-    if (!value) {
+  private calculateProgressByColumn(
+    columnId: number
+  ): number {
+
+    const sortedColumns =
+      [...this.columns]
+        .sort(
+          (a, b) =>
+            a.columnOrder - b.columnOrder
+        );
+
+    const currentIndex =
+      sortedColumns.findIndex(
+        c => c.id === columnId
+      );
+
+    if (currentIndex <= 0) {
       return 0;
     }
 
-    const normalized =
-      value.toLowerCase().trim();
+    const lastIndex =
+      sortedColumns.length - 1;
 
-    const days =
-      this.extract(normalized, /(\d+)d/);
-
-    const hours =
-      this.extract(normalized, /(\d+)h/);
-
-    const minutes =
-      this.extract(normalized, /(\d+)m/);
-
-    const seconds =
-      this.extract(normalized, /(\d+)s/);
-
-    return (
-      (days * 24)
-      + hours
-      + (minutes / 60)
-      + (seconds / 3600)
+    if (currentIndex >= lastIndex) {
+      return 100;
+    }
+    return Number(
+      (
+        (currentIndex / lastIndex) * 100
+      ).toFixed(2)
     );
-  }
-
-  private extract(
-    value: string,
-    regex: RegExp
-  ): number {
-
-    const match =
-      value.match(regex);
-
-    return match
-      ? Number(match[1])
-      : 0;
-  }
-  formatHoursToDuration(
-    value: number | null
-  ): string {
-
-    if (!value || value <= 0) {
-      return '';
-    }
-
-    let totalSeconds =
-      Math.round(value * 3600);
-
-    const days =
-      Math.floor(totalSeconds / 86400);
-
-    totalSeconds %= 86400;
-
-    const hours =
-      Math.floor(totalSeconds / 3600);
-
-    totalSeconds %= 3600;
-
-    const minutes =
-      Math.floor(totalSeconds / 60);
-
-    const seconds =
-      totalSeconds % 60;
-
-    const parts: string[] = [];
-
-    if (days > 0) {
-      parts.push(`${days}d`);
-    }
-
-    if (hours > 0) {
-      parts.push(`${hours}h`);
-    }
-
-    if (minutes > 0) {
-      parts.push(`${minutes}m`);
-    }
-
-    if (seconds > 0) {
-      parts.push(`${seconds}s`);
-    }
-
-    return parts.join('');
   }
 
 }
