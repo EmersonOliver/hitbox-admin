@@ -197,7 +197,7 @@ export class ModalServiceOrderComponent
       );
 
     const ruleId =
-      this.form.get('ruleId')?.value;
+      product.pricingRuleId;
 
     this.ruleSelected = this.rules.find(f => f.id == ruleId);
 

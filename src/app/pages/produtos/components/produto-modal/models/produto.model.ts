@@ -5,6 +5,7 @@ export interface ProductResponse {
   productId: number;
 
   name: string;
+  pricingRuleId: number;
 
   categoryName: string;
   categoriaId: number;
@@ -16,6 +17,7 @@ export interface ProductResponse {
   description: string;
 
   currentCalculatedCost: number;
+  currentSalePrice:number;
 
   productionWeight: number;
 
@@ -23,5 +25,5 @@ export interface ProductResponse {
 
   materials: ProductMaterialResponse[];
 
-  estimatedMinutes:number;
+  estimatedMinutes: number;
 }

@@ -15,6 +15,7 @@ import {
   AbstractControl,
   FormArray,
   FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -32,6 +33,7 @@ import { SuggestedPriceResult } from '../../../calc-pricing/models/suggested.pri
 import { InventoryModel } from '../../../inventory/components/inventory-modal/models/inventory.model';
 import { ProductService } from '../../../../core/product/product.service';
 import { ImageUtil } from '../../../../core/utils/image.util';
+import { PricingRuleResponse } from '../../../calc-pricing/models/pricing.rules.response';
 declare var bootstrap: any;
 
 @Component({
@@ -80,10 +82,14 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
   categorias: CategoriaModel[] = []
   editar: boolean = false;
 
+  rules: PricingRuleResponse[] = []
+  ruleSelected?: PricingRuleResponse;
+
   constructor(
     private fb: FormBuilder,
     private pricingService: PricingRuleService,
     private inventoryService: InventarioService,
+    private pricingRuleService: PricingRuleService,
     private categoriaService: CategoriaService,
     private productService: ProductService,
     private toast: ToastService
@@ -93,6 +99,7 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
       description: [''],
       categoryId: [null, Validators.required],
       productionWeight: [0],
+      pricingRuleId: [null, Validators.required],
       shippingWeight: [0],
       width: [0],
       height: [0],
@@ -114,6 +121,11 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
       this.imagePreview = null
     }
   }
+
+  changeRule() {
+    this.ruleSelected = this.rules.find(r => r.id == this.form.get('pricingRuleId')?.value)
+  }
+
   preencherFormulario() {
     this.form.reset();
     this.materials.clear();
@@ -121,6 +133,7 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
     this.form.patchValue({
       productId: this.produtoSelecionado?.productId,
       name: this.produtoSelecionado?.name,
+      pricingRuleId: this.produtoSelecionado?.pricingRuleId,
       description: this.produtoSelecionado?.description,
       categoryId: this.produtoSelecionado?.categoriaId,
       productionWeight: this.produtoSelecionado?.productionWeight,
@@ -162,6 +175,15 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void {
     this.loadAllInventory();
     this.loadCategorias();
+    this.loadPrincingRules();
+  }
+
+  loadPrincingRules() {
+    this.pricingRuleService.findAll().subscribe({
+      next: response => {
+        this.rules = response;
+      }
+    })
   }
 
   ngAfterViewInit(): void {
@@ -346,6 +368,8 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
         formValue.name,
       description:
         formValue.description,
+      pricingRuleId:
+        formValue.pricingRuleId,
       categoryId:
         formValue.categoryId,
       productionWeight:
@@ -742,5 +766,50 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
           0.7); // qualidade
       };
     });
+  }
+  onWeightInput(event: Event, index: number): void {
+
+    const input = event.target as HTMLInputElement;
+
+    const numeric =
+      input.value.replace(/\D/g, '');
+
+    const value =
+      Number(numeric) / 1000;
+
+    this.materials.at(index)
+      .get('quantity')
+      ?.setValue(value, {
+        emitEvent: false
+      });
+
+    input.value =
+      value.toFixed(3).replace('.', ',');
+  }
+
+  onWeightInputValue(event: Event, formControlName:any): void {
+
+    const input = event.target as HTMLInputElement;
+
+    const numeric =
+      input.value.replace(/\D/g, '');
+
+    const value =
+      Number(numeric) / 1000;
+
+    formControlName.setValue(value, {emitEvent: false});
+
+    input.value =
+      value.toFixed(3).replace('.', ',');
+  }
+  formatWeight(value: number | null): string {
+
+    if (value == null) {
+      return '0,000';
+    }
+
+    return value
+      .toFixed(3)
+      .replace('.', ',');
   }
 }

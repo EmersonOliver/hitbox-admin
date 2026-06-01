@@ -311,6 +311,10 @@ export class ProductionKanbanComponent implements OnInit {
     );
   }
 
+  osTemplate(value: any): string {
+    return String(value).padStart(4, '0');
+  }
+
   openModalColumn(): void {
     const modal =
       new bootstrap.Modal(

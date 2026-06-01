@@ -125,7 +125,10 @@
                         </th>
 
                         <th>
-                            Custo Atual
+                            Custo Produção
+                        </th>
+                        <th>
+                            Custo Venda
                         </th>
 
                         <th>
@@ -209,6 +212,18 @@
                             </strong>
 
                         </td>
+                         <td>
+
+                            <strong>
+
+                                {{
+                                product.currentSalePrice
+                                | currency:'BRL'
+                                }}
+
+                            </strong>
+
+                        </td>
 
                         <!-- PRODUCTION WEIGHT -->
 
@@ -274,7 +289,7 @@
                                 <button class="btn btn-sm btn-outline-success" title="Criar Produção"
                                     (click)="sendToProduction(product)">
 
-                                  <i class="bi bi-play"></i>
+                                    <i class="bi bi-play"></i>
 
                                 </button>
 
@@ -377,8 +392,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="productModalExclusaoConfirm" aria-labelledby="productModalExclusaoConfirm" aria-hidden="true"
-    tabindex="-1">
+<div class="modal fade" id="productModalExclusaoConfirm" aria-labelledby="productModalExclusaoConfirm"
+    aria-hidden="true" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
