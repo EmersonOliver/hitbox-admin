@@ -1,7 +1,7 @@
 export interface KanbanCardRequest {
     id?: number;
     itemProductId: number;
-    clienteId:number;
+    clienteId:string;
     serviceOrderId: number;
     kanbanColumnId: number;
     cardOrder: number;

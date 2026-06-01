@@ -17,7 +17,7 @@ export interface KanbanCardResponse {
     productName: string;
     productImage: string;
     clientName: string;
-    clienteId:number;
+    clienteId:string;
     quantity: number;
 
 }

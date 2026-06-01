@@ -322,25 +322,7 @@
                     <option *ngFor="let c of columns" [value]="c.id">{{c.columnName}}</option>
                 </select>
             </div>
-            <!-- PRODUTO -->
-
-            <div class="mb-4">
-
-                <label class="form-label">
-                    Produto
-                </label>
-
-                <select class="form-select" formControlName="itemProductId" (change)="onProductChange()">
-                    <option [value]="null" disabled>
-                        Selecione um produto
-                    </option>
-                    <option *ngFor="let p of serviceOrderSelected?.items" [value]="p.id">
-                        {{ p.productName }}
-                    </option>
-
-                </select>
-
-            </div>
+           
             <div class="mb-4">
                 <label class="form-label">
                     Quantidade

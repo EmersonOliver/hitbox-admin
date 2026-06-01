@@ -347,12 +347,12 @@ h5 {
 
 .cdk-drag-animating {
 
-    transition: transform 250ms ease;
+    transition: transform 10ms linear!important;
 }
 
 .kanban-column-body.cdk-drop-list-dragging .kanban-card:not(.cdk-drag-placeholder) {
 
-    transition: transform 250ms ease;
+    transition: transform 10ms linear!important;
 }
 
 /* =========================================================
