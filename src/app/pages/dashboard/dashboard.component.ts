@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +6,8 @@ import { RangeDatepickerComponent } from "../components/datepicker/range-datepic
 import { RatingComponent } from '../components/rating/rating.component';
 import { StockProgressComponent } from "../components/stock-progress/stock-progress.component";
 import { Router, RouterLink } from "@angular/router";
+import { TutorialService } from '../../core/tutorial/tutorial.service';
+import { DASHBOARD_TOUR } from '../../core/tutorial/tours/dashboard.tour';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +16,7 @@ import { Router, RouterLink } from "@angular/router";
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit, AfterViewInit {
 
   rating = 0;
   cards = [
@@ -39,9 +41,20 @@ export class DashboardComponent {
       icon: 'bi-percent'
     }
   ];
-  constructor(private title: Title, private router: Router) {
+  constructor(private title: Title, private router: Router, private tutorialService: TutorialService) {
     title.setTitle('Hitbox - Dashboard')
   }
+  ngAfterViewInit(): void {
+    if (!localStorage.getItem('tour_completed_relsidebar')) {
+      this.tutorialService.startTour(
+        DASHBOARD_TOUR
+      );
+    }
+  }
+  ngOnInit(): void {
+
+  }
+
   clickRouterLink(link: string) {
     this.router.navigate([link])
   }

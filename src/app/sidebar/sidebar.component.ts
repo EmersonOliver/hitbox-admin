@@ -22,15 +22,15 @@ export class SidebarComponent implements OnInit {
   verifyResponse?: VerifyDomainsResponse;
 
   menus = [
-    { name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true },
-    { name: 'Categorias', link: '/categorias', icon: 'bi bi-tags', visible: true },
-    { name: 'Clientes', link: '/clientes', icon: 'bi bi-people', visible: true },
-    { name: 'Produtos', link: '/produtos', icon: 'bi bi-box', visible: true },
-    { name: 'Cálculos', link: '/calculos', icon: 'bi bi-calculator', visible: true },
-    { name: 'Produção', link: '/kanban', icon: 'bi bi-lightbulb', visible: true },
-    { name: 'Ordens de Serviço', link: '/orderService', icon: 'bi bi-journal-check', visible: true },
-    { name: 'Inventário/Estoque', link: '/inventario', icon: 'bi bi-box-seam', visible: true },
-    { name: 'Relatórios', link: '/relatorios', icon: 'bi bi-journal', visible: true },
+    { id:'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true },
+    { id:'catsidebar', name: 'Categorias', link: '/categorias', icon: 'bi bi-tags', visible: true },
+    { id:'clisidebar', name: 'Clientes', link: '/clientes', icon: 'bi bi-people', visible: true },
+    { id:'prdtssidebar', name: 'Produtos', link: '/produtos', icon: 'bi bi-box', visible: true },
+    { id:'calcsidebar', name: 'Cálculos', link: '/calculos', icon: 'bi bi-calculator', visible: true },
+    { id:'prodsidebar', name: 'Produção', link: '/kanban', icon: 'bi bi-lightbulb', visible: true },
+    { id:'ossidebar', name: 'Ordens de Serviço', link: '/orderService', icon: 'bi bi-journal-check', visible: true },
+    { id:'invsidebar', name: 'Inventário/Estoque', link: '/inventario', icon: 'bi bi-box-seam', visible: true },
+    { id:'relsidebar', name: 'Relatórios', link: '/relatorios', icon: 'bi bi-journal', visible: true },
   ];
 
 
@@ -48,16 +48,16 @@ export class SidebarComponent implements OnInit {
 
   loadMenus() {
     this.menus = [
-      { name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true },
-      { name: 'Categorias', link: '/categorias', icon: 'bi bi-tags', visible: true },
-      { name: 'Clientes', link: '/clientes', icon: 'bi bi-people', visible: true },
-      { name: 'Produtos', link: '/produtos', icon: 'bi bi-box', visible: true },
-      { name: 'Cálculos', link: '/calculos', icon: 'bi bi-calculator', visible: true },
-      { name: 'Produção', link: '/kanban', icon: 'bi bi-lightbulb', visible: true },
-      { name: 'Ordens de Serviço', link: '/orderService', icon: 'bi bi-journal-check', visible: true },
-      { name: 'Inventário/Estoque', link: '/inventario', icon: 'bi bi-box-seam', visible: true },
-      { name: 'Relatórios', link: '/relatorios', icon: 'bi bi-journal', visible: true },
-    ];
+    { id:'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true },
+    { id:'catsidebar', name: 'Categorias', link: '/categorias', icon: 'bi bi-tags', visible: true },
+    { id:'clisidebar', name: 'Clientes', link: '/clientes', icon: 'bi bi-people', visible: true },
+    { id:'prdtssidebar', name: 'Produtos', link: '/produtos', icon: 'bi bi-box', visible: true },
+    { id:'calcsidebar', name: 'Cálculos', link: '/calculos', icon: 'bi bi-calculator', visible: true },
+    { id:'prodsidebar', name: 'Produção', link: '/kanban', icon: 'bi bi-lightbulb', visible: true },
+    { id:'ossidebar', name: 'Ordens de Serviço', link: '/orderService', icon: 'bi bi-journal-check', visible: true },
+    { id:'invsidebar', name: 'Inventário/Estoque', link: '/inventario', icon: 'bi bi-box-seam', visible: true },
+    { id:'relsidebar', name: 'Relatórios', link: '/relatorios', icon: 'bi bi-journal', visible: true },
+  ];
   }
 
 
