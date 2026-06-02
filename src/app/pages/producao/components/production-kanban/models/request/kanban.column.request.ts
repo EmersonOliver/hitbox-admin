@@ -3,4 +3,5 @@ export interface KanbanColumnRequest {
     columnName: string;
     columnColor: string;
     columnOrder: number;
+    typeColumn: string;
 }

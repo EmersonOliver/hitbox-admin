@@ -1,7 +1,7 @@
 export interface KanbanCardRequest {
-    id: number;
+    id?: number;
     itemProductId: number;
-    clienteId:number;
+    clienteId:string;
     serviceOrderId: number;
     kanbanColumnId: number;
     cardOrder: number;
@@ -10,4 +10,5 @@ export interface KanbanCardRequest {
     blocked: boolean;
     blockedReason: string;
     notes: string;
+    quantity:number;
 }

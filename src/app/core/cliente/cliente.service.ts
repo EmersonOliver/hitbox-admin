@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ApiPage } from '../api/api.response.model';
 import { ClienteResponse } from '../../pages/clientes/models/cliente.response';
 import { ClienteModel } from '../../pages/clientes/models/cliente.model';
+import { ViaCep } from '../models/viacep.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,8 +52,16 @@ export class ClienteService {
     }).pipe();
   }
 
-  findAll():Observable<ClienteResponse[]> {
+  findAll(): Observable<ClienteResponse[]> {
     return this.http.get<ClienteResponse[]>('api/hitbox/clientes/findAll').pipe();
   }
 
+
+  consultaCEP(cep: string): Observable<ViaCep> {
+    return this.http.get<ViaCep>(`https://viacep.com.br/ws/${cep}/json/`).pipe();
+  }
+
+
 }
+
+

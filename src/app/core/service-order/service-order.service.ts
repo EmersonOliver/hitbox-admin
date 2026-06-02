@@ -108,7 +108,7 @@ export class ServiceOrderService {
      */
 
     findByStatus(
-        status: string
+        status?: string
     ): Observable<ServiceOrderResponse[]> {
 
         return this.http.get<ServiceOrderResponse[]>(

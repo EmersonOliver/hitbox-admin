@@ -26,7 +26,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
+              "src/3d-printer.ico",
               "src/assets"
             ],
             "styles": [
@@ -66,6 +66,10 @@
           "configurations": {
             "production": {
               "buildTarget": "hitbox-admin:build:production"
+            },
+            "options":{
+              "host":"0.0.0.0",
+              "allowedHosts": ["endeared-stick-blasphemy.ngrok-free.dev"]
             },
             "development": {
               "buildTarget": "hitbox-admin:build:development"

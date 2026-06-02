@@ -16,7 +16,7 @@
                         Novo Produto
                     </h4>
 
-                      <h4 *ngIf="produtoSelecionado?.productId" class="modal-title fw-bold mb-1">
+                    <h4 *ngIf="produtoSelecionado?.productId" class="modal-title fw-bold mb-1">
                         Editar Produto
                     </h4>
 
@@ -95,29 +95,20 @@
 
                 <button type="button" class="tab-btn" [class.active]="activeTab === 'composition'"
                     (click)="activeTab = 'composition'">
-
                     <i class="bi bi-box-seam me-2"></i>
-
                     Composição
-
-                </button>
-
-                <button *ngIf="false" type="button" class="tab-btn" [class.active]="activeTab === 'pricing'"
-                    (click)="activeTab = 'pricing'">
-
-                    <i class="bi bi-currency-dollar me-2"></i>
-
-                    Precificação
-
                 </button>
 
                 <button type="button" class="tab-btn" [class.active]="activeTab === 'production'"
                     (click)="activeTab = 'production'">
-
                     <i class="bi bi-rulers me-2"></i>
-
                     Produção
+                </button>
 
+                <button type="button" class="tab-btn" [class.active]="activeTab === 'pricing'"
+                    (click)="activeTab = 'pricing'">
+                    <i class="bi bi-currency-dollar me-2"></i>
+                    Precificação
                 </button>
 
             </div>
@@ -273,9 +264,7 @@
                             </h5>
 
                             <p class="text-muted mb-0">
-
                                 Recursos utilizados na produção
-
                             </p>
 
                         </div>
@@ -340,13 +329,11 @@
                                 <div class="col-lg-3">
 
                                     <label class="form-label">
-
                                         Quantidade <small>Ex: 0,2 = 200gr</small>
-
                                     </label>
-
-                                    <input type="number" class="form-control" formControlName="quantity">
-
+                                    <input type="text" class="form-control"
+                                        [value]="formatWeight(item.get('quantity')?.value)"
+                                        (input)="onWeightInput($event, $index)">
                                 </div>
 
                                 <!-- CONSUMPTION -->
@@ -406,6 +393,108 @@
 
                     }
 
+
+
+                    <!-- =====================================================
+                         PRODUCTION TAB
+                    ====================================================== -->
+
+                    @if(activeTab === 'production') {
+
+                    <div class="row g-4">
+
+                        <!-- PRODUCTION WEIGHT -->
+
+                        <div class="col-md-3">
+
+                            <label class="form-label">
+
+                                Peso produção
+
+                            </label>
+
+                            <div class="input-group">
+                                <input type="text" class="form-control"
+                                [value]="formatWeight(form.get('productionWeight')?.value)"
+                                        (input)="onWeightInputValue($event, form.get('productionWeight'))"
+                               >
+                                <span class="input-group-text">
+                                    g
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">
+                                Tempo produção
+                            </label>
+
+                            <div class="input-group">
+                                <input type="text" class="form-control" formControlName="estimatedMinutes">
+                                <span class="input-group-text">
+                                    1d1h1m1s
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- SHIPPING WEIGHT -->
+
+                        <div class="col-md-3">
+                            <label class="form-label">
+                                Peso envio
+                            </label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" 
+                                 [value]="formatWeight(form.get('shippingWeight')?.value)"
+                                        (input)="onWeightInputValue($event, form.get('shippingWeight'))"
+                               >
+                                <span class="input-group-text">
+                                    g
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- WIDTH -->
+                        <div class="col-md-3">
+                            <label class="form-label">
+                                Largura
+                            </label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" formControlName="width">
+                                <span class="input-group-text">
+                                    cm
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- HEIGHT -->
+                        <div class="col-md-3">
+                            <label class="form-label">
+                                Altura
+                            </label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" formControlName="height">
+                                <span class="input-group-text">
+                                    cm
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- DEPTH -->
+
+                        <div class="col-md-3">
+                            <label class="form-label">
+                                Profundidade
+                            </label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" formControlName="depth">
+                                <span class="input-group-text">
+                                    cm
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    }
                     <!-- =====================================================
                          PRICING TAB
                     ====================================================== -->
@@ -415,53 +504,47 @@
                     <div class="row g-4">
 
                         <!-- BASE COST -->
+                        <div class="col-md-12">
+                            <label>Regra de Precificação</label>
+                            <select name="pricingRule" formControlName="pricingRuleId" id="pricingRule"
+                            (change)="changeRule()"
+                                class="form-select">
+                                <option [value]="null">Selecione</option>
+                                @for(rule of rules; track rule.id) {
+                                <option [value]="rule.id">{{rule.name}} - {{rule.minimumPrice | currency: 'BRL'}}
+                                </option>
+                                }
+                            </select>
+                        </div>
 
                         <div class="col-md-6">
 
                             <div class="pricing-card">
-
                                 <span class="text-muted d-block mb-2">
-
                                     Custo de produção
-
                                 </span>
-
                                 <h3 class="fw-bold mb-0">
-
                                     {{
-                                    totalCompositionCost
+                                    totalCompositionCost || 0
                                     | currency:'BRL'
                                     }}
-
                                 </h3>
-
                             </div>
-
                         </div>
 
                         <!-- CALCULATED -->
-
                         <div class="col-md-6">
-
                             <div class="pricing-card">
-
                                 <span class="text-muted d-block mb-2">
-
-                                    Custo calculado
-
+                                    Custo de Venda Mínima
                                 </span>
-
                                 <h3 class="fw-bold mb-0">
-
                                     {{
-                                    totalCompositionCost
+                                    ruleSelected?.minimumPrice || 0
                                     | currency:'BRL'
                                     }}
-
                                 </h3>
-
                             </div>
-
                         </div>
 
                     </div>
@@ -608,118 +691,6 @@
                     }
 
                     }
-
-                    <!-- =====================================================
-                         PRODUCTION TAB
-                    ====================================================== -->
-
-                    @if(activeTab === 'production') {
-
-                    <div class="row g-4">
-
-                        <!-- PRODUCTION WEIGHT -->
-
-                        <div class="col-md-3">
-
-                            <label class="form-label">
-
-                                Peso produção
-
-                            </label>
-
-                            <div class="input-group">
-
-                                <input type="number" class="form-control" formControlName="productionWeight">
-
-                                <span class="input-group-text">
-
-                                    g
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                         <div class="col-md-3">
-                            <label class="form-label">
-                                Tempo produção
-                            </label>
-
-                            <div class="input-group">
-                                <input type="text" class="form-control" formControlName="estimatedMinutes">
-                                <span class="input-group-text">
-                                    1d1h1m1s
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- SHIPPING WEIGHT -->
-
-                        <div class="col-md-3">
-                            <label class="form-label">
-                                Peso envio
-                            </label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" formControlName="shippingWeight">
-                                <span class="input-group-text">
-                                    g
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- WIDTH -->
-
-                        <div class="col-md-3">
-
-                            <label class="form-label">
-
-                                Largura
-
-                            </label>
-
-                            <div class="input-group">
-
-                                <input type="number" class="form-control" formControlName="width">
-
-                                <span class="input-group-text">
-
-                                    cm
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                        <!-- HEIGHT -->
-                        <div class="col-md-3">
-                            <label class="form-label">
-                                Altura
-                            </label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" formControlName="height">
-                                <span class="input-group-text">
-                                    cm
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- DEPTH -->
-
-                        <div class="col-md-3">
-                            <label class="form-label">
-                                Profundidade
-                            </label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" formControlName="depth">
-                                <span class="input-group-text">
-                                    cm
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    }
                 </form>
             </div>
 
@@ -735,7 +706,8 @@
 
                 </button>
 
-                <button *ngIf="!produtoSelecionado?.productId" type="submit" class="btn btn-primary" [disabled]="loading" (click)="submit()">
+                <button *ngIf="!produtoSelecionado?.productId" type="submit" class="btn btn-primary"
+                    [disabled]="loading" (click)="submit()">
 
                     @if(loading) {
                     <span class="spinner-border spinner-border-sm me-2">
@@ -744,7 +716,8 @@
                     Salvar produto
                 </button>
 
-                  <button *ngIf="produtoSelecionado?.productId" type="submit" class="btn btn-info" [disabled]="loading" (click)="submit()">
+                <button *ngIf="produtoSelecionado?.productId" type="submit" class="btn btn-info" [disabled]="loading"
+                    (click)="submit()">
 
                     @if(loading) {
                     <span class="spinner-border spinner-border-sm me-2">
