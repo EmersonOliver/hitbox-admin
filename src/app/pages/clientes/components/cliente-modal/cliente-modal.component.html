@@ -190,7 +190,7 @@
                       CEP
                     </label>
 
-                    <input type="text" class="form-control" formControlName="cep" placeholder="00000-000">
+                    <input type="text" #cep (change)="consultaCEP(cep)" class="form-control" formControlName="cep" placeholder="00000-000">
 
                   </div>
 

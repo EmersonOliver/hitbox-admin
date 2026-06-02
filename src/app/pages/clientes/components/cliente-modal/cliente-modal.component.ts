@@ -21,6 +21,7 @@ import { ClienteResponse } from '../../models/cliente.response';
 import { ClienteModel } from '../../models/cliente.model';
 import { ClienteService } from '../../../../core/cliente/cliente.service';
 import { ToastService } from '../../../components/toast/toast.service';
+import { ViaCep } from '../../../../core/models/viacep.model';
 declare var bootstrap: any;
 @Component({
   selector: 'app-cliente-modal',
@@ -46,6 +47,8 @@ export class ClienteModalComponent implements OnInit, OnChanges {
 
   modal: any;
 
+
+  viaCepResponse?: ViaCep;
   constructor(
     private fb: FormBuilder,
     private clienteService: ClienteService,
@@ -139,14 +142,7 @@ export class ClienteModalComponent implements OnInit, OnChanges {
   }
 
   removerEndereco(index: number): void {
-
     this.enderecos.removeAt(index);
-
-    if (
-      this.enderecos.length === 0
-    ) {
-      // this.adicionarEndereco();
-    }
   }
 
   open(): void {
@@ -252,5 +248,29 @@ export class ClienteModalComponent implements OnInit, OnChanges {
     modal?.hide();
 
   }
+
+  consultaCEP(event: any) {
+    console.log(event.value)
+    this.clienteService.consultaCEP(event.value).subscribe({
+      next: response => {
+        this.viaCepResponse = response;
+        this.enderecos.clear();
+        this.enderecos.push(
+          this.fb.group({
+            tipo: ['RESIDENCIAL'],
+            endereco: [response.logradouro],
+            cep: [response.cep],
+            numero: [null],
+            bairro: [response.bairro],
+            cidade: [response.localidade + '-' + response.uf],
+            complemento: [''],
+            observacoes: ['']
+          })
+        );
+
+      }
+    });
+  }
+
 
 }
