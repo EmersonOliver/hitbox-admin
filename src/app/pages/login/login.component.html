@@ -1,0 +1,63 @@
+<div class="login-page">
+
+    <!-- Painel esquerdo -->
+    <div class="login-banner">
+
+        <div class="banner-content">
+
+            <!-- <img src="assets/img/logo.jpg" alt="Logo" class="logo"> -->
+
+            <h1>Hitbox ERP</h1>
+
+            <p>
+                Gerencie produção, estoque, ordens de serviço
+                e vendas em um único lugar.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Painel direito -->
+    <div class="login-form-container">
+
+        <div class="login-card">
+
+            <h2>Entrar</h2>
+
+            <p class="subtitle">
+                Faça login para acessar sua conta
+            </p>
+
+            <form [formGroup]="form" (ngSubmit)="login()">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Usuário
+                    </label>
+
+                    <input type="text" class="form-control" placeholder="Digite seu usuário">
+
+                </div>
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Senha
+                    </label>
+
+                    <input type="password" class="form-control" placeholder="Digite sua senha">
+
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    Entrar
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
