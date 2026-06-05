@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { PrivateLayoutComponent } from './layouts/private-layout/private-layout.component';
+import { SettingsComponent } from './pages/profile/settings/settings.component';
+import { authGuard } from './core/auth/guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -18,12 +20,27 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./pages/login/login.component')
                         .then(m => m.LoginComponent)
+            },
+            {
+                path: 'register',
+                loadComponent: () =>
+                    import('./pages/register/register.component').then(
+                        m => m.RegisterComponent
+                    )
+            },
+            {
+                path: 'create-company',
+                loadComponent: () =>
+                    import('./pages/create-company/create-company.component').then(
+                        m => m.CreateCompanyComponent
+                    )
             }
         ]
     },
     {
         path: '',
         component: PrivateLayoutComponent,
+        canActivate: [authGuard],
         children: [
             { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent) },
             { path: 'produtos', loadComponent: () => import('./pages/produtos/produtos.component').then(m => m.ProdutosComponent) },
@@ -48,10 +65,58 @@ export const routes: Routes = [
                     import('./pages/profile/profile.component')
                         .then(m => m.ProfileComponent)
             },
-              {
+            {
                 path: 'profile/change-password', loadComponent: () =>
                     import('./pages/profile/change-password/change-password.component')
                         .then(m => m.ChangePasswordComponent)
+            },
+
+            {
+                path: 'profile/settings',
+                component: SettingsComponent,
+                children: [
+
+                    {
+                        path: '',
+                        redirectTo: 'appearance',
+                        pathMatch: 'full'
+                    },
+
+                    {
+                        path: 'appearance',
+                        loadComponent: () =>
+                            import('./pages/profile/settings/setting-appearance/setting-appearance.component')
+                                .then(m => m.SettingAppearanceComponent)
+                    },
+
+                    {
+                        path: 'notifications',
+                        loadComponent: () =>
+                            import('./pages/profile/settings/setting-notification/setting-notification.component')
+                                .then(m => m.SettingNotificationComponent)
+                    },
+
+                    {
+                        path: 'company',
+                        loadComponent: () =>
+                            import('./pages/profile/settings/setting-company/setting-company.component')
+                                .then(m => m.SettingCompanyComponent)
+                    },
+
+                    {
+                        path: 'integrations',
+                        loadComponent: () =>
+                            import('./pages/profile/settings/setting-integrations/setting-integrations.component')
+                                .then(m => m.SettingIntegrationsComponent)
+                    },
+
+                    {
+                        path: 'backup',
+                        loadComponent: () =>
+                            import('./pages/profile/settings/setting-backup/setting-backup.component')
+                                .then(m => m.SettingBackupComponent)
+                    }
+                ]
             }
 
         ]

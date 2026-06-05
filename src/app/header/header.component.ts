@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-
+ 
   titulo = "";
   constructor(private readonly themeService: ThemeService,
     private router: Router,
@@ -27,10 +27,14 @@ export class HeaderComponent {
   myProfile() {
     this.router.navigate(['/profile'])
   }
-  changePassword(){
+  changePassword() {
     this.router.navigate(['/profile/change-password'])
   }
   logout() {
-      this.router.navigate(['/'])
+    this.router.navigate(['/'])
   }
+   settings() {
+    this.router.navigate(['/profile/settings'])
+  }
+
 }

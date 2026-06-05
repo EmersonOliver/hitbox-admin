@@ -1,0 +1,17 @@
+.settings-card {
+  padding: 1.5rem;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 1rem 0;
+
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.setting-row:last-child {
+  border-bottom: none;
+}

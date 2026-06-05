@@ -1,0 +1,231 @@
+.company-container {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: var(--app-bg);
+
+    padding: 2rem;
+}
+
+.company-card {
+    width: 100%;
+    max-width: 900px;
+
+    background: var(--app-surface);
+
+    border: 1px solid var(--app-border);
+
+    border-radius: 20px;
+
+    padding: 3rem;
+
+    box-shadow: var(--app-card-shadow);
+}
+
+.company-header {
+    margin-bottom: 2rem;
+    text-align: center;
+
+    h1 {
+        margin: 0;
+
+        font-size: 2rem;
+
+        font-weight: 700;
+
+        color: var(--bs-body-color);
+
+        font-family: var(--font-title);
+    }
+
+    p {
+        margin-top: .75rem;
+
+        color: var(--bs-secondary-color);
+    }
+}
+
+.form-grid {
+    display: grid;
+
+    gap: 1.25rem;
+
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.form-group {
+
+    display: flex;
+    flex-direction: column;
+
+    label {
+
+        font-size: .9rem;
+
+        font-weight: 600;
+
+        margin-bottom: .5rem;
+
+        color: var(--bs-body-color);
+    }
+
+    input,
+    select {
+
+        height: 48px;
+
+        background: var(--app-input-bg);
+
+        color: var(--bs-body-color);
+
+        border: 1px solid var(--app-border);
+
+        border-radius: 12px;
+
+        padding: 0 1rem;
+
+        transition: all .2s ease;
+    }
+
+    input:focus,
+    select:focus {
+
+        outline: none;
+
+        border-color: var(--bs-primary);
+
+        box-shadow:
+            0 0 0 .2rem rgba(var(--bs-primary-rgb), .20);
+    }
+
+    small {
+
+        margin-top: .5rem;
+
+        color: var(--bs-secondary-color);
+    }
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.slug-container {
+
+    display: flex;
+
+    align-items: center;
+
+    border: 1px solid var(--app-border);
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    background: var(--app-input-bg);
+
+    span {
+
+        padding: 0 1rem;
+
+        background: rgba(var(--bs-primary-rgb), .08);
+
+        color: var(--bs-secondary-color);
+
+        height: 48px;
+
+        display: flex;
+        align-items: center;
+
+        white-space: nowrap;
+    }
+
+    input {
+
+        flex: 1;
+
+        border: none !important;
+
+        background: transparent !important;
+
+        box-shadow: none !important;
+    }
+}
+
+.actions {
+
+    margin-top: 2rem;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    button {
+
+        min-width: 220px;
+
+        height: 52px;
+
+        border: none;
+
+        border-radius: 14px;
+
+        background: var(--app-gradient);
+
+        color: white;
+
+        font-weight: 600;
+
+        transition: .2s ease;
+
+        box-shadow:
+            0 4px 14px rgba(var(--bs-primary-rgb), .35);
+    }
+
+    button:hover {
+
+        transform: translateY(-1px);
+
+        filter: brightness(1.05);
+    }
+
+    button:disabled {
+
+        opacity: .6;
+
+        cursor: not-allowed;
+
+        transform: none;
+
+        filter: none;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .company-card {
+
+        padding: 2rem;
+    }
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .full-width {
+
+        grid-column: span 1;
+    }
+
+    .actions {
+
+        button {
+
+            width: 100%;
+        }
+    }
+}

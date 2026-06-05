@@ -1,0 +1,67 @@
+<div class="settings-page">
+
+    <div class="settings-header">
+
+        <h2>
+            <i class="bi bi-gear-fill me-2"></i>
+            Configurações
+        </h2>
+        <p>
+            Personalize o comportamento do sistema e gerencie recursos da sua empresa.
+        </p>
+
+    </div>
+
+    <div class="settings-layout">
+
+        <!-- MENU -->
+
+        <aside class="settings-sidebar">
+
+            <a routerLink="appearance" routerLinkActive="active" class="settings-link">
+                <i class="bi bi-palette"></i>
+                Aparência
+            </a>
+
+            <a routerLink="notifications" routerLinkActive="active" class="settings-link">
+                <i class="bi bi-bell"></i>
+                Notificações
+            </a>
+
+            <a routerLink="company" routerLinkActive="active" class="settings-link">
+
+                <i class="bi bi-building"></i>
+
+                Empresa
+
+            </a>
+
+            <a routerLink="integrations" routerLinkActive="active" class="settings-link">
+
+                <i class="bi bi-plug"></i>
+
+                Integrações
+
+            </a>
+
+            <a routerLink="backup" routerLinkActive="active" class="settings-link">
+
+                <i class="bi bi-cloud-arrow-up"></i>
+
+                Backup
+
+            </a>
+
+        </aside>
+
+        <!-- CONTEÚDO -->
+
+        <section class="settings-content">
+
+            <router-outlet></router-outlet>
+
+        </section>
+
+    </div>
+
+</div>
