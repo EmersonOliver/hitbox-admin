@@ -18,12 +18,11 @@ export class PricingEngineService {
     rule: PricingRuleResponse,
     simulation: PricingSimulation
   ): PricingResult {
-
     let productionCost =
       rule.setupCost || 0;
 
     switch (
-      rule.calculationType
+    rule.calculationType
     ) {
 
       case CalculationType.PER_GRAM:

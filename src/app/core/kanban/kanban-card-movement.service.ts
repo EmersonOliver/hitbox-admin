@@ -15,19 +15,24 @@ export class KanbanCardMovementService {
   create(
     request: KanbanCardMovementRequest
   ): Observable<KanbanCardMovementResponse> {
+    let token = localStorage.getItem('token');
 
     return this.http.post<KanbanCardMovementResponse>(
       `${this.API}/create`,
-      request
+      request, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }
     );
   }
 
   findByCard(
     cardId: number
   ): Observable<KanbanCardMovementResponse[]> {
-
+  let token = localStorage.getItem('token');
     return this.http.get<KanbanCardMovementResponse[]>(
-      `${this.API}/find-by-card/${cardId}`
+      `${this.API}/find-by-card/${cardId}`,{
+           headers: { 'Authorization': `Bearer ${token}` }
+      }
     );
   }
 }

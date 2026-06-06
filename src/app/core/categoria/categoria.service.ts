@@ -12,18 +12,23 @@ export class CategoriaService {
   constructor(private http: HttpClient) { }
 
   salvarCategoria(payload: CategoriaModel): Observable<any> {
-    return this.http.post<any>('api/hitbox/categoria/create', payload).pipe();
+    let token = localStorage.getItem('token');
+    return this.http.post<any>('api/hitbox/categoria/create', payload, { headers: { 'Authorization': `Bearer ${token}` } }).pipe();
   }
 
   editarCategoria(id: number, payload: CategoriaModel): Observable<any> {
+    let token = localStorage.getItem('token');
     return this.http.put<any>('api/hitbox/categoria/update', payload, {
-      params: { id: Number(id) }
+      params: { id: Number(id) },
+      headers: { 'Authorization': `Bearer ${token}` }
     });
   }
 
   removerCategoria(id: number): Observable<any> {
+    let token = localStorage.getItem('token');
     return this.http.delete<any>('api/hitbox/categoria/remove', {
-      params: { id: id }
+      params: { id: id },
+      headers: { 'Authorization': `Bearer ${token}` }
     }).pipe();
   }
 

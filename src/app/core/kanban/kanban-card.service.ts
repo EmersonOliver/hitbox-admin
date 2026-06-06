@@ -10,33 +10,39 @@ import { KanbanCardResponse } from '../../pages/producao/components/production-k
 export class KanbanCardService {
   private readonly API =
     `api/hitbox/kanban/card`;
-  constructor(  private http: HttpClient) { }
-   create(
+  constructor(private http: HttpClient) { }
+  create(
     request: KanbanCardRequest
   ): Observable<KanbanCardResponse> {
-
+    let token = localStorage.getItem('token');
     return this.http.post<KanbanCardResponse>(
       `${this.API}/create`,
-      request
+      request, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }
     );
   }
 
   update(
     request: KanbanCardRequest
   ): Observable<KanbanCardResponse> {
-
+    let token = localStorage.getItem('token');
     return this.http.put<KanbanCardResponse>(
       `${this.API}/edit/${request.id}`,
-      request
+      request, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }
     );
   }
 
   delete(
     cardId: number
   ): Observable<void> {
-
+    let token = localStorage.getItem('token');
     return this.http.delete<void>(
-      `${this.API}/delete/${cardId}`
+      `${this.API}/delete/${cardId}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }
     );
   }
 }

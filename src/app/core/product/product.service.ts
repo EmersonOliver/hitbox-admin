@@ -12,17 +12,28 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   save(payload: FormData): Observable<any> {
-    return this.http.post<any>(`api/hitbox/products/save`, payload).pipe();
+    let token = localStorage.getItem('token');
+    return this.http.post<any>(`api/hitbox/products/save`, payload,
+      {
+        headers: { 'Authorization': `Bearer ${token}` }
+      }
+    ).pipe();
   }
 
   edit(payload: FormData, id: number): Observable<ProductResponse> {
-    return this.http.put<any>(`api/hitbox/products/edit/${id}`, payload).pipe();
+    let token = localStorage.getItem('token');
+    return this.http.put<any>(`api/hitbox/products/edit/${id}`, payload,
+      {
+        headers: { 'Authorization': `Bearer ${token}` }
+      }
+    ).pipe();
   }
 
   page(page: number, size: number, idCategorias?: number[],
     sortField?: string,
     sortDirection?: string,
     search?: string): Observable<ApiPage<ProductResponse>> {
+    let token = localStorage.getItem('token');
     let params =
       new HttpParams()
 
@@ -50,15 +61,21 @@ export class ProductService {
         );
     });
     return this.http.get<ApiPage<ProductResponse>>('api/hitbox/products/page', {
-      params
+      params, headers: { 'Authorization': `Bearer ${token}` }
     });
   }
 
   delete(id?: number): Observable<any> {
-    return this.http.delete<any>(`api/hitbox/products/delete/${id}`).pipe();
+    let token = localStorage.getItem('token');
+    return this.http.delete<any>(`api/hitbox/products/delete/${id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).pipe();
   }
 
   findAll(): Observable<ProductResponse[]> {
-    return this.http.get<ProductResponse[]>('api/hitbox/products/findAll').pipe()
+    let token = localStorage.getItem('token');
+    return this.http.get<ProductResponse[]>('api/hitbox/products/findAll', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).pipe()
   }
 }

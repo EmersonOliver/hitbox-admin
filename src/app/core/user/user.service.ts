@@ -1,9 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { UserRequest } from '../../pages/register/models/user.request';
+import { Observable } from 'rxjs';
+import { UserResponse } from '../../pages/register/models/user.response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  createFirstUser(payload: UserRequest): Observable<UserResponse> {
+    return this.http.post<UserResponse>('api/usuario/hitbox/user/create', payload).pipe();
+  }
+
+
 }

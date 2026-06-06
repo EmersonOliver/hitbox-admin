@@ -27,9 +27,13 @@ export class LoginComponent {
     console.log('Login');
     this.authService.login(this.form.getRawValue()).subscribe({
       next: response => {
-        this.router.navigate(['/create-company'])
-      }, 
-      error: (error)=>{
+        if (response.companyId == null) {
+          this.router.navigate(['/create-company']);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
+      },
+      error: (error) => {
         console.log(error.error.message)
       }
     })

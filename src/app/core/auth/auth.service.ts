@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthRequest } from '../../pages/login/models/auth.model';
 import { TokenService } from './guards/token.service';
 import { tap } from 'rxjs';
+import { LoginResponse } from '../../pages/login/models/login.response';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,8 @@ export class AuthService {
 
   }
 
-  login(payload: AuthRequest): Observable<any> {
-    return this.http.post<any>('api/usuario/hitbox/auth/login', payload).pipe(
+  login(payload: AuthRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>('api/usuario/hitbox/auth/login', payload).pipe(
        tap(res => this.tokenService.setToken(res.token))
     );
   }

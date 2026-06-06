@@ -30,60 +30,77 @@ export class PricingRuleService {
     ) { }
 
     save(payload: PricingRule): Observable<PricingRule> {
+        let token = localStorage.getItem('token');
         return this.http.post<PricingRule>(
             `api/hitbox/pricing-rule/save`,
-            payload
+            payload, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        }
         );
     }
 
     edit(id: number, payload: PricingRule): Observable<PricingRule> {
+        let token = localStorage.getItem('token');
         return this.http.put<PricingRule>(
             `api/hitbox/pricing-rule/edit`,
             payload, {
-            params: { ruleId: id }
+            params: { ruleId: id }, headers: { 'Authorization': `Bearer ${token}` }
         }
         );
     }
 
     getPage(page: number, size: number): Observable<ApiPage<PricingRuleResponse>> {
+        let token = localStorage.getItem('token');
         return this.http.get<ApiPage<PricingRuleResponse>>(`api/hitbox/pricing-rule/page`, {
             params: {
                 page,
                 size
-            }
+            }, headers: { 'Authorization': `Bearer ${token}` }
         }).pipe();
     }
 
     getSuggestedPrices(
         productionCost: number
     ) {
-
+        let token = localStorage.getItem('token');
         return this.http.get<SuggestedPriceResult[]>(
             `api/hitbox/pricing-rule/suggested/price`,
             {
                 params: {
                     productionCost
-                }
+                },
+                headers: { 'Authorization': `Bearer ${token}` }
             }
         );
     }
     simulate(productionCost: any) {
+        let token = localStorage.getItem('token');
         return this.http.post<SuggestedPriceResult[]>(
-            `api/hitbox/pricing-rule/suggested/price`, productionCost
+            `api/hitbox/pricing-rule/suggested/price`, productionCost, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        }
         );
     }
 
     deleteRule(id?: number): Observable<any> {
-        return this.http.delete<any>(`api/hitbox/pricing-rule/delete/${id}`).pipe();
+        let token = localStorage.getItem('token');
+        return this.http.delete<any>(`api/hitbox/pricing-rule/delete/${id}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        }).pipe();
     }
 
-    findAll():Observable<PricingRuleResponse[]> {
-        return this.http.get<PricingRuleResponse[]>('api/hitbox/pricing-rule/findAll').pipe();
+    findAll(): Observable<PricingRuleResponse[]> {
+        let token = localStorage.getItem('token');
+        return this.http.get<PricingRuleResponse[]>('api/hitbox/pricing-rule/findAll', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        }).pipe();
     }
 
-      ruleById(productionCost: any, ruleId:number) {
+    ruleById(productionCost: any, ruleId: number) {
+        let token = localStorage.getItem('token');
         return this.http.post<SuggestedPriceResult>(
-            `api/hitbox/pricing-rule/ruleById/${ruleId}`, productionCost
+            `api/hitbox/pricing-rule/ruleById/${ruleId}`, productionCost,
+            { headers: { 'Authorization': `Bearer ${token}` } }
         );
     }
 

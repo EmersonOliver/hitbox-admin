@@ -14,38 +14,39 @@ export class KanbanColumnService {
   constructor(private http: HttpClient) { }
 
   findAll(): Observable<KanbanColumnResponse[]> {
-
+    let token = localStorage.getItem('token');
     return this.http.get<KanbanColumnResponse[]>(
-      `${this.API}/find-all`
+      `${this.API}/find-all`, { headers: { 'Authorization': `Bearer ${token}` } }
     );
   }
 
   create(
     request: KanbanColumnRequest
   ): Observable<KanbanColumnResponse> {
-
+    let token = localStorage.getItem('token');
     return this.http.post<KanbanColumnResponse>(
       `${this.API}/create`,
-      request
+      request, { headers: { 'Authorization': `Bearer ${token}` } }
     );
   }
 
   update(
     request: KanbanColumnRequest
   ): Observable<KanbanColumnResponse> {
-
+    let token = localStorage.getItem('token');
     return this.http.put<KanbanColumnResponse>(
       `${this.API}/edit/${request.id}`,
-      request
+      request, { headers: { 'Authorization': `Bearer ${token}` } }
     );
   }
 
   delete(
     columnId: number
   ): Observable<void> {
-
+    let token = localStorage.getItem('token');
     return this.http.delete<void>(
-      `${this.API}/delete/${columnId}`
+      `${this.API}/delete/${columnId}`,
+      { headers: { 'Authorization': `Bearer ${token}` } }
     );
   }
 }
