@@ -1,22 +1,190 @@
-<div class="row align-items-center g-2">
-    <!-- LOGO -->
-    <div class="col-6">
-        <div class="d-flex align-items-center">
-            <!-- SOMENTE MOBILE -->
-            <img src="assets/img/logo.jpg" class="mobile-logo d-block d-md-none">
-            <!-- DESKTOP TITLE -->
-            <h4 class="fw-bold text-primary mb-0 d-none d-md-block">
-                Hitbox
-            </h4>
-        </div>
+<div class="header-actions">
+
+    <!-- TEMA -->
+    <button class="btn btn-theme" (click)="toggleTheme()">
+
+        <i class="bi bi-moon"></i>
+
+    </button>
+
+    <!-- USUÁRIO -->
+    <div class="dropdown">
+
+        <button class="btn user-menu" data-bs-toggle="dropdown">
+
+            <div class="avatar">
+                {{initials}}
+            </div>
+
+            <div class="user-info d-none d-lg-flex">
+
+                <span class="name">
+                    {{firstName}}
+                </span>
+
+                <small>
+                    {{role}}
+                </small>
+
+            </div>
+
+            <i class="bi bi-chevron-down"></i>
+
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end shadow-lg user-dropdown">
+
+            <!-- USER HEADER -->
+
+            <li class="dropdown-user">
+
+                <div class="avatar-large">
+                    {{initials}}
+                </div>
+
+                <div>
+
+                    <strong>
+                        {{firstName}}
+                    </strong>
+
+                    <small>
+                        {{role}}
+                    </small>
+
+                </div>
+
+            </li>
+
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+
+            <!-- CONTA -->
+
+            <li>
+
+                <button class="dropdown-item" (click)="myProfile()">
+                    <i class="bi bi-person"></i>
+                    Meu Perfil
+                </button>
+
+            </li>
+
+            <li>
+
+                <button class="dropdown-item" (click)="changePassword()">
+
+                    <i class="bi bi-key"></i>
+
+                    Alterar Senha
+
+                </button>
+
+            </li>
+
+            <li>
+
+                <button class="dropdown-item" (click)="settings()">
+
+                    <i class="bi bi-gear"></i>
+
+                    Configurações
+
+                </button>
+
+            </li>
+
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+
+            <!-- EMPRESA -->
+
+            <li>
+
+                <button class="dropdown-item">
+
+                    <i class="bi bi-building"></i>
+
+                    Minha Empresa
+
+                </button>
+
+            </li>
+
+            <li>
+
+                <button class="dropdown-item">
+
+                    <i class="bi bi-people"></i>
+
+                    Equipes
+
+                </button>
+
+            </li>
+
+            <li>
+
+                <button class="dropdown-item">
+
+                    <i class="bi bi-shield-lock"></i>
+
+                    Permissões
+
+                </button>
+
+            </li>
+
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+
+            <!-- SISTEMA -->
+
+            <li>
+
+                <button class="dropdown-item">
+
+                    <i class="bi bi-mortarboard"></i>
+
+                    Reiniciar Tutorial
+
+                </button>
+
+            </li>
+
+            <li>
+
+                <button class="dropdown-item">
+
+                    <i class="bi bi-palette"></i>
+
+                    Personalização
+
+                </button>
+
+            </li>
+
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+
+            <!-- LOGOUT -->
+
+            <li>
+
+                <button class="dropdown-item text-danger" (click)="logout()">
+
+                    <i class="bi bi-box-arrow-right"></i>
+                    Sair
+                </button>
+
+            </li>
+
+        </ul>
+
     </div>
 
-    <!-- ACTIONS -->
-    <div class="col-6">
-        <div class="d-flex justify-content-end">
-            <button class="btn btn-outline-secondary" (click)="toggleTheme()">
-                <i class="bi bi-moon"></i>
-            </button>
-        </div>
-    </div>
 </div>

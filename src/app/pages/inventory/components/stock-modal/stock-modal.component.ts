@@ -8,7 +8,6 @@ import {
   Validators
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ImageUtil } from '../../../../core/utils/image.util';
 import { InventarioService } from '../../../../core/inventario/inventario.service';
 import { ToastService } from '../../../components/toast/toast.service';
 import { ToastComponent } from "../../../components/toast/toast.component";
@@ -81,6 +80,7 @@ export class StockModalComponent implements OnChanges {
 
       this.calculatePreview();
     }
+    
   }
 
   calculatePreview(): void {
@@ -203,14 +203,6 @@ export class StockModalComponent implements OnChanges {
     });
   }
 
-  resolveImage(
-    image?: string
-  ): string {
-    if (!image) {
-      return 'assets/no-image.png';
-    }
-
-    return ImageUtil.resolve(image);
-  }
+ 
 
 }

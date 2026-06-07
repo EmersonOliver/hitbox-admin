@@ -34,10 +34,10 @@ export class ServiceOrderService {
     create(
         request: ServiceOrderRequest
     ): Observable<ServiceOrderResponse> {
-
+        let token = localStorage.getItem('token');
         return this.http.post<ServiceOrderResponse>(
             `${this.API}/create`,
-            request
+            request, { headers: { 'Authorization': `Bearer ${token}` } }
         );
     }
 
@@ -51,10 +51,10 @@ export class ServiceOrderService {
         orderId: number,
         request: ServiceOrderRequest
     ): Observable<ServiceOrderResponse> {
-
+        let token = localStorage.getItem('token');
         return this.http.put<ServiceOrderResponse>(
             `${this.API}/update/${orderId}`,
-            request
+            request, { headers: { 'Authorization': `Bearer ${token}` } }
         );
     }
 
@@ -67,9 +67,9 @@ export class ServiceOrderService {
     delete(
         orderId: number
     ): Observable<void> {
-
+        let token = localStorage.getItem('token');
         return this.http.delete<void>(
-            `${this.API}/delete/${orderId}`
+            `${this.API}/delete/${orderId}`, { headers: { 'Authorization': `Bearer ${token}` } }
         );
     }
 
@@ -80,9 +80,9 @@ export class ServiceOrderService {
      */
 
     findAll(): Observable<ServiceOrderResponse[]> {
-
+        let token = localStorage.getItem('token');
         return this.http.get<ServiceOrderResponse[]>(
-            `${this.API}/find-all`
+            `${this.API}/find-all`, { headers: { 'Authorization': `Bearer ${token}` } }
         );
     }
 
@@ -95,9 +95,9 @@ export class ServiceOrderService {
     findById(
         orderId: number
     ): Observable<ServiceOrderResponse> {
-
+        let token = localStorage.getItem('token');
         return this.http.get<ServiceOrderResponse>(
-            `${this.API}/find-by-id/${orderId}`
+            `${this.API}/find-by-id/${orderId}`, { headers: { 'Authorization': `Bearer ${token}` } }
         );
     }
 
@@ -110,9 +110,9 @@ export class ServiceOrderService {
     findByStatus(
         status?: string
     ): Observable<ServiceOrderResponse[]> {
-
+        let token = localStorage.getItem('token');
         return this.http.get<ServiceOrderResponse[]>(
-            `${this.API}/find-by-status/${status}`
+            `${this.API}/find-by-status/${status}`, { headers: { 'Authorization': `Bearer ${token}` } }
         );
     }
 
@@ -125,10 +125,10 @@ export class ServiceOrderService {
     startProduction(
         orderId: number
     ): Observable<ServiceOrderResponse> {
-
+        let token = localStorage.getItem('token');
         return this.http.patch<ServiceOrderResponse>(
-            `${this.API}/start-production/${orderId}`,
-            {}
+            `${this.API}/start-production/${orderId}`
+            , { headers: { 'Authorization': `Bearer ${token}` } }
         );
     }
 
@@ -141,10 +141,10 @@ export class ServiceOrderService {
     finish(
         orderId: number
     ): Observable<ServiceOrderResponse> {
-
+        let token = localStorage.getItem('token');
         return this.http.patch<ServiceOrderResponse>(
             `${this.API}/finish/${orderId}`,
-            {}
+            { headers: { 'Authorization': `Bearer ${token}` } }
         );
     }
 
@@ -157,10 +157,10 @@ export class ServiceOrderService {
     cancel(
         orderId: number
     ): Observable<ServiceOrderResponse> {
-
+        let token = localStorage.getItem('token');
         return this.http.patch<ServiceOrderResponse>(
             `${this.API}/cancel/${orderId}`,
-            {}
+            { headers: { 'Authorization': `Bearer ${token}` } }
         );
     }
 
@@ -179,7 +179,7 @@ export class ServiceOrderService {
             endDate?: string;
         }
     ): Observable<ServiceOrderResponse[]> {
-
+        let token = localStorage.getItem('token');
         let httpParams =
             new HttpParams();
 
@@ -218,7 +218,7 @@ export class ServiceOrderService {
         return this.http.get<ServiceOrderResponse[]>(
             `${this.API}/filter`,
             {
-                params: httpParams
+                params: httpParams, headers: { 'Authorization': `Bearer ${token}` }
             }
         );
     }

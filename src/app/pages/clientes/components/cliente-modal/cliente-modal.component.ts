@@ -254,7 +254,7 @@ export class ClienteModalComponent implements OnInit, OnChanges {
     this.clienteService.consultaCEP(event.value).subscribe({
       next: response => {
         this.viaCepResponse = response;
-        this.enderecos.clear();
+        this.enderecos.clear(); 
         this.enderecos.push(
           this.fb.group({
             tipo: ['RESIDENCIAL'],

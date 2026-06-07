@@ -1,0 +1,108 @@
+.setup-screen {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--bs-body-bg);
+
+  z-index: 9999;
+
+  animation: fadeIn .3s ease;
+}
+
+.setup-card {
+
+  width: 520px;
+  max-width: 90vw;
+
+  padding: 2rem;
+
+  border-radius: 1rem;
+
+  background-color: var(--bs-tertiary-bg);
+
+  border: 1px solid var(--bs-border-color);
+
+  box-shadow: var(--bs-box-shadow-lg);
+
+  color: var(--bs-body-color);
+}
+
+.logo {
+  text-align: center;
+
+  font-size: 2rem;
+  font-weight: 700;
+
+  color: var(--bs-primary);
+
+  margin-bottom: 1rem;
+}
+
+.description {
+  text-align: center;
+
+  color: var(--bs-secondary-color);
+
+  margin-bottom: 2rem;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.step {
+
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+
+  padding: .75rem 1rem;
+
+  border-radius: .5rem;
+
+  opacity: .5;
+
+  transition: all .3s ease;
+}
+
+.step.active {
+
+  opacity: 1;
+
+  background-color: rgba(var(--bs-primary-rgb), .1);
+
+  border: 1px solid rgba(var(--bs-primary-rgb), .25);
+}
+
+.step.completed {
+
+  opacity: 1;
+
+  color: var(--bs-success);
+}
+
+.step.completed i {
+  color: var(--bs-success);
+}
+
+.loading {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+@keyframes fadeIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

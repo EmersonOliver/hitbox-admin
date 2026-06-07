@@ -1,0 +1,122 @@
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    background: #050b18;
+}
+
+/* LADO ESQUERDO */
+
+.login-banner {
+    flex: 1;
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #1e293b
+    );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+}
+
+.banner-content {
+    max-width: 500px;
+    color: white;
+}
+
+.logo {
+    width: 90px;
+    margin-bottom: 1.5rem;
+}
+
+.banner-content h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.banner-content p {
+    font-size: 1.1rem;
+    color: #cbd5e1;
+    line-height: 1.7;
+}
+
+/* LADO DIREITO */
+
+.login-form-container {
+    width: 500px;
+    background: #0b1220;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 2rem;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 380px;
+}
+
+.login-card h2 {
+    color: white;
+    font-weight: 700;
+}
+
+.subtitle {
+    color: #94a3b8;
+    margin-bottom: 2rem;
+}
+
+.form-label {
+    color: white;
+}
+
+.form-control {
+    background: #111827;
+    border: 1px solid #1f2937;
+    color: white;
+}
+
+.form-control:focus {
+    background: #111827;
+    color: white;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 .2rem rgba(59,130,246,.25);
+}
+
+.btn-primary {
+    height: 50px;
+    font-weight: 600;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 991px) {
+
+    .login-banner {
+        display: none;
+    }
+
+    .login-form-container {
+        width: 100%;
+    }
+}
+
+.register-link {
+
+    text-align: center;
+
+    margin-top: 1.5rem;
+
+    color: var(--text-muted);
+}
+
+.register-link a {
+
+    text-decoration: none;
+
+    font-weight: 600;
+}

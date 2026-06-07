@@ -1,27 +1,247 @@
 .header {
-  width: 100%;
+    width: 100%;
 }
 
-.img-circle {
-  display: flex;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-}
-
+/* ==========================================
+   LOGO
+========================================== */
 
 .mobile-logo {
+    width: 42px;
+    height: 42px;
 
-  width: 42px;
-  height: 42px;
+    object-fit: cover;
 
-  object-fit: cover;
+    border-radius: 50%;
 
-  border-radius: 50%;
+    border: 2px solid var(--bs-primary);
+}
 
-  border: 2px solid var(--bs-primary);
+/* ==========================================
+   ACTIONS
+========================================== */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 12px;
+}
+
+/* ==========================================
+   BOTÃO TEMA
+========================================== */
+
+.btn-theme {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    background: rgba(255,255,255,.03);
+
+    color: var(--bs-body-color);
+
+    transition: .25s;
+}
+
+.btn-theme:hover {
+    transform: translateY(-2px);
+
+    background: rgba(255,255,255,.06);
+}
+
+/* ==========================================
+   USER MENU
+========================================== */
+
+.user-menu {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    height: 48px;
+
+    padding: 0 14px;
+
+    border-radius: 16px;
+
+    border: none;
+
+    background: rgba(255,255,255,.03);
+
+    color: var(--bs-body-color);
+
+    transition: .25s;
+}
+
+.user-menu:hover {
+    background: rgba(255,255,255,.06);
+
+    transform: translateY(-2px);
+}
+
+.user-menu:focus {
+    box-shadow: none;
+}
+
+/* ==========================================
+   AVATAR
+========================================== */
+
+.avatar {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+
+    color: white;
+
+    background: linear-gradient(
+        135deg,
+        #ff7a45,
+        #ff9c66
+    );
+}
+
+/* ==========================================
+   USER INFO
+========================================== */
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+
+    text-align: left;
+
+    line-height: 1.2;
+}
+
+.user-info .name {
+    font-size: .92rem;
+
+    font-weight: 600;
+}
+
+.user-info small {
+    font-size: .72rem;
+
+    opacity: .65;
+}
+
+/* ==========================================
+   DROPDOWN
+========================================== */
+
+.user-dropdown {
+    min-width: 280px;
+
+    border-radius: 20px;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    overflow: hidden;
+
+    padding: .5rem;
+
+    background: var(--bs-body-bg);
+}
+
+.dropdown-user {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 1rem;
+}
+
+.avatar-large {
+    width: 56px;
+    height: 56px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+
+    color: white;
+
+    background: linear-gradient(
+        135deg,
+        #ff7a45,
+        #ff9c66
+    );
+}
+
+.dropdown-user strong {
+    display: block;
+
+    font-size: 1rem;
+}
+
+.dropdown-user small {
+    opacity: .65;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    border-radius: 12px;
+
+    padding: .75rem 1rem;
+
+    transition: .2s;
+}
+
+.dropdown-item i {
+    width: 20px;
+}
+
+.dropdown-item:hover {
+    background: rgba(255,255,255,.05);
+}
+
+.dropdown-divider {
+    opacity: .08;
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 991px) {
+
+    .user-menu {
+        padding: 0 10px;
+    }
+
+    .avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .user-dropdown {
+        min-width: 240px;
+    }
 }

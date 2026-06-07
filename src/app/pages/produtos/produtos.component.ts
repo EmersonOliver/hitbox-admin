@@ -8,9 +8,9 @@ import { CategoriaModel } from '../categorias/model/categoria.model';
 import { ProductResponse } from './components/produto-modal/models/produto.model';
 import { CategoriaService } from '../../core/categoria/categoria.service';
 import { ToastService } from '../components/toast/toast.service';
-import { ImageUtil } from '../../core/utils/image.util';
 import { ProductService } from '../../core/product/product.service';
 import { ProdutosHistoricoProducaoModalComponent } from "./components/produtos-historico-producao-modal/produtos-historico-producao-modal.component";
+import { ImageService } from '../../core/image/image.service';
 declare var bootstrap: any;
 
 declare var $: any;
@@ -50,6 +50,7 @@ export class ProdutosComponent implements OnInit {
 
   constructor(private title: Title,
     private toast: ToastService,
+    private imageService: ImageService,
     private categoriaService: CategoriaService,
     private productService: ProductService
   ) {
@@ -75,6 +76,7 @@ export class ProdutosComponent implements OnInit {
 
           this.totalElements =
             res.totalElements;
+          this.loadImages();
         }
       })
   }
@@ -109,14 +111,7 @@ export class ProdutosComponent implements OnInit {
     this.currentPage = 1;
     this.loadProductsPage();
   }
-  resolveImage(
-    path?: string
-  ): string {
 
-    return ImageUtil.resolve(
-      path
-    );
-  }
 
   loadCategoriasFiltro() {
     this.categoriaService.loadCategoriasByParametro('VENDA').subscribe({
@@ -190,15 +185,15 @@ export class ProdutosComponent implements OnInit {
   }
 
   openImageModal(
-    image?: string
+    item?: ProductResponse
   ): void {
 
-    if (!image) {
+    if (!item) {
       return;
     }
 
-    this.selectedImagePreview =
-      this.resolveImage(image);
+    this.selectedImagePreview = item.imagePreview
+
 
     const modal =
       new bootstrap.Modal(
@@ -209,6 +204,17 @@ export class ProdutosComponent implements OnInit {
 
     modal.show();
   }
+  private loadImages(): void {
 
+    this.products.forEach(item => {
+
+      this.imageService
+        .load(item.imageUrl)
+        .subscribe(url => {
+          item.imagePreview = url;
+        });
+    });
+
+  }
 
 }

@@ -12,7 +12,10 @@ export class VerifyDomainService {
 
 
   verifyCRUDDomains(): Observable<VerifyDomainsResponse> {
-    return this.http.get<VerifyDomainsResponse>('api/hitbox/verify/domains/all').pipe();
+    let token = localStorage.getItem('token');
+    return this.http.get<VerifyDomainsResponse>('api/hitbox/verify/domains/all',
+      { headers: { 'Authorization': `Bearer ${token}` } }
+    ).pipe();
 
   }
 

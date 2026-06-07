@@ -32,28 +32,39 @@ export class ClienteService {
           search
         );
     }
+    let token = localStorage.getItem('token');
     return this.http.get<ApiPage<ClienteResponse>>('api/hitbox/clientes/page', {
-      params
+      params, headers: { 'Authorization': `Bearer ${token}` }
     }).pipe();
   }
 
   delete(id: string): Observable<any> {
-    return this.http.delete<any>(`api/hitbox/clientes/delete/${id}`).pipe();
+    let token = localStorage.getItem('token');
+    return this.http.delete<any>(`api/hitbox/clientes/delete/${id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).pipe();
   }
 
   save(payload: ClienteModel): Observable<ClienteResponse> {
-    return this.http.post<ClienteResponse>('api/hitbox/clientes/save', payload).pipe();
+    let token = localStorage.getItem('token');
+    return this.http.post<ClienteResponse>('api/hitbox/clientes/save', payload, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).pipe();
   }
 
   edit(payload: ClienteModel, id: string): Observable<ClienteResponse> {
+    let token = localStorage.getItem('token');
     let params = new HttpParams().append('clienteId', id);
     return this.http.put<any>(`api/hitbox/clientes/edit`, payload, {
-      params
+      params, headers: { 'Authorization': `Bearer ${token}` }
     }).pipe();
   }
 
   findAll(): Observable<ClienteResponse[]> {
-    return this.http.get<ClienteResponse[]>('api/hitbox/clientes/findAll').pipe();
+    let token = localStorage.getItem('token');
+    return this.http.get<ClienteResponse[]>('api/hitbox/clientes/findAll', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).pipe();
   }
 
 

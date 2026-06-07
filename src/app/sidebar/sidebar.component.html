@@ -11,7 +11,7 @@
     <ul class="nav nav-pills flex-column gap-2">
         <li class="nav-item  ">
             @for(menu of menus; track $index){
-            <a *ngIf="menu.visible" [routerLink]="menu.link" class="nav-link" routerLinkActive="active">
+            <a [id]="menu.id" *ngIf="menu.visible" [routerLink]="menu.link" class="nav-link" routerLinkActive="active">
                 <i [class]="menu.icon + ' me-2'"></i>
                 {{menu.name}}
             </a>

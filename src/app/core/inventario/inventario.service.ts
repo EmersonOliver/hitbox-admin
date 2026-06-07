@@ -12,11 +12,17 @@ export class InventarioService {
   constructor(private http: HttpClient) { }
 
   save(payload: FormData): Observable<InventoryModel> {
-    return this.http.post<any>('api/hitbox/inventory/save', payload).pipe();
+    let token = localStorage.getItem('token');
+    return this.http.post<any>('api/hitbox/inventory/save', payload, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).pipe();
   }
 
   edit(id: number, payload: FormData): Observable<InventoryModel> {
-    return this.http.put<any>(`api/hitbox/inventory/edit/${id}`, payload).pipe();
+    let token = localStorage.getItem('token');
+    return this.http.put<any>(`api/hitbox/inventory/edit/${id}`, payload, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).pipe();
   }
 
   getPage(
@@ -27,7 +33,7 @@ export class InventarioService {
     sortDirection?: string,
     search?: string
   ): Observable<ApiPage<InventoryModel>> {
-
+    let token = localStorage.getItem('token');
     let params =
       new HttpParams()
 
@@ -56,23 +62,30 @@ export class InventarioService {
     });
 
     return this.http.get<ApiPage<InventoryModel>>(`api/hitbox/inventory/page`, {
-      params
+      params, headers: { 'Authorization': `Bearer ${token}` }
     });
   }
 
   listInventoryByCategory(tipoCategoria: string): Observable<InventoryModel[]> {
     let params = new HttpParams().append("tipoCategoria", tipoCategoria);
+    let token = localStorage.getItem('token');
     return this.http.get<InventoryModel[]>(`api/hitbox/inventory/loadByCategory`, {
-      params
+      params, headers: { 'Authorization': `Bearer ${token}` }
     });
   }
 
   delete(id?: number): Observable<any> {
-    return this.http.delete<any>(`api/hitbox/inventory/delete/${id}`).pipe();
+    let token = localStorage.getItem('token');
+    return this.http.delete<any>(`api/hitbox/inventory/delete/${id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).pipe();
   }
 
   movementStock(payload: any, inventoryId?: number): Observable<any> {
-    return this.http.post<any>(`api/hitbox/inventory/movements/${inventoryId}`, payload).pipe();
+    let token = localStorage.getItem('token');
+    return this.http.post<any>(`api/hitbox/inventory/movements/${inventoryId}`, payload, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).pipe();
 
   }
 }

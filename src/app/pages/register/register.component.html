@@ -1,0 +1,125 @@
+<div class="register-layout">
+
+    <!-- PAINEL ESQUERDO -->
+
+    <section class="register-brand">
+
+        <div class="brand-content">
+
+            <img src="assets/img/logo.jpg" alt="Hitbox" class="brand-logo">
+
+            <h1>
+                Hitbox
+            </h1>
+
+            <p>
+                Gestão completa de produção, estoque,
+                ordens de serviço e precificação.
+            </p>
+
+            <div class="brand-features">
+
+                <div class="feature-item">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>Controle de Produção</span>
+                </div>
+
+                <div class="feature-item">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>Precificação Inteligente</span>
+                </div>
+
+                <div class="feature-item">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>Gestão de Estoque</span>
+                </div>
+
+                <div class="feature-item">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>Relatórios Financeiros</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FORMULÁRIO -->
+
+    <section class="register-form-area">
+            <div class="register-card">
+
+                <div class="card-header">
+
+                    <h2>
+                        Criar Conta
+                    </h2>
+
+                    <p>
+                        Crie sua empresa e comece agora.
+                    </p>
+
+                </div>
+
+                <form [formGroup]="form" (ngSubmit)="register()">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Nome
+                            </label>
+
+                            <input formControlName="name" class="form-control" type="text">
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Sobrenome
+                            </label>
+
+                            <input formControlName="lastname" class="form-control" type="text">
+
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">
+                                Email
+                            </label>
+                            <input formControlName="email" class="form-control" type="email">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                Senha
+                            </label>
+                            <input formControlName="password" class="form-control" type="password">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                Confirmar Senha
+                            </label>
+                            <input formControlName="confirmPassword" class="form-control" type="password">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary register-btn" type="submit">
+                        Criar Conta
+                    </button>
+                </form>
+                <div class="login-link">
+                    Já possui conta?
+                    <a routerLink="/login">
+                        Entrar
+                    </a>
+                </div>
+
+            </div>
+    </section>
+
+</div>

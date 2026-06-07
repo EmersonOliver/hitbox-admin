@@ -21,6 +21,7 @@ import { InventoryModalComponent } from './components/inventory-modal/inventory-
 import { InventoryModel } from './components/inventory-modal/models/inventory.model';
 import { StockModalComponent } from "./components/stock-modal/stock-modal.component";
 import { StockMovementHistoricalComponent } from "./components/stock-movement-historical/stock-movement-historical.component";
+import { ImageService } from '../../core/image/image.service';
 
 declare var bootstrap: any;
 
@@ -62,17 +63,19 @@ export class InventoryComponent implements OnInit {
   inventorySelecionado?:
     InventoryModel | null = null;
 
-  selectedImagePreview?: string;
+  selectedImagePreview!: string;
 
   constructor(
     private inventoryService: InventarioService,
     private toast: ToastService,
+    private imageService: ImageService,
     private categoriaService: CategoriaService) { }
 
 
   ngOnInit(): void {
     this.loadInventory()
     this.loadCategoriasFiltro();
+
   }
 
   loadCategoriasFiltro() {
@@ -201,18 +204,21 @@ export class InventoryComponent implements OnInit {
 
           this.totalElements =
             response.totalElements;
+
+          this.loadImages();
         }
       });
   }
 
-  resolveImage(
-    path?: string
-  ): string {
+  // resolveImage(
+  //   path?: string
+  // ): string {
 
-    return ImageUtil.resolve(
-      path
-    );
-  }
+
+  //   return ImageUtil.resolve(
+  //     path
+  //   );
+  // }
 
   removerInventario(id?: number) {
     this.inventoryService.delete(id).subscribe({
@@ -339,15 +345,14 @@ export class InventoryComponent implements OnInit {
   }
 
   openImageModal(
-    image?: string
-  ): void {
+  item: InventoryModel  ): void {
 
-    if (!image) {
+    if (!item) {
       return;
     }
 
     this.selectedImagePreview =
-      this.resolveImage(image);
+    item.imagePreview || '';
 
     const modal =
       new bootstrap.Modal(
@@ -360,7 +365,7 @@ export class InventoryComponent implements OnInit {
   }
 
   abrirModalStockMovements(item: InventoryModel) {
-     this.inventorySelecionado = item;
+    this.inventorySelecionado = item;
     const modal =
       new bootstrap.Modal(
         document.getElementById(
@@ -368,6 +373,22 @@ export class InventoryComponent implements OnInit {
         )
       );
     modal.show();
+  }
+
+  private loadImages(): void {
+
+    this.inventory.forEach(item => {
+
+      this.imageService
+        .load(item.imageUrl)
+        .subscribe(url => {
+
+          item.imagePreview = url;
+
+        });
+
+    });
+
   }
 
 }
