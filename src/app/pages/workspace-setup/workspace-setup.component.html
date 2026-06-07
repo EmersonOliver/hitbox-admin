@@ -1,0 +1,68 @@
+<div class="setup-screen">
+
+  <div class="setup-card">
+
+    <div class="logo">
+      Aguarde..
+    </div>
+
+    <div class="loading">
+
+      <div
+        class="spinner-border text-primary"
+        role="status">
+      </div>
+
+    </div>
+
+    <p class="description">
+      Preparando sua área de trabalho...
+    </p>
+
+    <div class="steps">
+
+      <div
+        class="step"
+        [class.completed]="currentStep > 0"
+        [class.active]="currentStep === 0">
+
+        <i class="bi bi-building"></i>
+        Empresa criada
+
+      </div>
+
+      <div
+        class="step"
+        [class.completed]="currentStep > 1"
+        [class.active]="currentStep === 1">
+
+        <i class="bi bi-shield-check"></i>
+        Configurando permissões
+
+      </div>
+
+      <div
+        class="step"
+        [class.completed]="currentStep > 2"
+        [class.active]="currentStep === 2">
+
+        <i class="bi bi-box-seam"></i>
+        Preparando inventário
+
+      </div>
+
+      <div
+        class="step"
+        [class.completed]="currentStep > 3"
+        [class.active]="currentStep === 3">
+
+        <i class="bi bi-speedometer2"></i>
+        Inicializando dashboard
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

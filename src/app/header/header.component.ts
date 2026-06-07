@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ThemeService } from '../core/services/theme.service';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { TokenService } from '../core/auth/guards/token.service';
 
 @Component({
   selector: 'app-header',
@@ -12,14 +13,67 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
- 
+export class HeaderComponent implements OnInit {
+  userName = '';
+  firstName = '';
+  companyName = '';
+  role = '';
+
   titulo = "";
   constructor(private readonly themeService: ThemeService,
     private router: Router,
+    private tokenService: TokenService,
     private title: Title) {
     this.titulo = title.getTitle()
   }
+  ngOnInit(): void {
+    this.firstName = this.tokenService.getUserName();
+    this.userName =
+      this.tokenService.getFullName();
+
+    this.companyName =
+      this.tokenService.getCompanyName();
+
+    this.role =
+      this.formatRole(
+        this.tokenService.getRole()
+      );
+  }
+  private formatRole(role: string): string {
+
+    switch (role) {
+
+      case 'ROLE_OWNER':
+        return 'Administrador';
+
+      case 'ROLE_MANAGER':
+        return 'Gerente';
+
+      case 'ROLE_USER':
+        return 'Usuário';
+
+      default:
+        return role;
+    }
+  }
+
+  get initials(): string {
+
+    const name =
+      this.tokenService.getFullName();
+
+    if (!name) {
+      return 'HS';
+    }
+
+    return name
+      .split(' ')
+      .filter(x => x)
+      .slice(0, 2)
+      .map(x => x[0].toUpperCase())
+      .join('');
+  }
+
   toggleTheme(): void {
     this.themeService.toggleTheme();
   }
@@ -31,9 +85,10 @@ export class HeaderComponent {
     this.router.navigate(['/profile/change-password'])
   }
   logout() {
-    this.router.navigate(['/'])
+    this.router.navigate(['/']);
+    localStorage.removeItem('token')
   }
-   settings() {
+  settings() {
     this.router.navigate(['/profile/settings'])
   }
 

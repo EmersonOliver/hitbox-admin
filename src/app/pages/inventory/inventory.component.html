@@ -149,8 +149,8 @@
                         <!-- PRODUCT -->
                         <td>
                             <div class="d-flex align-items-center gap-3">
-                                <img [src]="resolveImage(item.imageUrl)" class="inventory-image inventory-clickable"
-                                    (click)="openImageModal(item.imageUrl)">
+                                <img [src]="item.imagePreview || 'assets/img/no-image.png'" class="inventory-image inventory-clickable"
+                                    (click)="openImageModal(item)">
                                 <div>
                                     <h6 class="mb-1">
                                         {{ item.name }}

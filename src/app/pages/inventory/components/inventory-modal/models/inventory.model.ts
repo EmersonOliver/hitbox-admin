@@ -2,7 +2,7 @@ import { CategoriaModel } from "../../../../categorias/model/categoria.model";
 import { StockMovementModel } from "../../stock-modal/models/stock.movement.model";
 
 export interface InventoryModel {
- id?: number;
+  id?: number;
 
   name: string;
 
@@ -37,7 +37,8 @@ export interface InventoryModel {
   stockPercentage?: number;
 
   movementCount?: number;
-  movements:StockMovementModel[];
+  imagePreview?: string;
+  movements: StockMovementModel[];
 }
 
 export enum InventoryUnit {

@@ -166,17 +166,13 @@
 
                             <div class="d-flex align-items-center gap-3">
 
-                                <img [src]="resolveImage(product.imageUrl)" class="product-image product-clickable"
-                                    (click)="openImageModal(product.imageUrl)">
-
+                                <img [src]="product.imagePreview" class="product-image product-clickable"
+                                    (click)="openImageModal(product)">
                                 <div>
 
                                     <h6 class="mb-1">
-
                                         {{ product.name }}
-
                                     </h6>
-
                                     <small class="text-muted sku-text">
 
                                         SKU:
@@ -212,7 +208,7 @@
                             </strong>
 
                         </td>
-                         <td>
+                        <td>
 
                             <strong>
 

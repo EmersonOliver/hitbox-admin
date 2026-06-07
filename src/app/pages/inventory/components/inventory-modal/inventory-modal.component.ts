@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   OnInit,
   Output,
@@ -26,7 +25,7 @@ import { CategoriaModel } from '../../../categorias/model/categoria.model';
 import { InventarioService } from '../../../../core/inventario/inventario.service';
 import { CategoriaService } from '../../../../core/categoria/categoria.service';
 import { ToastService } from '../../../components/toast/toast.service';
-import { ImageUtil } from '../../../../core/utils/image.util';
+import { ImageService } from '../../../../core/image/image.service';
 declare var bootstrap: any;
 
 @Component({
@@ -80,11 +79,11 @@ export class InventoryModalComponent implements OnInit, OnChanges {
 
   constructor(
     private fb: FormBuilder,
+    private imageService: ImageService,
     private inventarioService: InventarioService,
     private categoriaService: CategoriaService,
     private toast: ToastService
   ) { }
-
 
   ngOnInit(): void {
     this.loadCategorias();
@@ -184,61 +183,35 @@ export class InventoryModalComponent implements OnInit, OnChanges {
       this.form.markAllAsTouched();
       return;
     }
-
     const formData =
-      new FormData();
+      this.buildFormData();
 
-    formData.append(
-      'data',
 
-      new Blob(
-        [
-          JSON.stringify(
-            this.form.getRawValue()
-          )
-        ],
-        {
-          type: 'application/json'
-        }
-      )
-    );
-    if (this.selectedFile) {
+    const request = this.inventorySelected?.id ?
+      this.inventarioService.edit(
+        this.inventorySelected?.id!,
+        formData
+      ) : this.inventarioService
+        .save(formData);
 
-      formData.append(
-        'image',
-        this.selectedFile
-      );
-    }
-
-    this.loading = true;
-
-    this.buildFormData().then(formData => {
-      const request = this.inventorySelected?.id ?
-        this.inventarioService.edit(
-          this.inventorySelected?.id!,
-          formData
-        ) : this.inventarioService
-          .save(formData);
-
-      request.subscribe({
-        next: () => {
-          this.loading = false;
-          this.form.reset({
-            active: true
-          });
-          this.imagePreview = null;
-          this.selectedFile = undefined!;
-          this.toast.show('Salvo com sucesso!', 'success');
-          this.save.emit();
-          this.fecharModal();
-          this.inventorySelected = null;
-        },
-        error: (error) => {
-          this.loading = false;
-          this.toast.show('Ocorreu um erro ' + error.error.message, 'danger');
-        }
-      });
-    })
+    request.subscribe({
+      next: () => {
+        this.loading = false;
+        this.form.reset({
+          active: true
+        });
+        this.imagePreview = null;
+        this.selectedFile = undefined!;
+        this.toast.show('Salvo com sucesso!', 'success');
+        this.save.emit();
+        this.fecharModal();
+        this.inventorySelected = null;
+      },
+      error: (error) => {
+        this.loading = false;
+        this.toast.show('Ocorreu um erro ' + error.error.message, 'danger');
+      }
+    });
 
   }
   fillForm(inventory: InventoryModel): void {
@@ -262,8 +235,19 @@ export class InventoryModalComponent implements OnInit, OnChanges {
           inventory.active
       });
 
-    this.imagePreview =
-      ImageUtil.resolve(inventory.imageUrl);
+    this.imagePreview = null;
+
+    if (!inventory.imageUrl) {
+      return;
+    }
+
+    this.imageService
+      .load(inventory.imageUrl)
+      .subscribe(url => {
+
+        this.imagePreview = url;
+
+      });
   }
 
   private async urlToFile(
@@ -286,16 +270,13 @@ export class InventoryModalComponent implements OnInit, OnChanges {
     );
   }
 
-  private async buildFormData():
-    Promise<FormData> {
+  private buildFormData(): FormData {
 
     const formData =
       new FormData();
 
     formData.append(
-
       'data',
-
       new Blob(
         [
           JSON.stringify(
@@ -303,47 +284,16 @@ export class InventoryModalComponent implements OnInit, OnChanges {
           )
         ],
         {
-          type:
-            'application/json'
+          type: 'application/json'
         }
       )
     );
-
-    /* ==========================
-       NOVA IMAGEM
-    ========================== */
 
     if (this.selectedFile) {
 
       formData.append(
         'image',
         this.selectedFile
-      );
-
-      return formData;
-    }
-
-    /* ==========================
-       IMAGEM EXISTENTE
-    ========================== */
-
-    if (
-      this.inventorySelected?.id &&
-      this.imagePreview &&
-      typeof this.imagePreview === 'string'
-    ) {
-
-      const file =
-        await this.urlToFile(
-
-          this.imagePreview,
-
-          'inventory.webp'
-        );
-
-      formData.append(
-        'image',
-        file
       );
     }
 

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 
 const TOKEN_KEY = 'token';
 import { BehaviorSubject } from 'rxjs';
-
+import { jwtDecode } from 'jwt-decode';
+import { JwtPayload } from '../../models/jwt.model';
 @Injectable({ providedIn: 'root' })
 export class TokenService {
 
@@ -25,6 +26,43 @@ export class TokenService {
     return localStorage.getItem(TOKEN_KEY);
   }
 
+  getPayload(): JwtPayload | null {
+
+    const token = this.getToken();
+
+    if (!token) {
+      return null;
+    }
+
+    return jwtDecode<JwtPayload>(token);
+  }
+
+  getUserName(): string {
+    return this.getPayload()?.name ?? '';
+  }
+
+  getFullName(): string {
+    return this.getPayload()?.fullName ?? '';
+  }
+
+  getEmail(): string {
+    return this.getPayload()?.email ?? '';
+  }
+
+  getCompanyName(): string {
+    return this.getPayload()?.companyName ?? '';
+  }
+
+  getRole(): string {
+    return this.getPayload()?.['X-User-Role'] ?? '';
+  }
+
+  getCompanyId(): string {
+    return this.getPayload()?.['X-Company-Id'] ?? '';
+  }
+
+
+
   clear(): void {
     localStorage.removeItem(TOKEN_KEY);
     this.loggedIn$.next(false);
@@ -32,7 +70,6 @@ export class TokenService {
 
   isAuthenticated(): boolean {
     const token = this.getToken();
-    console.log(token)
     if (!token) return false;
     return !this.isTokenExpired(token);
   }
@@ -49,3 +86,4 @@ export class TokenService {
     }
   }
 }
+

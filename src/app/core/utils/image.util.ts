@@ -1,29 +1,38 @@
+// export class ImageUtil {
+
+//   static resolve(
+//     path?: string | null
+//   ): string {
+
+//     if (!path) {
+
+//       return 'assets/img/no-image.png';
+//     }
+
+
+
+//     if (
+//       path.startsWith('http')
+//     ) {
+
+//       return path;
+//     }
+
+   
+//     return `/api/hitbox${path}`;
+//   }
+// }
+
 export class ImageUtil {
 
   static resolve(
-    path?: string | null
+    key?: string | null
   ): string {
 
-    if (!path) {
-
+    if (!key) {
       return 'assets/img/no-image.png';
     }
 
-    /* ============================
-       JÁ É URL COMPLETA
-    ============================ */
-
-    if (
-      path.startsWith('http')
-    ) {
-
-      return path;
-    }
-
-    /* ============================
-       UPLOADS
-    ============================ */
-
-    return `/api/hitbox${path}`;
+    return `/api/hitbox/files?key=${encodeURIComponent(key)}`;
   }
 }

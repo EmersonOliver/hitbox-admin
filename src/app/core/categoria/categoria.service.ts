@@ -55,18 +55,22 @@ export class CategoriaService {
           search
         );
     }
+    let token = localStorage.getItem('token')
     return this.http.get<ApiPage<CategoriaModel>>(`api/hitbox/categoria/listAll`, {
-      params
+      params, headers: { 'Authorization': `Bearer ${token}` }
     }).pipe();
   }
   loadCategoriasWithouPages(): Observable<ApiPage<CategoriaModel>> {
-    return this.http.get<ApiPage<CategoriaModel>>(`api/hitbox/categoria/listAll`).pipe();
+    let token = localStorage.getItem('token')
+    return this.http.get<ApiPage<CategoriaModel>>(`api/hitbox/categoria/listAll`, 
+      { headers: { 'Authorization': `Bearer ${token}` } }).pipe();
   }
 
   loadCategoriasByParametro(tipoCategoria: string): Observable<CategoriaModel[]> {
     let params = new HttpParams().append("tipoCategoria", tipoCategoria);
+    let token = localStorage.getItem('token')
     return this.http.get<CategoriaModel[]>('api/hitbox/categoria/parametros', {
-      params
+      params, headers: { 'Authorization': `Bearer ${token}` }
     })
   }
 }

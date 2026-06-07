@@ -26,4 +26,5 @@ export interface ProductResponse {
   materials: ProductMaterialResponse[];
 
   estimatedMinutes: number;
+  imagePreview?:string;
 }

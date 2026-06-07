@@ -32,8 +32,8 @@ import { ToastService } from '../../../components/toast/toast.service';
 import { SuggestedPriceResult } from '../../../calc-pricing/models/suggested.pricing.model';
 import { InventoryModel } from '../../../inventory/components/inventory-modal/models/inventory.model';
 import { ProductService } from '../../../../core/product/product.service';
-import { ImageUtil } from '../../../../core/utils/image.util';
 import { PricingRuleResponse } from '../../../calc-pricing/models/pricing.rules.response';
+import { ImageService } from '../../../../core/image/image.service';
 declare var bootstrap: any;
 
 @Component({
@@ -87,6 +87,7 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
 
   constructor(
     private fb: FormBuilder,
+    private imageService: ImageService,
     private pricingService: PricingRuleService,
     private inventoryService: InventarioService,
     private pricingRuleService: PricingRuleService,
@@ -168,8 +169,15 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
           })
         )
       });
-      this.imagePreview =
-        ImageUtil.resolve(this.produtoSelecionado.imageUrl);
+      this.imagePreview = null;
+      if (!this.produtoSelecionado?.imagePreview) {
+        return;
+      }
+      this.imageService
+        .load(this.produtoSelecionado?.imageUrl)
+        .subscribe(url => {
+          this.imagePreview = url;
+        });
     }
   }
   ngOnInit(): void {
@@ -787,7 +795,7 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
       value.toFixed(3).replace('.', ',');
   }
 
-  onWeightInputValue(event: Event, formControlName:any): void {
+  onWeightInputValue(event: Event, formControlName: any): void {
 
     const input = event.target as HTMLInputElement;
 
@@ -797,7 +805,7 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
     const value =
       Number(numeric) / 1000;
 
-    formControlName.setValue(value, {emitEvent: false});
+    formControlName.setValue(value, { emitEvent: false });
 
     input.value =
       value.toFixed(3).replace('.', ',');

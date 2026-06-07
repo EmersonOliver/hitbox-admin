@@ -1,9 +1,7 @@
 <div class="header-actions">
 
     <!-- TEMA -->
-    <button
-        class="btn btn-theme"
-        (click)="toggleTheme()">
+    <button class="btn btn-theme" (click)="toggleTheme()">
 
         <i class="bi bi-moon"></i>
 
@@ -12,22 +10,20 @@
     <!-- USUÁRIO -->
     <div class="dropdown">
 
-        <button
-            class="btn user-menu"
-            data-bs-toggle="dropdown">
+        <button class="btn user-menu" data-bs-toggle="dropdown">
 
             <div class="avatar">
-                HS
+                {{initials}}
             </div>
 
             <div class="user-info d-none d-lg-flex">
 
                 <span class="name">
-                    Hitbox Studio
+                    {{firstName}}
                 </span>
 
                 <small>
-                    Administrador
+                    {{role}}
                 </small>
 
             </div>
@@ -43,17 +39,17 @@
             <li class="dropdown-user">
 
                 <div class="avatar-large">
-                    HS
+                    {{initials}}
                 </div>
 
                 <div>
 
                     <strong>
-                        Hitbox Studio
+                        {{firstName}}
                     </strong>
 
                     <small>
-                        Administrador
+                        {{role}}
                     </small>
 
                 </div>
@@ -179,9 +175,7 @@
 
             <li>
 
-                <button
-                    class="dropdown-item text-danger"
-                    (click)="logout()">
+                <button class="dropdown-item text-danger" (click)="logout()">
 
                     <i class="bi bi-box-arrow-right"></i>
                     Sair

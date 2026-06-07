@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CompanyService } from '../../core/company/company.service';
+import { TokenService } from '../../core/auth/guards/token.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-company',
@@ -13,7 +15,9 @@ import { CompanyService } from '../../core/company/company.service';
 export class CreateCompanyComponent {
 
   form: FormGroup;
-  constructor(private fb: FormBuilder, private companyService: CompanyService) {
+  constructor(private fb: FormBuilder, private companyService: CompanyService,
+    private router: Router,
+    private tokenService: TokenService) {
     this.form = this.fb.group({
       companyName: ['', Validators.required],
       tradeName: [''],
@@ -28,8 +32,11 @@ export class CreateCompanyComponent {
 
   save() {
     this.companyService.createCompany(this.form.getRawValue()).subscribe({
-      next: response=> {
-        console.log(response)
+      next: response => {
+
+        this.tokenService.setToken(response.token);
+      this.router.navigate(['/workspace-setup']);
+
       }
     })
   }

@@ -1,240 +1,244 @@
-<div id="dashboardHeader" class="dashboard-header">
-  <div class="row">
-    <div class="col-md-8 p-3">
-      <h2>Dashboard</h2>
-      <small class="text-muted">Visão geral de produção</small>
-    </div>
-    <div class="col-md-4 p-3">
-      <app-range-datepicker></app-range-datepicker>
-    </div>
-  </div>
-</div>
-<div id="dashboard-cards" class="row g-3 mb-4">
-  <div  class="col-md-3">
-    <div class="card p-3 shadow">
-      <small class="text-muted"><i class="bi bi-currency-dollar me-2 text-primary"></i>Receita Total</small>
-      <h4>{{12580.90 | currency:'BRL'}}</h4>
+<div class="dasboard-container fade-enter">
+  <div id="dashboardHeader" class="dashboard-header">
+    <div class="row">
+      <div class="col-md-8 p-3">
+        <h2>Dashboard</h2>
+        <small class="text-muted">Visão geral de produção</small>
+      </div>
+      <div class="col-md-4 p-3">
+        <app-range-datepicker></app-range-datepicker>
+      </div>
     </div>
   </div>
+  <div id="dashboard-cards" class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card p-3 shadow">
+        <small class="text-muted"><i class="bi bi-currency-dollar me-2 text-primary"></i>Receita Total</small>
+        <h4>{{12580.90 | currency:'BRL'}}</h4>
+      </div>
+    </div>
 
-  <div class="col-md-3">
-    <div class="card p-3 shadow">
-      <small class="text-muted"><i class="bi bi-cart me-2 text-primary"></i>Custo de Produção</small>
-      <h4>{{4235.40 | currency:'BRL'}}</h4>
+    <div class="col-md-3">
+      <div class="card p-3 shadow">
+        <small class="text-muted"><i class="bi bi-cart me-2 text-primary"></i>Custo de Produção</small>
+        <h4>{{4235.40 | currency:'BRL'}}</h4>
+      </div>
     </div>
-  </div>
 
-  <div class="col-md-3">
-    <div class="card p-3 shadow">
-      <small class="text-muted"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>Lucro Líquido</small>
-      <h4>{{8345.50 | currency:'BRL'}}</h4>
+    <div class="col-md-3">
+      <div class="card p-3 shadow">
+        <small class="text-muted"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>Lucro Líquido</small>
+        <h4>{{8345.50 | currency:'BRL'}}</h4>
+      </div>
     </div>
-  </div>
 
-  <div class="col-md-3">
-    <div class="card p-3 shadow">
-      <small class="text-muted"><i class="bi bi-percent me-2 text-primary"></i>Margem de Lucro</small>
-      <h4>66,3%</h4>
+    <div class="col-md-3">
+      <div class="card p-3 shadow">
+        <small class="text-muted"><i class="bi bi-percent me-2 text-primary"></i>Margem de Lucro</small>
+        <h4>66,3%</h4>
+      </div>
     </div>
   </div>
-</div>
-<!-- QUICK ACTIONS -->
-<div class="quick-actions-grid">
+  <!-- QUICK ACTIONS -->
+  <div class="quick-actions-grid">
 
-  <div class="action-tile primary" (click)="clickRouterLink('/orderService')">
-    <i class="bi bi-journal-check me-2"></i>
-    <div>
-      <h6>Ordem de Serviços</h6>
-      <small>Gerenciar Serviços</small>
+    <div class="action-tile primary" (click)="clickRouterLink('/orderService')">
+      <i class="bi bi-journal-check me-2"></i>
+      <div>
+        <h6>Ordem de Serviços</h6>
+        <small>Gerenciar Serviços</small>
+      </div>
     </div>
-  </div>
-   <div class="action-tile primary" (click)="clickRouterLink('/kanban')">
+    <div class="action-tile primary" (click)="clickRouterLink('/kanban')">
       <i class="bi bi-lightbulb me-2"></i>
-    <div>
-      <h6>Produção</h6>
-      <small>Gerenciar Produções</small>
+      <div>
+        <h6>Produção</h6>
+        <small>Gerenciar Produções</small>
+      </div>
+    </div>
+
+    <div class="action-tile primary" (click)="clickRouterLink('/categorias')">
+      <i class="bi bi-tags me-2"></i>
+      <div>
+        <h6>Categorias</h6>
+        <small>Gerenciar categorias</small>
+      </div>
+    </div>
+
+    <div class="action-tile primary" (click)="clickRouterLink('/inventario')">
+      <i class="bi bi-box-seam me-2"></i>
+      <div>
+        <h6>Inventário/Estoque</h6>
+        <small>Gerenciar base</small>
+      </div>
+    </div>
+    <div class="action-tile primary" (click)="clickRouterLink('/clientes')">
+      <i class="bi bi-people me-2"></i>
+      <div>
+        <h6>Clientes</h6>
+        <small>Gerenciar base</small>
+      </div>
     </div>
   </div>
 
-  <div class="action-tile primary" (click)="clickRouterLink('/categorias')">
-    <i class="bi bi-tags me-2"></i>
-    <div>
-      <h6>Categorias</h6>
-      <small>Gerenciar categorias</small>
-    </div>
-  </div>
+  <div class="container">
 
-  <div class="action-tile primary" (click)="clickRouterLink('/inventario')">
-    <i class="bi bi-box-seam me-2"></i>
-    <div>
-      <h6>Inventário/Estoque</h6>
-      <small>Gerenciar base</small>
-    </div>
-  </div>
-  <div class="action-tile primary" (click)="clickRouterLink('/clientes')">
-      <i class="bi bi-people me-2"></i> 
-    <div>
-      <h6>Clientes</h6>
-      <small>Gerenciar base</small>
-    </div>
-  </div>
-</div>
-
-<div class="container">
-
-  <div class="row g-4">
-    <div class="col-md-6 p-3">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <h6>Produtos Mais Lucrativos</h6>
-          <div class="table-responsive">
-            <table class="table table-striped align-middle">
-              <thead>
-                <tr>
-                  <th scope="col">Produto</th>
-                  <th scope="col">Nome</th>
-                  <th scope="col">Valor</th>
-                  <th scope="col">Popularidade</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="align-items-center">
-                  <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/product/monster.webp" class="img-fluid img-thumbnail product-image rounded ">
-                  </th>
-                  <td>Kit Caneca Monster</td>
-                  <td>{{69.90 | currency:'BRL'}}</td>
-                  <td>
-                    <app-rating [readonly]="true" [ngModel]="5">
-                    </app-rating>
-                  </td>
-                </tr>
-                <tr class="align-items-center">
-                  <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/product/coisinho.png" class="img-fluid img-thumbnail product-image rounded ">
-                  </th>
-                  <td>Bonequinho</td>
-                  <td>{{80.00 | currency:'BRL'}}</td>
-                  <td>
-                    <app-rating [readonly]="true" [ngModel]="3">
-                    </app-rating>
-                  </td>
-                </tr>
-                <tr class="align-items-center">
-                  <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/product/sensorial.png" class="img-fluid img-thumbnail product-image rounded ">
-                  </th>
-                  <td>Sensorial</td>
-                  <td>{{55.00 | currency:'BRL'}}</td>
-                  <td>
-                    <app-rating [readonly]="true" [ngModel]="5">
-                    </app-rating>
-                  </td>
-                </tr>
-                <tr class="align-items-center">
-                  <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/product/naruto.png" class="img-fluid img-thumbnail product-image rounded ">
-                  </th>
-                  <td>Naruto Bordado</td>
-                  <td>{{60.00 | currency:'BRL'}}</td>
-                  <td>
-                    <app-rating [readonly]="true" [ngModel]="4">
-                    </app-rating>
-                  </td>
-                </tr>
-                <tr class="align-items-center">
-                  <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/product/chaveiro.png" class="img-fluid img-thumbnail product-image rounded ">
-                  </th>
-                  <td>Chaveiro Capivara Bordado</td>
-                  <td>{{15.00 | currency:'BRL'}}</td>
-                  <td>
-                    <app-rating [readonly]="true" [ngModel]="4">
-                    </app-rating>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+    <div class="row g-4">
+      <div class="col-md-6 p-3">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h6>Produtos Mais Lucrativos</h6>
+            <div class="table-responsive">
+              <table class="table table-striped align-middle">
+                <thead>
+                  <tr>
+                    <th scope="col">Produto</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Popularidade</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="align-items-center">
+                    <th scope="row" class="product-image-cell ">
+                      <img src="assets/img/product/monster.webp" class="img-fluid img-thumbnail product-image rounded ">
+                    </th>
+                    <td>Kit Caneca Monster</td>
+                    <td>{{69.90 | currency:'BRL'}}</td>
+                    <td>
+                      <app-rating [readonly]="true" [ngModel]="5">
+                      </app-rating>
+                    </td>
+                  </tr>
+                  <tr class="align-items-center">
+                    <th scope="row" class="product-image-cell ">
+                      <img src="assets/img/product/coisinho.png" class="img-fluid img-thumbnail product-image rounded ">
+                    </th>
+                    <td>Bonequinho</td>
+                    <td>{{80.00 | currency:'BRL'}}</td>
+                    <td>
+                      <app-rating [readonly]="true" [ngModel]="3">
+                      </app-rating>
+                    </td>
+                  </tr>
+                  <tr class="align-items-center">
+                    <th scope="row" class="product-image-cell ">
+                      <img src="assets/img/product/sensorial.png"
+                        class="img-fluid img-thumbnail product-image rounded ">
+                    </th>
+                    <td>Sensorial</td>
+                    <td>{{55.00 | currency:'BRL'}}</td>
+                    <td>
+                      <app-rating [readonly]="true" [ngModel]="5">
+                      </app-rating>
+                    </td>
+                  </tr>
+                  <tr class="align-items-center">
+                    <th scope="row" class="product-image-cell ">
+                      <img src="assets/img/product/naruto.png" class="img-fluid img-thumbnail product-image rounded ">
+                    </th>
+                    <td>Naruto Bordado</td>
+                    <td>{{60.00 | currency:'BRL'}}</td>
+                    <td>
+                      <app-rating [readonly]="true" [ngModel]="4">
+                      </app-rating>
+                    </td>
+                  </tr>
+                  <tr class="align-items-center">
+                    <th scope="row" class="product-image-cell ">
+                      <img src="assets/img/product/chaveiro.png" class="img-fluid img-thumbnail product-image rounded ">
+                    </th>
+                    <td>Chaveiro Capivara Bordado</td>
+                    <td>{{15.00 | currency:'BRL'}}</td>
+                    <td>
+                      <app-rating [readonly]="true" [ngModel]="4">
+                      </app-rating>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-6 p-3">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <h6>Estoque Baixo</h6>
-          <div class="table-responsive">
-            <table class="table table-striped align-middle">
-              <thead>
-                <tr>
-                  <th scope="col">Produto</th>
-                  <th scope="col">Nome</th>
-                  <th scope="col">Qtd</th>
-                  <th scope="col">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="align-items-center">
-                  <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/inventario/filmento_amarelo.jpg"
-                      class="img-fluid img-thumbnail product-image rounded ">
-                  </th>
-                  <td>Filamento Amarelo 1Kg</td>
-                  <td>120g restantes</td>
-                  <td>
-                    <app-stock-progress [value]="30">
-                    </app-stock-progress>
-                  </td>
-                </tr>
-                <tr class="align-items-center">
-                  <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/inventario/click.webp" class="img-fluid img-thumbnail product-image rounded ">
-                  </th>
-                  <td>Kit Click - 200Un</td>
-                  <td>40 restantes</td>
-                  <td>
-                    <app-stock-progress [value]="40">
-                    </app-stock-progress>
-                  </td>
-                </tr>
-                <tr class="align-items-center">
-                  <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/inventario/saquinho.jpg"
-                      class="img-fluid img-thumbnail product-image rounded ">
-                  </th>
-                  <td>Saquinho Kit 400un</td>
-                  <td>300 restantes</td>
-                  <td>
-                    <app-stock-progress [value]="85">
-                    </app-stock-progress>
-                  </td>
-                </tr>
-                <tr class="align-items-center">
-                  <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/inventario/correntinha.webp"
-                      class="img-fluid img-thumbnail product-image rounded ">
-                  </th>
-                  <td>Correntinha Bolinha - Kit 20Un</td>
-                  <td>3 restantes</td>
-                  <td>
-                    <app-stock-progress [value]="15">
-                    </app-stock-progress>
-                  </td>
-                </tr>
-                <tr class="align-items-center">
-                  <th scope="row" class="product-image-cell ">
-                    <img src="assets/img/inventario/filamento_azul.webp"
-                      class="img-fluid img-thumbnail product-image rounded ">
-                  </th>
-                  <td>Filamento Azul 1Kg</td>
-                  <td>920g restantes</td>
-                  <td>
-                    <app-stock-progress [value]="90">
-                    </app-stock-progress>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+      <div class="col-md-6 p-3">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h6>Estoque Baixo</h6>
+            <div class="table-responsive">
+              <table class="table table-striped align-middle">
+                <thead>
+                  <tr>
+                    <th scope="col">Produto</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Qtd</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="align-items-center">
+                    <th scope="row" class="product-image-cell ">
+                      <img src="assets/img/inventario/filmento_amarelo.jpg"
+                        class="img-fluid img-thumbnail product-image rounded ">
+                    </th>
+                    <td>Filamento Amarelo 1Kg</td>
+                    <td>120g restantes</td>
+                    <td>
+                      <app-stock-progress [value]="30">
+                      </app-stock-progress>
+                    </td>
+                  </tr>
+                  <tr class="align-items-center">
+                    <th scope="row" class="product-image-cell ">
+                      <img src="assets/img/inventario/click.webp"
+                        class="img-fluid img-thumbnail product-image rounded ">
+                    </th>
+                    <td>Kit Click - 200Un</td>
+                    <td>40 restantes</td>
+                    <td>
+                      <app-stock-progress [value]="40">
+                      </app-stock-progress>
+                    </td>
+                  </tr>
+                  <tr class="align-items-center">
+                    <th scope="row" class="product-image-cell ">
+                      <img src="assets/img/inventario/saquinho.jpg"
+                        class="img-fluid img-thumbnail product-image rounded ">
+                    </th>
+                    <td>Saquinho Kit 400un</td>
+                    <td>300 restantes</td>
+                    <td>
+                      <app-stock-progress [value]="85">
+                      </app-stock-progress>
+                    </td>
+                  </tr>
+                  <tr class="align-items-center">
+                    <th scope="row" class="product-image-cell ">
+                      <img src="assets/img/inventario/correntinha.webp"
+                        class="img-fluid img-thumbnail product-image rounded ">
+                    </th>
+                    <td>Correntinha Bolinha - Kit 20Un</td>
+                    <td>3 restantes</td>
+                    <td>
+                      <app-stock-progress [value]="15">
+                      </app-stock-progress>
+                    </td>
+                  </tr>
+                  <tr class="align-items-center">
+                    <th scope="row" class="product-image-cell ">
+                      <img src="assets/img/inventario/filamento_azul.webp"
+                        class="img-fluid img-thumbnail product-image rounded ">
+                    </th>
+                    <td>Filamento Azul 1Kg</td>
+                    <td>920g restantes</td>
+                    <td>
+                      <app-stock-progress [value]="90">
+                      </app-stock-progress>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

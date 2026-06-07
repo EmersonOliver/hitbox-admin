@@ -4,6 +4,7 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import { PrivateLayoutComponent } from './layouts/private-layout/private-layout.component';
 import { SettingsComponent } from './pages/profile/settings/settings.component';
 import { authGuard } from './core/auth/guards/auth.guard';
+import { guestGuard } from './core/auth/guards/guest.guard';
 
 export const routes: Routes = [
     {
@@ -19,20 +20,28 @@ export const routes: Routes = [
                 path: 'login',
                 loadComponent: () =>
                     import('./pages/login/login.component')
-                        .then(m => m.LoginComponent)
+                        .then(m => m.LoginComponent),
+                canActivate: [guestGuard]
             },
             {
                 path: 'register',
                 loadComponent: () =>
                     import('./pages/register/register.component').then(
                         m => m.RegisterComponent
-                    )
+                    ),
+                canActivate: [guestGuard]
             },
             {
                 path: 'create-company',
                 loadComponent: () =>
                     import('./pages/create-company/create-company.component').then(
                         m => m.CreateCompanyComponent
+                    ),
+            },{
+                path:'workspace-setup',
+                 loadComponent: () => 
+                    import('./pages/workspace-setup/workspace-setup.component').then(
+                        m=> m.WorkspaceSetupComponent
                     )
             }
         ]

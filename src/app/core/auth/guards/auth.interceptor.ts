@@ -13,17 +13,16 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const authReq = token
     ? req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    })
     : req;
 
   return next(authReq).pipe(
     catchError((error) => {
 
       if (error.status === 401) {
-        // 🔥 token expirado ou inválido
         tokenService.clear();
 
         router.navigate(['/']); // ou '/login'
