@@ -11,4 +11,5 @@ export interface KanbanCardRequest {
     blockedReason: string;
     notes: string;
     quantity:number;
+    status:string;
 }

@@ -1,0 +1,367 @@
+<div class="container-fluid py-4">
+
+    <!-- HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Permissões
+            </h2>
+
+            <p class="text-muted mb-0">
+                Controle os acessos de cada perfil do sistema
+            </p>
+
+        </div>
+
+        <button class="btn btn-primary">
+
+            <i class="bi bi-floppy me-2"></i>
+
+            Salvar Alterações
+
+        </button>
+
+    </div>
+
+    <!-- ROLE -->
+
+    <div class="permission-toolbar mb-4">
+
+        <div class="row">
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+
+                    Perfil
+
+                </label>
+
+                <select class="form-select">
+
+                    <option>Owner</option>
+
+                    <option>Manager</option>
+
+                    <option>Production</option>
+
+                    <option>Stock</option>
+
+                    <option>Financial</option>
+
+                    <option>Operator</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MODULES -->
+
+    <div class="row g-4">
+
+        <!-- INVENTORY -->
+
+        <div class="col-xl-4 col-lg-6">
+
+            <div class="permission-card">
+
+                <div class="permission-header">
+
+                    <div>
+
+                        <h5>
+                            Inventário
+                        </h5>
+
+                        <small>
+                            Controle de estoque e materiais
+                        </small>
+
+                    </div>
+
+                    <i class="bi bi-box-seam"></i>
+
+                </div>
+
+                <div class="permission-body">
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox" checked>
+
+                        <label class="form-check-label">
+
+                            Visualizar
+
+                        </label>
+
+                    </div>
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox" checked>
+
+                        <label class="form-check-label">
+
+                            Criar
+
+                        </label>
+
+                    </div>
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox">
+
+                        <label class="form-check-label">
+
+                            Editar
+
+                        </label>
+
+                    </div>
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox">
+
+                        <label class="form-check-label">
+
+                            Excluir
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- PRODUCTION -->
+
+        <div class="col-xl-4 col-lg-6">
+
+            <div class="permission-card">
+
+                <div class="permission-header">
+
+                    <div>
+
+                        <h5>
+                            Produção
+                        </h5>
+
+                        <small>
+                            Ordens de produção
+                        </small>
+
+                    </div>
+
+                    <i class="bi bi-gear-wide-connected"></i>
+
+                </div>
+
+                <div class="permission-body">
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox" checked>
+
+                        <label class="form-check-label">
+
+                            Visualizar
+
+                        </label>
+
+                    </div>
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox">
+
+                        <label class="form-check-label">
+
+                            Criar Ordem
+
+                        </label>
+
+                    </div>
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox">
+
+                        <label class="form-check-label">
+
+                            Encerrar Ordem
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- USERS -->
+
+        <div class="col-xl-4 col-lg-6">
+
+            <div class="permission-card">
+
+                <div class="permission-header">
+
+                    <div>
+
+                        <h5>
+                            Usuários
+                        </h5>
+
+                        <small>
+                            Gestão de colaboradores
+                        </small>
+
+                    </div>
+
+                    <i class="bi bi-people"></i>
+
+                </div>
+
+                <div class="permission-body">
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox">
+
+                        <label class="form-check-label">
+
+                            Visualizar
+
+                        </label>
+
+                    </div>
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox">
+
+                        <label class="form-check-label">
+
+                            Criar
+
+                        </label>
+
+                    </div>
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox">
+
+                        <label class="form-check-label">
+
+                            Editar
+
+                        </label>
+
+                    </div>
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox">
+
+                        <label class="form-check-label">
+
+                            Excluir
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TEAMS -->
+
+        <div class="col-xl-4 col-lg-6">
+
+            <div class="permission-card">
+
+                <div class="permission-header">
+
+                    <div>
+
+                        <h5>
+                            Equipes
+                        </h5>
+
+                        <small>
+                            Gestão organizacional
+                        </small>
+
+                    </div>
+
+                    <i class="bi bi-diagram-3"></i>
+
+                </div>
+
+                <div class="permission-body">
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox">
+
+                        <label class="form-check-label">
+
+                            Visualizar
+
+                        </label>
+
+                    </div>
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox">
+
+                        <label class="form-check-label">
+
+                            Criar
+
+                        </label>
+
+                    </div>
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox">
+
+                        <label class="form-check-label">
+
+                            Editar
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -14,6 +14,8 @@ import { TokenService } from '../core/auth/guards/token.service';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
+
+
   userName = '';
   firstName = '';
   companyName = '';
@@ -92,4 +94,18 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/profile/settings'])
   }
 
+  teams() {
+    this.router.navigate(['profile/teams'])
+  }
+  permissions() {
+    this.router.navigate(['profile/teams/permissions'])
+  }
+  myCompany() {
+    this.router.navigate(['profile/settings/company'])
+  }
+
+  resetTutorial() {
+    localStorage.removeItem('tour_completed_relsidebar')
+    this.router.navigate(['dashboard']);
+  }
 }

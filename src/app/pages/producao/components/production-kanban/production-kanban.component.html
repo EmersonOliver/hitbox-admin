@@ -325,67 +325,18 @@
                     <option *ngFor="let c of columns" [value]="c.id">{{c.columnName}}</option>
                 </select>
             </div>
-           
-            <div class="mb-4">
-                <label class="form-label">
-                    Quantidade
-                </label>
-                <input type="number" class="form-control" formControlName="quantity">
-            </div>
 
-            <div class="mb-4">
-                <label class="form-label">
-                    Cliente
-                </label>
-                <select name="clienteSelect" id="clienteSelect" formControlName="clienteId" class="form-select">
-                    <option [value]="null" disabled>Selecione</option>
-                    <option *ngFor="let c of clientes" [ngValue]="c.id">
-                        {{ c.nome }}
-                    </option>
-                </select>
-            </div>
-
-            <!-- PROGRESS -->
-
-            <div class="mb-4">
-                <div class="d-flex justify-content-between mb-2">
-                    <label class="form-label mb-0">
-                        Progresso
-                    </label>
-                    <strong>
-                        {{ formCard.get('productionProgress')?.value }}%
-                    </strong>
-                </div>
-                <input type="range" class="form-range" min="0" max="100" formControlName="productionProgress">
-
-            </div>
-
-            <!-- ESTIMATIVA -->
-
-            <div class="mb-4">
-
-                <label class="form-label">
-                    Tempo estimado
-                </label>
-
-                <input type="text" class="form-control" formControlName="estimatedMinutes">
-
-            </div>
             <!-- BLOQUEIO -->
-
             <div class="form-check form-switch mb-3">
-
                 <input class="form-check-input" type="checkbox" formControlName="blocked">
-
                 <label class="form-check-label">
                     Card bloqueado
                 </label>
-
             </div>
 
             <!-- MOTIVO -->
 
-            @if(selectedCard.blocked){
+            @if(formCard.get('blocked')?.value){
 
             <div class="mb-4">
 
