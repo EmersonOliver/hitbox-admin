@@ -14,28 +14,28 @@
     <div class="col-md-3">
       <div class="card p-3 shadow">
         <small class="text-muted"><i class="bi bi-currency-dollar me-2 text-primary"></i>Receita Total</small>
-        <h4>{{12580.90 | currency:'BRL'}}</h4>
+        <h4>{{0 | currency:'BRL'}}</h4>
       </div>
     </div>
 
     <div class="col-md-3">
       <div class="card p-3 shadow">
         <small class="text-muted"><i class="bi bi-cart me-2 text-primary"></i>Custo de Produção</small>
-        <h4>{{4235.40 | currency:'BRL'}}</h4>
+        <h4>{{0 | currency:'BRL'}}</h4>
       </div>
     </div>
 
     <div class="col-md-3">
       <div class="card p-3 shadow">
         <small class="text-muted"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>Lucro Líquido</small>
-        <h4>{{8345.50 | currency:'BRL'}}</h4>
+        <h4>{{0 | currency:'BRL'}}</h4>
       </div>
     </div>
 
     <div class="col-md-3">
       <div class="card p-3 shadow">
         <small class="text-muted"><i class="bi bi-percent me-2 text-primary"></i>Margem de Lucro</small>
-        <h4>66,3%</h4>
+        <h4>0%</h4>
       </div>
     </div>
   </div>
@@ -87,8 +87,20 @@
       <div class="col-md-6 p-3">
         <div class="card shadow-sm">
           <div class="card-body">
-            <h6>Produtos Mais Lucrativos</h6>
+            <h6>Produtos</h6>
             <div class="table-responsive">
+              <div *ngIf="!dashboard?.topProducts" class="text-center py-5">
+
+                <i class="bi bi-box-seam fs-1 text-muted"></i>
+
+                <h5 class="mt-3">
+                  Nenhum produto encontrado
+                </h5>
+                <p class="text-muted mb-0">
+                  Efetue vendas de seus produtos para aparecer no histórico
+                </p>
+
+              </div>
               <table class="table table-striped align-middle">
                 <thead>
                   <tr>
@@ -99,59 +111,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="align-items-center">
+                  <tr *ngFor="let item of dashboard?.topProducts" class="align-items-center">
                     <th scope="row" class="product-image-cell ">
-                      <img src="assets/img/product/monster.webp" class="img-fluid img-thumbnail product-image rounded ">
+                      <img [src]="item.product.imagePreview" class="img-fluid img-thumbnail product-image rounded ">
                     </th>
-                    <td>Kit Caneca Monster</td>
-                    <td>{{69.90 | currency:'BRL'}}</td>
+                    <td>{{item.product.name}}</td>
+                    <td>{{item.product.currentSalePrice| currency:'BRL'}}</td>
                     <td>
-                      <app-rating [readonly]="true" [ngModel]="5">
-                      </app-rating>
-                    </td>
-                  </tr>
-                  <tr class="align-items-center">
-                    <th scope="row" class="product-image-cell ">
-                      <img src="assets/img/product/coisinho.png" class="img-fluid img-thumbnail product-image rounded ">
-                    </th>
-                    <td>Bonequinho</td>
-                    <td>{{80.00 | currency:'BRL'}}</td>
-                    <td>
-                      <app-rating [readonly]="true" [ngModel]="3">
-                      </app-rating>
-                    </td>
-                  </tr>
-                  <tr class="align-items-center">
-                    <th scope="row" class="product-image-cell ">
-                      <img src="assets/img/product/sensorial.png"
-                        class="img-fluid img-thumbnail product-image rounded ">
-                    </th>
-                    <td>Sensorial</td>
-                    <td>{{55.00 | currency:'BRL'}}</td>
-                    <td>
-                      <app-rating [readonly]="true" [ngModel]="5">
-                      </app-rating>
-                    </td>
-                  </tr>
-                  <tr class="align-items-center">
-                    <th scope="row" class="product-image-cell ">
-                      <img src="assets/img/product/naruto.png" class="img-fluid img-thumbnail product-image rounded ">
-                    </th>
-                    <td>Naruto Bordado</td>
-                    <td>{{60.00 | currency:'BRL'}}</td>
-                    <td>
-                      <app-rating [readonly]="true" [ngModel]="4">
-                      </app-rating>
-                    </td>
-                  </tr>
-                  <tr class="align-items-center">
-                    <th scope="row" class="product-image-cell ">
-                      <img src="assets/img/product/chaveiro.png" class="img-fluid img-thumbnail product-image rounded ">
-                    </th>
-                    <td>Chaveiro Capivara Bordado</td>
-                    <td>{{15.00 | currency:'BRL'}}</td>
-                    <td>
-                      <app-rating [readonly]="true" [ngModel]="4">
+                      <app-rating [readonly]="true" [ngModel]="item.score">
                       </app-rating>
                     </td>
                   </tr>
@@ -164,8 +131,21 @@
       <div class="col-md-6 p-3">
         <div class="card shadow-sm">
           <div class="card-body">
-            <h6>Estoque Baixo</h6>
+            <h6>Estoque</h6>
             <div class="table-responsive">
+              <div *ngIf="!dashboard?.topInventorys" class="text-center py-5">
+
+                <i class="bi bi-box-seam fs-1 text-muted"></i>
+
+                <h5 class="mt-3">
+                  Nenhum item encontrado
+                </h5>
+                <p class="text-muted mb-0">
+                  Cadastre seu estoque para aparecer no histórico
+                </p>
+
+              </div>
+
               <table class="table table-striped align-middle">
                 <thead>
                   <tr>
@@ -176,63 +156,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="align-items-center">
+                  <tr *ngFor="let i of dashboard?.topInventorys" class="align-items-center">
                     <th scope="row" class="product-image-cell ">
-                      <img src="assets/img/inventario/filmento_amarelo.jpg"
+                      <img [src]="i.imagePreview"
                         class="img-fluid img-thumbnail product-image rounded ">
                     </th>
-                    <td>Filamento Amarelo 1Kg</td>
-                    <td>120g restantes</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.quantity}}</td>
                     <td>
-                      <app-stock-progress [value]="30">
-                      </app-stock-progress>
-                    </td>
-                  </tr>
-                  <tr class="align-items-center">
-                    <th scope="row" class="product-image-cell ">
-                      <img src="assets/img/inventario/click.webp"
-                        class="img-fluid img-thumbnail product-image rounded ">
-                    </th>
-                    <td>Kit Click - 200Un</td>
-                    <td>40 restantes</td>
-                    <td>
-                      <app-stock-progress [value]="40">
-                      </app-stock-progress>
-                    </td>
-                  </tr>
-                  <tr class="align-items-center">
-                    <th scope="row" class="product-image-cell ">
-                      <img src="assets/img/inventario/saquinho.jpg"
-                        class="img-fluid img-thumbnail product-image rounded ">
-                    </th>
-                    <td>Saquinho Kit 400un</td>
-                    <td>300 restantes</td>
-                    <td>
-                      <app-stock-progress [value]="85">
-                      </app-stock-progress>
-                    </td>
-                  </tr>
-                  <tr class="align-items-center">
-                    <th scope="row" class="product-image-cell ">
-                      <img src="assets/img/inventario/correntinha.webp"
-                        class="img-fluid img-thumbnail product-image rounded ">
-                    </th>
-                    <td>Correntinha Bolinha - Kit 20Un</td>
-                    <td>3 restantes</td>
-                    <td>
-                      <app-stock-progress [value]="15">
-                      </app-stock-progress>
-                    </td>
-                  </tr>
-                  <tr class="align-items-center">
-                    <th scope="row" class="product-image-cell ">
-                      <img src="assets/img/inventario/filamento_azul.webp"
-                        class="img-fluid img-thumbnail product-image rounded ">
-                    </th>
-                    <td>Filamento Azul 1Kg</td>
-                    <td>920g restantes</td>
-                    <td>
-                      <app-stock-progress [value]="90">
+                      <app-stock-progress [value]="getStockPercentage(i)">
                       </app-stock-progress>
                     </td>
                   </tr>

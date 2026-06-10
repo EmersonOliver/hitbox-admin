@@ -100,35 +100,17 @@
 
             <!-- START DATE -->
 
-            <div class="col-12 col-md-4 col-lg-2">
+            <div class="col-12 col-md-6 col-lg-4">
 
                 <label class="form-label">
-                    Data inicial
+                    Datas
                 </label>
 
-                <input
-                    type="date"
-                    class="form-control"
-                    [(ngModel)]="startDate"
-                    (change)="applyFilters()">
+                <app-range-datepicker></app-range-datepicker>
 
             </div>
 
-            <!-- END DATE -->
-
-            <div class="col-12 col-md-4 col-lg-2">
-
-                <label class="form-label">
-                    Data final
-                </label>
-
-                <input
-                    type="date"
-                    class="form-control"
-                    [(ngModel)]="endDate"
-                    (change)="applyFilters()">
-
-            </div>
+          
 
             <!-- ACTION -->
 

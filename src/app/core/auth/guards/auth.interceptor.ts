@@ -11,6 +11,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const token = tokenService.getToken();
 
+  if (!tokenService.isAuthenticated()) {
+    tokenService.clear();
+    router.navigate(['/']);
+  }
+
   const authReq = token
     ? req.clone({
       setHeaders: {
@@ -21,7 +26,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(authReq).pipe(
     catchError((error) => {
-
       if (error.status === 401) {
         tokenService.clear();
 

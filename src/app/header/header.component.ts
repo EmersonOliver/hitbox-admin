@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ThemeService } from '../core/services/theme.service';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TokenService } from '../core/auth/guards/token.service';
+import { ProfileService } from '../core/profile/profile.service';
 
 @Component({
   selector: 'app-header',
@@ -22,11 +23,15 @@ export class HeaderComponent implements OnInit {
   role = '';
 
   titulo = "";
+
+
   constructor(private readonly themeService: ThemeService,
     private router: Router,
     private tokenService: TokenService,
+    private profileService: ProfileService,
     private title: Title) {
     this.titulo = title.getTitle()
+
   }
   ngOnInit(): void {
     this.firstName = this.tokenService.getUserName();
@@ -36,22 +41,36 @@ export class HeaderComponent implements OnInit {
     this.companyName =
       this.tokenService.getCompanyName();
 
-    this.role =
-      this.formatRole(
-        this.tokenService.getRole()
-      );
+
+    this.profileService.loadProfile().subscribe({
+      next: profile => {
+
+        this.firstName =
+          profile.name;
+
+        this.role =
+          this.formatRole(profile.role);
+
+        this.profileService.profileResponse = profile;
+      }
+    })
   }
+
+
   private formatRole(role: string): string {
 
     switch (role) {
 
       case 'ROLE_OWNER':
+      case 'OWNER':
         return 'Administrador';
 
       case 'ROLE_MANAGER':
+      case 'MANAGER':
         return 'Gerente';
 
       case 'ROLE_USER':
+      case 'USER':
         return 'Usuário';
 
       default:

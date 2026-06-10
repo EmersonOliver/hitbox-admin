@@ -131,23 +131,10 @@ export class ProductionKanbanComponent implements OnInit {
 
   changeOrder() {
     this.serviceOrderSelected = this.ordersComboOpen.find(r => r.id == this.formCard.get('serviceOrderId')?.value);
-    let productItem = this.serviceOrderSelected?.items.find(i => i.id === this.formCard.get('itemProductId')?.value);
-    console.log(productItem)
     this.formCard.patchValue({
       clienteId: this.serviceOrderSelected?.clienteId
     });
 
-    if (productItem) {
-      this.formCard.patchValue({
-        estimatedMinutes:
-          FormatProductionTime.formatHoursToDuration(
-            productItem!.estimatedMinutes
-          )
-      });
-      console.log(FormatProductionTime.formatHoursToDuration(
-        productItem!.estimatedMinutes
-      ))
-    }
   }
 
   carregarProdutos() {
@@ -437,7 +424,7 @@ export class ProductionKanbanComponent implements OnInit {
       productImage: '',
       clientName: '',
       quantity: 1,
-      status:'OPEN'
+      status: 'OPEN'
     };
 
     this.editCard(newCard);
@@ -652,10 +639,10 @@ export class ProductionKanbanComponent implements OnInit {
           blockedReason: '',
           notes: '',
           quantity: item.quantity,
-          status: this.columns.find(column=> firstColumnId == column.id)?.typeColumn || 'OPEN'
+          status: this.columns.find(column => firstColumnId == column.id)?.typeColumn || 'OPEN'
         })
       );
-
+    console.log(requests)
     forkJoin(
       requests.map(
         request => this.cardService.create(request)
