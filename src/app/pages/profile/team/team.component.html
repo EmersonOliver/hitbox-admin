@@ -1,0 +1,82 @@
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Equipes
+            </h2>
+
+            <p class="text-muted mb-0">
+                Organize usuários por departamentos
+            </p>
+
+        </div>
+
+        <button class="btn btn-primary" (click)="addTeam()">
+
+            <i class="bi bi-plus-circle me-2"></i>
+
+            Nova Equipe
+
+        </button>
+
+    </div>
+
+    <!-- BUSCA -->
+
+    <div class="team-search mb-4">
+
+        <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar equipe..."
+        >
+
+    </div>
+
+    <!-- LISTA -->
+
+    <div class="team-grid">
+
+        <div class="team-card" (click)="openModal()">
+
+            <div class="team-icon">
+
+                <i class="bi bi-gear"></i>
+
+            </div>
+
+            <div class="team-content">
+
+                <h5>
+                    Produção
+                </h5>
+
+                <small>
+                    Responsável: Emerson
+                </small>
+
+            </div>
+
+            <div class="team-meta">
+
+                <span class="badge text-bg-primary">
+
+                    12 membros
+
+                </span>
+
+                <i class="bi bi-chevron-right"></i>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<app-team-modal></app-team-modal>
+<app-add-team-modal></app-add-team-modal>

@@ -79,7 +79,21 @@ export const routes: Routes = [
                     import('./pages/profile/change-password/change-password.component')
                         .then(m => m.ChangePasswordComponent)
             },
-
+            {
+                path: 'profile/teams', loadComponent: () =>
+                    import('./pages/profile/team/team.component')
+                        .then(m => m.TeamComponent)
+            },
+            {
+                path: 'profile/teams/users', loadComponent: () =>
+                    import('./pages/profile/team/users/users.component')
+                        .then(m => m.UsersComponent)
+            },
+            {
+                path: 'profile/teams/permissions', loadComponent: () =>
+                    import('./pages/profile/team/permissions/permissions.component')
+                        .then(m => m.PermissionsComponent)
+            },
             {
                 path: 'profile/settings',
                 component: SettingsComponent,

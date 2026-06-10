@@ -51,6 +51,9 @@
                     </button>
 
                     <div class="dropdown-menu w-100 p-3 shadow" style="max-height: 300px; overflow-y: auto;">
+                        <div *ngIf="categorias.length == 0" class="col-md-12">
+                             Não há Categorias
+                        </div>
 
                         <div class="form-check mb-2" *ngFor="let c of categorias">
 

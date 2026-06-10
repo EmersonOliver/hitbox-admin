@@ -16,8 +16,8 @@ import { ToastComponent } from "../components/toast/toast.component";
 export class LoginComponent {
 
   form: FormGroup;
-  constructor(private fb: FormBuilder, 
-    private toast:ToastService,
+  constructor(private fb: FormBuilder,
+    private toast: ToastService,
     private router: Router, private authService: AuthService) {
     this.form = fb.group({
       email: [null, Validators.required],
@@ -26,7 +26,6 @@ export class LoginComponent {
   }
 
   login() {
-    console.log('Login');
     this.authService.login(this.form.getRawValue()).subscribe({
       next: response => {
         if (response.companyId == null) {
@@ -34,13 +33,11 @@ export class LoginComponent {
         } else {
           this.router.navigate(['/dashboard']);
         }
-        this.toast.show('Requisição enviada com sucesso!', 'success');
       },
       error: (error) => {
         this.toast.show('Ocorreu um erro. ' + error.error.message, 'danger');
       }
     })
-
   }
 
 }

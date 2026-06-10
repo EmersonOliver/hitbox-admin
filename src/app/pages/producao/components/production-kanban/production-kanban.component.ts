@@ -131,22 +131,10 @@ export class ProductionKanbanComponent implements OnInit {
 
   changeOrder() {
     this.serviceOrderSelected = this.ordersComboOpen.find(r => r.id == this.formCard.get('serviceOrderId')?.value);
-    let productItem = this.serviceOrderSelected?.items.find(i => i.id === this.formCard.get('itemProductId')?.value);
     this.formCard.patchValue({
-      clienteId: this.serviceOrderSelected?.clienteId,
+      clienteId: this.serviceOrderSelected?.clienteId
     });
 
-    if (productItem) {
-      this.formCard.patchValue({
-        estimatedMinutes:
-          FormatProductionTime.formatHoursToDuration(
-            productItem!.estimatedMinutes
-          )
-      });
-      console.log(FormatProductionTime.formatHoursToDuration(
-        productItem!.estimatedMinutes
-      ))
-    }
   }
 
   carregarProdutos() {
@@ -264,7 +252,9 @@ export class ProductionKanbanComponent implements OnInit {
         movedCard.notes,
 
       quantity:
-        movedCard.quantity
+        movedCard.quantity,
+      status:
+        movedCard.status
     }
 
     this.cardService.update(payload)
@@ -433,7 +423,8 @@ export class ProductionKanbanComponent implements OnInit {
       productName: '',
       productImage: '',
       clientName: '',
-      quantity: 1
+      quantity: 1,
+      status: 'OPEN'
     };
 
     this.editCard(newCard);
@@ -469,7 +460,9 @@ export class ProductionKanbanComponent implements OnInit {
             card.notes,
           clienteId: card.clienteId,
           quantity:
-            card.quantity
+            card.quantity,
+          status:
+            card.status
         }
 
         this.cardService.update(payload).subscribe();
@@ -531,31 +524,7 @@ export class ProductionKanbanComponent implements OnInit {
 
     if (!this.selectedCard.id) {
       this.createCardsFromServiceOrder();
-      // this.cardService
-      //   .create(payload)
-      //   .subscribe({
 
-      //     next: created => {
-
-      //       const column =
-      //         this.columns.find(
-      //           c =>
-      //             c.id ===
-      //             created.kanbanColumnId
-      //         );
-
-      //       if (!column) {
-      //         return;
-      //       }
-      //       column.cards.push(created);
-      //       this.fecharCanvas();
-      //       this.ngOnInit();
-      //       // this.carregarOrdemServicoByStatus('OPEN')
-      //       // this.loadKanban();
-      //       this.formCard.reset();
-
-      //     }
-      //   });
       return;
     }
 
@@ -669,10 +638,11 @@ export class ProductionKanbanComponent implements OnInit {
           blocked: false,
           blockedReason: '',
           notes: '',
-          quantity: item.quantity
+          quantity: item.quantity,
+          status: this.columns.find(column => firstColumnId == column.id)?.typeColumn || 'OPEN'
         })
       );
-
+    console.log(requests)
     forkJoin(
       requests.map(
         request => this.cardService.create(request)

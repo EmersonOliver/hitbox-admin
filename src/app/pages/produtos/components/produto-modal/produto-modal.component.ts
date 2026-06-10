@@ -775,6 +775,7 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
       };
     });
   }
+  
   onWeightInput(event: Event, index: number): void {
 
     const input = event.target as HTMLInputElement;
@@ -810,6 +811,7 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
     input.value =
       value.toFixed(3).replace('.', ',');
   }
+
   formatWeight(value: number | null): string {
 
     if (value == null) {

@@ -1,0 +1,91 @@
+.permission-toolbar {
+
+    background: var(--bs-body-bg);
+
+    border: 1px solid var(--bs-border-color);
+
+    border-radius: 16px;
+
+    padding: 1.25rem;
+}
+
+.permission-card {
+
+    height: 100%;
+
+    background: var(--bs-body-bg);
+
+    border: 1px solid var(--bs-border-color);
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    transition: all .2s ease;
+}
+
+.permission-card:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: var(--bs-box-shadow);
+}
+
+.permission-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 1rem 1.25rem;
+
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.permission-header h5 {
+
+    margin-bottom: .25rem;
+}
+
+.permission-header small {
+
+    color: var(--bs-secondary-color);
+}
+
+.permission-header i {
+
+    font-size: 1.5rem;
+
+    color: var(--bs-primary);
+}
+
+.permission-body {
+
+    padding: 2.25rem;
+}
+
+.permission-body .form-check {
+
+    padding: .5rem 0;
+
+    border-bottom: 1px solid rgba(var(--bs-secondary-rgb), .08);
+}
+
+.permission-body .form-check:last-child {
+
+    border-bottom: none;
+}
+
+.permission-body .form-check-label {
+
+    cursor: pointer;
+
+    font-weight: 500;
+}
+
+.permission-body .form-check-input {
+
+    cursor: pointer;
+}

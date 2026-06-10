@@ -20,6 +20,7 @@ import { ModalServiceOrderComponent } from '../components/modals/modal-service-o
 import { ModalServiceViewerComponent } from '../components/modals/modal-service-viewer/modal-service-viewer.component';
 import { ServiceOrderRequest } from '../models/request/service-order-request.model';
 import { ToastService } from '../../components/toast/toast.service';
+import { RangeDatepickerComponent } from "../../components/datepicker/range-datepicker.component";
 
 
 declare var bootstrap: any;
@@ -31,8 +32,9 @@ declare var bootstrap: any;
     CommonModule,
     FormsModule,
     ModalServiceOrderComponent,
-    ModalServiceViewerComponent
-  ],
+    ModalServiceViewerComponent,
+    RangeDatepickerComponent
+],
   templateUrl: './service-order.component.html',
   styleUrls: ['./service-order.component.scss']
 })

@@ -1,0 +1,244 @@
+<div class="modal fade" id="teamModal" tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+
+        <div class="modal-content app-modal">
+
+            <!-- HEADER -->
+
+            <div class="modal-header border-0">
+
+                <div>
+
+                    <h4 class="fw-bold mb-1">
+                        Equipe Produção
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        Gerencie os membros desta equipe
+                    </p>
+
+                </div>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <!-- BODY -->
+
+            <div class="modal-body">
+
+                <!-- NOVO MEMBRO -->
+
+                <div class="card-member-add mb-4">
+
+                    <div class="row g-2">
+
+                        <div class="col-md-8">
+
+                            <input type="email" class="form-control" placeholder="Digite o e-mail do colaborador">
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <button class="btn btn-primary w-100">
+
+                                <i class="bi bi-person-plus me-2"></i>
+
+                                Convidar
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- MEMBROS -->
+
+                <div class="team-members">
+
+                    <!-- OWNER -->
+
+                    <div class="member-item">
+
+                        <div class="member-avatar">
+                            EO
+                        </div>
+
+                        <div class="member-info">
+
+                            <strong>
+                                Emerson Oliveira
+                            </strong>
+
+                            <small>
+                                {{'e.emerson@gmail.com'}}
+                            </small>
+
+                        </div>
+
+                        <div class="member-role">
+
+                            <span class="badge text-bg-success">
+                                Owner
+                            </span>
+
+                        </div>
+
+                        <div class="member-actions">
+
+                            <div class="dropdown">
+
+                                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown">
+
+                                    <i class="bi bi-three-dots"></i>
+
+                                </button>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+
+                                    <li>
+
+                                        <button class="dropdown-item">
+
+                                            <i class="bi bi-eye me-2"></i>
+
+                                            Visualizar Perfil
+
+                                        </button>
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- MEMBRO -->
+
+                    <div class="member-item">
+
+                        <div class="member-avatar">
+                            JP
+                        </div>
+
+                        <div class="member-info">
+
+                            <strong>
+                                João Pereira
+                            </strong>
+
+                            <small>
+                                {{'joao@email.com'}}
+                            </small>
+
+                        </div>
+
+                        <div class="member-role">
+
+                            <span class="badge text-bg-primary">
+                                Operador
+                            </span>
+
+                        </div>
+
+                        <div class="member-actions">
+
+                            <div class="dropdown">
+
+                                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown">
+
+                                    <i class="bi bi-three-dots"></i>
+
+                                </button>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+
+                                    <li>
+
+                                        <button class="dropdown-item" (click)="permissions()">
+
+                                            <i class="bi bi-person-badge me-2"></i>
+
+                                            Alterar Cargo
+
+                                        </button>
+
+                                    </li>
+
+                                    <li>
+
+                                        <button class="dropdown-item" (click)="permissions()">
+
+                                            <i class="bi bi-shield-lock me-2"></i>
+
+                                            Permissões
+
+                                        </button>
+
+                                    </li>
+
+                                    <li>
+
+                                        <button class="dropdown-item" (click)="users()">
+
+                                            <i class="bi bi-pencil-square me-2"></i>
+
+                                            Editar Usuário
+
+                                        </button>
+
+                                    </li>
+
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+
+                                    <li>
+
+                                        <button class="dropdown-item text-danger">
+
+                                            <i class="bi bi-trash me-2"></i>
+
+                                            Remover da Equipe
+
+                                        </button>
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+
+            <div class="modal-footer border-0">
+
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+
+                    Fechar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -10,13 +10,14 @@ export class ProfileService {
 
   constructor(private http: HttpClient) { }
 
+  profileResponse?: ProfileResponse;
+
   editProfile(payload: any, id: string): Observable<ProfileResponse> {
     return this.http.put<any>(`api/usuario/hitbox/profile/${id}`, payload).pipe();
   }
 
   loadProfile(): Observable<ProfileResponse> {
-    let token = localStorage.getItem('token');
-    return this.http.get<any>(`api/usuario/hitbox/profile`, { headers: { 'Authorization': `Bearer ${token}` } }).pipe();
+    return this.http.get<any>(`api/usuario/hitbox/profile`).pipe();
   }
 
 }
