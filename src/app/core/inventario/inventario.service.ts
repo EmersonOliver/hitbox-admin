@@ -88,4 +88,11 @@ export class InventarioService {
     }).pipe();
 
   }
+
+
+  stockAvailable(id: number, quantity: number): Observable<{available:boolean}> {
+    return this.http.get<{available:boolean}>(`api/hitbox/inventory/available/${id}`, {
+      params: { quantity: quantity }
+    }).pipe();
+  }
 }

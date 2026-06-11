@@ -14,11 +14,13 @@ import { ImageService } from '../../core/image/image.service';
 import { InventoryModel } from '../inventory/components/inventory-modal/models/inventory.model';
 import { ProductModalViewerComponent } from "./components/product-modal-viewer/product-modal-viewer.component";
 import { ProductDashboardResponse } from './models/product-dashboard.model';
+import { InventoryModalViewerComponent } from "./components/inventory-modal-viewer/inventory-modal-viewer.component";
+import { InventoryDashboardResponse } from './models/inventory-dashboard.model';
 declare var bootstrap: any;
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, RangeDatepickerComponent, RatingComponent, StockProgressComponent, RouterModule, ProductModalViewerComponent],
+  imports: [CommonModule, FormsModule, RangeDatepickerComponent, RatingComponent, StockProgressComponent, RouterModule, ProductModalViewerComponent, InventoryModalViewerComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -28,6 +30,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   dashboard?: DashboardResponse;
   productDashboard?: ProductDashboardResponse;
+  inventoryDashboard?: InventoryDashboardResponse;
   cards = [
     {
       title: 'Receita Total',
@@ -105,7 +108,29 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     })
 
   }
+  loadInventoryDashboard(id?: number) {
+    this.dashboardService.inventoryDashboard(id).subscribe({
+      next: response => {
+        this.inventoryDashboard = response;
+        this.imageService
+          .load(this.inventoryDashboard.inventory.imageUrl)
+          .subscribe(url => {
+            this.inventoryDashboard!.inventory.imagePreview = url;
+            const modal =
+              new bootstrap.Modal(
+                document.getElementById(
+                  'inventoryViewerModal'
+                )
+              );
+            setTimeout(() => {
+              modal.show();
+            }, 0);
 
+          });
+      }
+    })
+
+  }
   private loadImages(): void {
     this.dashboard?.topProducts.forEach(item => {
       this.imageService

@@ -71,7 +71,7 @@ export class ProductionKanbanComponent implements OnInit {
   columnsTypes = [
     { id: 'OPEN', label: 'Aberto' },
     { id: 'IN_PRODUCTION', label: 'Em Produção' },
-    { id: 'PARTIALLY_FINISHED', label: 'Em Montagem' },
+    { id: 'IN_PRODUCTION', label: 'Em Montagem' },
     { id: 'FINISHED', label: 'Finalizado' },
     { id: 'DELIVERED', label: 'Entregue' },
     { id: 'CANCELED', label: 'Cancelado' }
@@ -218,6 +218,8 @@ export class ProductionKanbanComponent implements OnInit {
     movedCard.cardOrder =
       event.currentIndex;
 
+      let status = this.columns.find(c=> c.id == targetColumn.id)?.typeColumn;
+console.log(status)
     const payload = {
       id: movedCard.id,
 
@@ -254,7 +256,7 @@ export class ProductionKanbanComponent implements OnInit {
       quantity:
         movedCard.quantity,
       status:
-        movedCard.status
+        status || 'OPEN'
     }
 
     this.cardService.update(payload)
@@ -528,39 +530,6 @@ export class ProductionKanbanComponent implements OnInit {
       return;
     }
 
-    // this.cardService
-    //   .update(payload)
-    //   .subscribe({
-
-    //     next: updated => {
-    //       const column =
-    //         this.columns.find(
-    //           c =>
-    //             c.id ===
-    //             updated.kanbanColumnId
-    //         );
-    //       if (!column) {
-    //         return;
-    //       }
-
-    //       const index =
-    //         column.cards.findIndex(
-    //           c =>
-    //             c.id ===
-    //             updated.id
-    //         );
-
-    //       if (index !== -1) {
-
-    //         column.cards[index] =
-    //           updated;
-    //       }
-
-    //       this.fecharCanvas();
-    //       this.loadKanban();
-    //       this.formCard.reset();
-    //     }
-    //   });
   }
   removeCard(id: number) {
     this.cardService.delete(id).subscribe({

@@ -1,1 +1,378 @@
-<p>inventory-modal-viewer works!</p>
+<div
+  class="modal fade"
+  id="inventoryViewerModal"
+  tabindex="-1"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h5 class="modal-title">
+
+          <i class="bi bi-box-seam me-2"></i>
+
+          Dashboard do Inventário
+
+        </h5>
+
+        <button
+          class="btn-close"
+          data-bs-dismiss="modal">
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <ng-container *ngIf="dashboard">
+
+          <div class="row g-4 mb-4">
+
+            <!-- IMAGEM -->
+
+            <div class="col-lg-4">
+
+              <div class="image-panel">
+
+                <img
+                  [src]="dashboard.inventory.imagePreview"
+                  class="inventory-image">
+
+                <div class="mt-3">
+
+                  <h3>
+                    {{ dashboard.inventory.name }}
+                  </h3>
+
+                  <div class="text-muted">
+
+                    {{ dashboard.inventory.supplier }}
+
+                  </div>
+
+                  <div class="mt-3">
+
+                    <span class="badge bg-secondary">
+
+                      {{
+                      dashboard.inventory.unit
+                      }}
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- MÉTRICAS -->
+
+            <div class="col-lg-8">
+
+              <div class="row g-3">
+
+                <div class="col-md-4">
+
+                  <div class="metric-card">
+
+                    <small>Comprado</small>
+
+                    <h4>
+
+                      {{
+                      dashboard.purchasedQuantity
+                      }}
+
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                  <div class="metric-card">
+
+                    <small>Consumido</small>
+
+                    <h4>
+
+                      {{
+                      dashboard.consumedQuantity
+                      }}
+
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                  <div class="metric-card success">
+
+                    <small>Saldo Atual</small>
+
+                    <h4>
+
+                      {{
+                      dashboard.currentQuantity
+                      }}
+
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="metric-card">
+
+                    <small>Valor Comprado</small>
+
+                    <h4>
+
+                      {{
+                      dashboard.totalPurchasedValue
+                      | currency:'BRL'
+                      }}
+
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="metric-card">
+
+                    <small>Valor Consumido</small>
+
+                    <h4>
+
+                      {{
+                      dashboard.totalConsumedValue
+                      | currency:'BRL'
+                      }}
+
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="metric-card warning">
+
+                    <small>Valor Atual Estoque</small>
+
+                    <h4>
+
+                      {{
+                      dashboard.currentStockValue
+                      | currency:'BRL'
+                      }}
+
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="metric-card">
+
+                    <small>Custo Médio</small>
+
+                    <h4>
+
+                      {{
+                      dashboard.averageUnitCost
+                      | currency:'BRL'
+                      }}
+
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="metric-card">
+
+                    <small>Última Entrada</small>
+
+                    <h5>
+
+                      {{
+                      dashboard.lastEntryDate
+                      | date:'dd/MM/yyyy'
+                      }}
+
+                    </h5>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="metric-card">
+
+                    <small>Último Consumo</small>
+
+                    <h5>
+
+                      {{
+                      dashboard.lastConsumptionDate
+                      | date:'dd/MM/yyyy'
+                      }}
+
+                    </h5>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- HISTÓRICO ENTRADAS -->
+
+          <h5 class="section-title">
+
+            Histórico de Entradas
+
+          </h5>
+
+          <div class="table-responsive mb-4">
+
+            <table class="table">
+
+              <thead>
+
+                <tr>
+
+                  <th>Ano</th>
+
+                  <th>Mês</th>
+
+                  <th>Quantidade</th>
+
+                  <th>Valor</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                <tr
+                  *ngFor="
+                    let item of dashboard.entriesHistory
+                  ">
+
+                  <td>{{ item.year }}</td>
+
+                  <td>{{ item.month }}</td>
+
+                  <td>{{ item.quantity }}</td>
+
+                  <td>
+
+                    {{
+                    item.value
+                    | currency:'BRL'
+                    }}
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+          <!-- HISTÓRICO CONSUMO -->
+
+          <h5 class="section-title">
+
+            Histórico de Consumo
+
+          </h5>
+
+          <div class="table-responsive">
+
+            <table class="table">
+
+              <thead>
+
+                <tr>
+
+                  <th>Ano</th>
+
+                  <th>Mês</th>
+
+                  <th>Quantidade</th>
+
+                  <th>Valor</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                <tr
+                  *ngFor="
+                    let item of dashboard.consumptionHistory
+                  ">
+
+                  <td>{{ item.year }}</td>
+
+                  <td>{{ item.month }}</td>
+
+                  <td>{{ item.quantity }}</td>
+
+                  <td>
+
+                    {{
+                    item.value
+                    | currency:'BRL'
+                    }}
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
