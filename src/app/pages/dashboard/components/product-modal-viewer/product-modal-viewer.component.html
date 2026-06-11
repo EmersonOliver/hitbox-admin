@@ -1,0 +1,373 @@
+<div class="modal fade"
+     id="productViewerModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h5 class="modal-title">
+
+          <i class="bi bi-bar-chart-line me-2"></i>
+
+          Dashboard do Produto
+
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal">
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <ng-container *ngIf="dashboard">
+
+          <!-- RESUMO -->
+
+          <div class="row g-4 mb-4">
+
+            <!-- IMAGEM -->
+
+            <div class="col-lg-4">
+
+              <div class="image-panel">
+
+                <img
+                  [src]="dashboard.product.imagePreview"
+                  class="product-image">
+
+                <div class="mt-3">
+
+                  <h3 class="fw-bold mb-1">
+                    {{ dashboard.product.name }}
+                  </h3>
+
+                  <div class="text-muted">
+                    SKU:
+                    {{ dashboard.product.sku }}
+                  </div>
+
+                  <div class="mt-3">
+
+                    <span class="badge bg-secondary">
+                      {{ dashboard.product.categoryName }}
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- MÉTRICAS -->
+
+            <div class="col-lg-8">
+
+              <div class="row g-3">
+
+                <div class="col-md-6">
+
+                  <div class="metric-card primary">
+
+                    <small>Receita Total</small>
+
+                    <h4>
+                      {{
+                        dashboard.totalRevenue
+                        | currency:'BRL'
+                      }}
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="metric-card success">
+
+                    <small>Lucro Total</small>
+
+                    <h4>
+                      {{
+                        dashboard.totalProfit
+                        | currency:'BRL'
+                      }}
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="metric-card">
+
+                    <small>Margem Média</small>
+
+                    <h4>
+                      {{
+                        dashboard.averageMargin
+                        | number:'1.2-2'
+                      }}%
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="metric-card">
+
+                    <small>Ticket Médio</small>
+
+                    <h4>
+                      {{
+                        dashboard.averageTicket
+                        | currency:'BRL'
+                      }}
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="metric-card warning">
+
+                    <small>Lucro / Hora</small>
+
+                    <h4>
+                      {{
+                        dashboard.profitPerHour
+                        | currency:'BRL'
+                      }}
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                  <div class="metric-card">
+
+                    <small>Ranking</small>
+
+                    <h4>
+                      #{{ dashboard.ranking }}
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                  <div class="metric-card">
+
+                    <small>Popularidade</small>
+
+                    <h4>
+                      {{ dashboard.popularityScore }}/5
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                  <div class="metric-card">
+
+                    <small>Produzidos</small>
+
+                    <h4>
+                      {{ dashboard.producedQuantity }}
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                  <div class="metric-card">
+
+                    <small>Vendidos</small>
+
+                    <h4>
+                      {{ dashboard.soldQuantity }}
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="metric-card">
+
+                    <small>Entregues</small>
+
+                    <h4>
+                      {{ dashboard.deliveredQuantity }}
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="metric-card">
+
+                    <small>Ordens de Serviço</small>
+
+                    <h4>
+                      {{ dashboard.serviceOrdersCount }}
+                    </h4>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- HISTÓRICO PRODUÇÃO -->
+
+          <h5 class="section-title">
+            Histórico de Produção
+          </h5>
+
+          <div class="table-responsive mb-4">
+
+            <table class="table align-middle">
+
+              <thead>
+
+                <tr>
+
+                  <th>Ano</th>
+
+                  <th>Mês</th>
+
+                  <th>Produzidos</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                <tr
+                  *ngFor="
+                    let item of dashboard.productionHistory
+                  ">
+
+                  <td>{{ item.year }}</td>
+
+                  <td>{{ item.month }}</td>
+
+                  <td>{{ item.quantityProduced }}</td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+          <!-- HISTÓRICO FINANCEIRO -->
+
+          <h5 class="section-title">
+            Histórico Financeiro
+          </h5>
+
+          <div class="table-responsive">
+
+            <table class="table align-middle">
+
+              <thead>
+
+                <tr>
+
+                  <th>Ano</th>
+
+                  <th>Mês</th>
+
+                  <th>Receita</th>
+
+                  <th>Custo</th>
+
+                  <th>Lucro</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                <tr
+                  *ngFor="
+                    let item of dashboard.revenueHistory
+                  ">
+
+                  <td>{{ item.year }}</td>
+
+                  <td>{{ item.month }}</td>
+
+                  <td>
+                    {{
+                      item.revenue
+                      | currency:'BRL'
+                    }}
+                  </td>
+
+                  <td>
+                    {{
+                      item.productionCost
+                      | currency:'BRL'
+                    }}
+                  </td>
+
+                  <td>
+                    {{
+                      item.profit
+                      | currency:'BRL'
+                    }}
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

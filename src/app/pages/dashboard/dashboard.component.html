@@ -111,16 +111,18 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of dashboard?.topProducts" class="align-items-center">
-                    <th scope="row" class="product-image-cell ">
-                      <img [src]="item.product.imagePreview" class="img-fluid img-thumbnail product-image rounded ">
-                    </th>
-                    <td>{{item.product.name}}</td>
-                    <td>{{item.product.currentSalePrice| currency:'BRL'}}</td>
-                    <td>
-                      <app-rating [readonly]="true" [ngModel]="item.score">
-                      </app-rating>
-                    </td>
+                  <tr class="align-middle clickable-row"
+                  *ngFor="let item of dashboard?.topProducts" 
+                   (click)="loadProductDashboard(item.product.productId)">
+                      <th scope="row" class="product-image-cell ">
+                        <img [src]="item.product.imagePreview" class="img-fluid img-thumbnail product-image rounded ">
+                      </th>
+                      <td>{{item.product.name}}</td>
+                      <td>{{item.product.currentSalePrice| currency:'BRL'}}</td>
+                      <td>
+                        <app-rating [readonly]="true" [ngModel]="item.score">
+                        </app-rating>
+                      </td>
                   </tr>
                 </tbody>
               </table>
@@ -158,8 +160,7 @@
                 <tbody>
                   <tr *ngFor="let i of dashboard?.topInventorys" class="align-items-center">
                     <th scope="row" class="product-image-cell ">
-                      <img [src]="i.imagePreview"
-                        class="img-fluid img-thumbnail product-image rounded ">
+                      <img [src]="i.imagePreview" class="img-fluid img-thumbnail product-image rounded ">
                     </th>
                     <td>{{i.name}}</td>
                     <td>{{i.quantity}}</td>
@@ -177,3 +178,4 @@
     </div>
   </div>
 </div>
+<app-product-modal-viewer [dashboard]="productDashboard"></app-product-modal-viewer>

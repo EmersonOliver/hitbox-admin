@@ -235,3 +235,12 @@ PULSE
     color: var(--bs-secondary);
   }
 }
+
+.clickable-row {
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.clickable-row:hover {
+  background: var(--app-surface-hover);
+}

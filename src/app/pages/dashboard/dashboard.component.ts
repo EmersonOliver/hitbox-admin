@@ -5,18 +5,20 @@ import { FormsModule } from '@angular/forms';
 import { RangeDatepickerComponent } from "../components/datepicker/range-datepicker.component";
 import { RatingComponent } from '../components/rating/rating.component';
 import { StockProgressComponent } from "../components/stock-progress/stock-progress.component";
-import { Router, RouterLink } from "@angular/router";
+import { Router, RouterLink, RouterModule } from "@angular/router";
 import { TutorialService } from '../../core/tutorial/tutorial.service';
 import { DASHBOARD_TOUR } from '../../core/tutorial/tours/dashboard.tour';
 import { DashboardService } from '../../core/dashboard/dashboard.service';
 import { DashboardResponse } from './models/dashboard.model';
 import { ImageService } from '../../core/image/image.service';
 import { InventoryModel } from '../inventory/components/inventory-modal/models/inventory.model';
-
+import { ProductModalViewerComponent } from "./components/product-modal-viewer/product-modal-viewer.component";
+import { ProductDashboardResponse } from './models/product-dashboard.model';
+declare var bootstrap: any;
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, RangeDatepickerComponent, RatingComponent, StockProgressComponent],
+  imports: [CommonModule, FormsModule, RangeDatepickerComponent, RatingComponent, StockProgressComponent, RouterModule, ProductModalViewerComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -25,6 +27,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   rating = 0;
 
   dashboard?: DashboardResponse;
+  productDashboard?: ProductDashboardResponse;
   cards = [
     {
       title: 'Receita Total',
@@ -76,6 +79,31 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   clickRouterLink(link: string) {
     this.router.navigate([link])
+  }
+  loadProductDashboard(id: number) {
+
+    this.dashboardService.productDashboard(id).subscribe({
+      next: response => {
+        this.productDashboard = response;
+        this.imageService
+          .load(this.productDashboard.product.imageUrl)
+          .subscribe(url => {
+            this.productDashboard!.product.imagePreview = url;
+            const modal =
+              new bootstrap.Modal(
+                document.getElementById(
+                  'productViewerModal'
+                )
+              );
+            setTimeout(() => {
+              modal.show();
+            }, 0);
+
+          });
+
+      }
+    })
+
   }
 
   private loadImages(): void {

@@ -37,11 +37,11 @@ export const routes: Routes = [
                     import('./pages/create-company/create-company.component').then(
                         m => m.CreateCompanyComponent
                     ),
-            },{
-                path:'workspace-setup',
-                 loadComponent: () => 
+            }, {
+                path: 'workspace-setup',
+                loadComponent: () =>
                     import('./pages/workspace-setup/workspace-setup.component').then(
-                        m=> m.WorkspaceSetupComponent
+                        m => m.WorkspaceSetupComponent
                     )
             }
         ]
@@ -53,6 +53,7 @@ export const routes: Routes = [
         children: [
             { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent) },
             { path: 'produtos', loadComponent: () => import('./pages/produtos/produtos.component').then(m => m.ProdutosComponent) },
+            { path: 'produtos/:id', loadComponent: () => import('./pages/produtos/produtos.component').then(m => m.ProdutosComponent) },
             { path: 'clientes', loadComponent: () => import('./pages/clientes/clientes.component').then(m => m.ClientesComponent) },
             { path: 'categorias', loadComponent: () => import('./pages/categorias/categorias.component').then(m => m.CategoriasComponent) },
             { path: 'calculos', loadComponent: () => import('./pages/calc-pricing/calc-pricing.component').then(m => m.CalcPricingComponent) },
