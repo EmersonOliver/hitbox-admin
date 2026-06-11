@@ -642,7 +642,6 @@ export class ProductionKanbanComponent implements OnInit {
           status: this.columns.find(column => firstColumnId == column.id)?.typeColumn || 'OPEN'
         })
       );
-    console.log(requests)
     forkJoin(
       requests.map(
         request => this.cardService.create(request)

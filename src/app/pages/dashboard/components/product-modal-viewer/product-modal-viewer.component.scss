@@ -1,0 +1,132 @@
+.image-panel {
+
+  background: var(--bs-body-bg);
+
+  border: 1px solid var(--bs-border-color);
+
+  border-radius: 16px;
+
+  padding: 1rem;
+
+  height: 100%;
+}
+
+.product-image {
+
+  width: 100%;
+
+  height: 520px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+.metric-card {
+
+  background: var(--bs-body-bg);
+
+  border: 1px solid var(--bs-border-color);
+
+  border-radius: 12px;
+
+  padding: 1rem;
+
+  height: 100%;
+
+  transition: all .2s ease;
+
+  small {
+
+    display: block;
+
+    margin-bottom: .5rem;
+
+    color: var(--bs-secondary-color);
+
+    font-size: .85rem;
+  }
+
+  h4 {
+
+    margin: 0;
+
+    font-weight: 700;
+
+    color: var(--bs-body-color);
+  }
+}
+
+.metric-card.primary {
+
+  border-left: 4px solid var(--bs-primary);
+}
+
+.metric-card.success {
+
+  border-left: 4px solid var(--bs-success);
+}
+
+.metric-card.warning {
+
+  border-left: 4px solid var(--bs-warning);
+}
+
+.section-title {
+
+  font-weight: 600;
+
+  margin-bottom: 1rem;
+
+  color: var(--bs-body-color);
+}
+
+.table {
+
+  --bs-table-bg: transparent;
+
+  margin-bottom: 0;
+}
+
+.table thead th {
+
+  color: var(--bs-body-color);
+
+  border-bottom-color: var(--bs-border-color);
+}
+
+.table tbody td {
+
+  color: var(--bs-body-color);
+
+  border-color: var(--bs-border-color);
+}
+
+.modal-content {
+
+  background: var(--bs-body-bg);
+
+  color: var(--bs-body-color);
+
+  border: 1px solid var(--bs-border-color);
+
+  border-radius: 16px;
+}
+
+.modal-header {
+
+  border-bottom-color: var(--bs-border-color);
+}
+
+.modal-footer {
+
+  border-top-color: var(--bs-border-color);
+}
+
+@media (max-width: 992px) {
+
+  .product-image {
+
+    height: 300px;
+  }
+}

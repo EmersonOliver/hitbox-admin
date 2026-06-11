@@ -15,7 +15,6 @@ import {
   AbstractControl,
   FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -114,9 +113,15 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
+
     if (
       changes['produtoSelecionado']?.currentValue) {
       this.preencherFormulario();
+      const modal =
+        bootstrap.Modal.getOrCreateInstance(
+          document.getElementById('productModal')
+        );
+      modal.show();
     } else {
       this.form.reset();
       this.imagePreview = null
@@ -438,13 +443,12 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
       request.subscribe({
         next: response => {
           this.toast.show('Cadastrado com sucesso!', 'success');
-          console.log(response)
           this.loading = false
           this.save.emit();
           this.fecharModal();
+
         },
         error: (error) => {
-          console.log(error)
           this.toast.show('Erro ao cadastrar! ' + error.error.message, 'danger');
           this.loading = false
 
@@ -775,7 +779,7 @@ export class ProdutoModalComponent implements OnInit, AfterViewInit, OnChanges {
       };
     });
   }
-  
+
   onWeightInput(event: Event, index: number): void {
 
     const input = event.target as HTMLInputElement;
