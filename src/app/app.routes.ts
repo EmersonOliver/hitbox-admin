@@ -59,6 +59,7 @@ export const routes: Routes = [
             { path: 'calculos', loadComponent: () => import('./pages/calc-pricing/calc-pricing.component').then(m => m.CalcPricingComponent) },
             { path: 'catalogo', loadComponent: () => import('./pages/pricing-catalog/pricing-catalog.component').then(m => m.PricingCatalogComponent) },
             { path: 'inventario', loadComponent: () => import('./pages/inventory/inventory.component').then(m => m.InventoryComponent) },
+            { path: 'inventario/:id', loadComponent: () => import('./pages/inventory/inventory.component').then(m => m.InventoryComponent) },
             { path: 'relatorios', loadComponent: () => import('./pages/reports/reports.component').then(m => m.ReportsComponent) },
             { path: 'producao', loadComponent: () => import('./pages/producao/producao.component').then(m => m.ProducaoComponent) },
             {

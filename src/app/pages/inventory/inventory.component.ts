@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   OnInit
 } from '@angular/core';
@@ -22,6 +23,7 @@ import { InventoryModel } from './components/inventory-modal/models/inventory.mo
 import { StockModalComponent } from "./components/stock-modal/stock-modal.component";
 import { StockMovementHistoricalComponent } from "./components/stock-movement-historical/stock-movement-historical.component";
 import { ImageService } from '../../core/image/image.service';
+import { ActivatedRoute } from '@angular/router';
 
 declare var bootstrap: any;
 
@@ -68,13 +70,17 @@ export class InventoryComponent implements OnInit {
   constructor(
     private inventoryService: InventarioService,
     private toast: ToastService,
+    private cdr: ChangeDetectorRef,
     private imageService: ImageService,
+    private activeRoute: ActivatedRoute,
     private categoriaService: CategoriaService) { }
 
 
   ngOnInit(): void {
     this.loadInventory()
     this.loadCategoriasFiltro();
+
+
 
   }
 
@@ -198,6 +204,17 @@ export class InventoryComponent implements OnInit {
 
           this.inventory =
             response.content;
+          this.cdr.detectChanges();
+          setTimeout(() => {
+            const id =
+              Number(
+                this.activeRoute.snapshot.paramMap.get('id')
+              );
+            let selecionado = this.inventory.find(p => p.id === id)
+            if (selecionado)
+              this.abrirModalStock(selecionado)
+          });
+
 
           this.totalPages =
             response.totalPages;
@@ -345,14 +362,14 @@ export class InventoryComponent implements OnInit {
   }
 
   openImageModal(
-  item: InventoryModel  ): void {
+    item: InventoryModel): void {
 
     if (!item) {
       return;
     }
 
     this.selectedImagePreview =
-    item.imagePreview || '';
+      item.imagePreview || '';
 
     const modal =
       new bootstrap.Modal(

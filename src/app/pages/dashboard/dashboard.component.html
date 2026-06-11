@@ -89,7 +89,7 @@
           <div class="card-body">
             <h6>Produtos</h6>
             <div class="table-responsive">
-              <div *ngIf="!dashboard?.topProducts" class="text-center py-5">
+              <div *ngIf="dashboard?.topProducts?.length == 0 " class="text-center py-5">
 
                 <i class="bi bi-box-seam fs-1 text-muted"></i>
 
@@ -111,18 +111,17 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="align-middle clickable-row"
-                  *ngFor="let item of dashboard?.topProducts" 
-                   (click)="loadProductDashboard(item.product.productId)">
-                      <th scope="row" class="product-image-cell ">
-                        <img [src]="item.product.imagePreview" class="img-fluid img-thumbnail product-image rounded ">
-                      </th>
-                      <td>{{item.product.name}}</td>
-                      <td>{{item.product.currentSalePrice| currency:'BRL'}}</td>
-                      <td>
-                        <app-rating [readonly]="true" [ngModel]="item.score">
-                        </app-rating>
-                      </td>
+                  <tr class="align-middle clickable-row" *ngFor="let item of dashboard?.topProducts"
+                    (click)="loadProductDashboard(item.product.productId)">
+                    <th scope="row" class="product-image-cell ">
+                      <img [src]="item.product.imagePreview" class="img-fluid img-thumbnail product-image rounded ">
+                    </th>
+                    <td>{{item.product.name}}</td>
+                    <td>{{item.product.currentSalePrice| currency:'BRL'}}</td>
+                    <td>
+                      <app-rating [readonly]="true" [ngModel]="item.score">
+                      </app-rating>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -158,7 +157,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let i of dashboard?.topInventorys" class="align-items-center">
+                  <tr *ngFor="let i of dashboard?.topInventorys" class="align-middle clickable-row"
+                    (click)="loadInventoryDashboard(i.id)">
                     <th scope="row" class="product-image-cell ">
                       <img [src]="i.imagePreview" class="img-fluid img-thumbnail product-image rounded ">
                     </th>
@@ -179,3 +179,4 @@
   </div>
 </div>
 <app-product-modal-viewer [dashboard]="productDashboard"></app-product-modal-viewer>
+<app-inventory-modal-viewer [dashboard]="inventoryDashboard"></app-inventory-modal-viewer>

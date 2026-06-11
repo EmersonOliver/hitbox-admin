@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DashboardResponse } from '../../pages/dashboard/models/dashboard.model';
 import { ProductDashboardResponse } from '../../pages/dashboard/models/product-dashboard.model';
+import { InventoryDashboardResponse } from '../../pages/dashboard/models/inventory-dashboard.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,11 @@ export class DashboardService {
     return this.http.get<DashboardResponse>('api/hitbox/dashboard').pipe();
   }
 
-  productDashboard(id:number):Observable<ProductDashboardResponse>{
+  productDashboard(id: number): Observable<ProductDashboardResponse> {
     return this.http.get<ProductDashboardResponse>(`api/hitbox/dashboard/product/${id}`).pipe();
+  }
+
+  inventoryDashboard(id?: number): Observable<InventoryDashboardResponse> {
+    return this.http.get<InventoryDashboardResponse>(`api/hitbox/dashboard/inventory/${id}`).pipe();
   }
 }

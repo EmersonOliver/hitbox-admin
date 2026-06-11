@@ -23,6 +23,8 @@ import { ProductService } from '../../../../../core/product/product.service';
 import { PricingRuleService } from '../../../../../core/pricing/services/pricing-rule.service';
 import { PricingRuleResponse } from '../../../../calc-pricing/models/pricing.rules.response';
 import { SuggestedPriceResult } from '../../../../calc-pricing/models/suggested.pricing.model';
+import { InventarioService } from '../../../../../core/inventario/inventario.service';
+import { RouterLink } from "@angular/router";
 
 
 declare var bootstrap: any;
@@ -33,7 +35,8 @@ declare var bootstrap: any;
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './modal-service-order.component.html',
   styleUrls: ['./modal-service-order.component.scss']
@@ -54,6 +57,7 @@ export class ModalServiceOrderComponent
   suggestedPriceResult?: SuggestedPriceResult;
   ruleSelected?: PricingRuleResponse;
   productIndex = -1;
+  error: boolean = false
 
   @Output()
   save =
@@ -64,6 +68,7 @@ export class ModalServiceOrderComponent
   constructor(
     private clienteService: ClienteService,
     private fb: FormBuilder,
+    private inventarioService: InventarioService,
     private productService: ProductService,
     private ruleService: PricingRuleService
   ) {
@@ -83,6 +88,8 @@ export class ModalServiceOrderComponent
     this.carregarProdutos();
     this.carregarRulesPrice();
   }
+
+  stockMessageError: any[] = []
 
   get items(): FormArray {
     return this.form.get('items') as FormArray;
@@ -171,6 +178,7 @@ export class ModalServiceOrderComponent
   }
 
   onProductChange(index: number): void {
+    this.error = false;
     this.productIndex = index;
     if (this.productIndex < 0) {
       return;
@@ -195,6 +203,18 @@ export class ModalServiceOrderComponent
       Number(
         itemGroup.get('quantity')?.value || 1
       );
+    if (quantity > 1) {
+      product.materials.forEach(mat => {
+        this.inventarioService.stockAvailable(mat.inventoryId, quantity).subscribe({
+          next: response => {
+          }, error: (error) => {
+            this.error = true;
+            this.stockMessageError.push(error.error);
+            console.log(this.stockMessageError)
+          }
+        })
+      });
+    }
 
     const ruleId =
       product.pricingRuleId;
