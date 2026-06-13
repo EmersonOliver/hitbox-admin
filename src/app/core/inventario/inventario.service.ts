@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiPage } from '../api/api.response.model';
 import { InventoryModel } from '../../pages/inventory/components/inventory-modal/models/inventory.model';
+import { StockMovementModel } from '../../pages/inventory/components/stock-modal/models/stock.movement.model';
 
 @Injectable({
   providedIn: 'root'
@@ -89,10 +90,17 @@ export class InventarioService {
 
   }
 
+  stockAvailable(payload: any): Observable<any> {
+    return this.http.post<any>(`api/hitbox/inventory/available`, payload).pipe();
+  }
 
-  stockAvailable(id: number, quantity: number): Observable<{available:boolean}> {
-    return this.http.get<{available:boolean}>(`api/hitbox/inventory/available/${id}`, {
-      params: { quantity: quantity }
-    }).pipe();
+  findMovements(
+    inventoryId: number,
+    page: number,
+    size = 10
+  ) {
+    return this.http.get<ApiPage<StockMovementModel>>(
+      `/api/hitbox/inventory/${inventoryId}/movements?page=${page}&size=${size}`
+    );
   }
 }

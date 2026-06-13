@@ -149,7 +149,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   }
 
-
   getStockPercentage(
     item: InventoryModel
   ): number {
@@ -166,4 +165,56 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       100
     );
   }
+  getStockStatus(item: any): string {
+
+    if (item.quantity <= 0) {
+      return 'OUT';
+    }
+
+    if (item.quantity <= item.minimumStock) {
+      return 'LOW';
+    }
+
+    return 'OK';
+  }
+
+  getStockVariant(
+    item: any
+  ): string {
+
+    const percentage =
+      this.getStockPercentage(item);
+
+    if (percentage <= 30) {
+
+      return 'danger';
+    }
+
+    if (percentage <= 60) {
+
+      return 'warning';
+    }
+
+    return 'success';
+  }
+  // getStockPercentage(
+  //   item: InventoryModel
+  // ): number {
+
+  //   if (!item.quantity || item.quantity <= 0) {
+  //     return 0;
+  //   }
+
+  //   const percentage =
+  //     (item.quantity / item.minimumStock) * 100;
+
+  //   // return Math.min(
+  //   //   Math.max(percentage, 0),
+  //   //   100
+  //   // );
+  //   return Number(
+  //   percentage.toFixed(2)
+  // );
+  // }
+
 }

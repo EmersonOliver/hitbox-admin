@@ -26,6 +26,7 @@ import { InventarioService } from '../../../../core/inventario/inventario.servic
 import { CategoriaService } from '../../../../core/categoria/categoria.service';
 import { ToastService } from '../../../components/toast/toast.service';
 import { ImageService } from '../../../../core/image/image.service';
+import { ActivatedRoute, Router } from '@angular/router';
 declare var bootstrap: any;
 
 @Component({
@@ -82,7 +83,8 @@ export class InventoryModalComponent implements OnInit, OnChanges {
     private imageService: ImageService,
     private inventarioService: InventarioService,
     private categoriaService: CategoriaService,
-    private toast: ToastService
+    private toast: ToastService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -206,6 +208,7 @@ export class InventoryModalComponent implements OnInit, OnChanges {
         this.save.emit();
         this.fecharModal();
         this.inventorySelected = null;
+  
       },
       error: (error) => {
         this.loading = false;

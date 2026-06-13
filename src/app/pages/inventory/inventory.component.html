@@ -389,7 +389,7 @@
 <app-inventory-modal (save)="reloadInventory()" [inventorySelected]="inventorySelecionado"></app-inventory-modal>
 <app-stock-modal (save)="loadInventory()" [inventorySelected]="inventorySelecionado"></app-stock-modal>
 <app-stock-movement-historical [inventoryName]="inventorySelecionado?.name"
-    [movements]="inventorySelecionado?.movements"></app-stock-movement-historical>
+    [inventorySelected]="inventorySelecionado"></app-stock-movement-historical>
 
 
 <div class="modal fade" id="inventarioModalExclusao" aria-labelledby="inventarioModalExclusao" aria-hidden="true"

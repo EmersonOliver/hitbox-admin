@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StockMovementModel } from '../stock-modal/models/stock.movement.model';
+import { InventarioService } from '../../../../core/inventario/inventario.service';
+import { InventoryModel } from '../inventory-modal/models/inventory.model';
 export interface StockMovementHistoricalModel {
 
   stockMovementId: number;
@@ -38,6 +40,10 @@ export class StockMovementHistoricalComponent implements OnChanges {
   inventoryName?: string;
 
   @Input()
+  inventorySelected?:
+    InventoryModel | null = null;
+
+
   movements?: StockMovementModel[] = [];
 
   @Input()
@@ -89,10 +95,13 @@ export class StockMovementHistoricalComponent implements OnChanges {
       class: 'primary'
     }
   };
-
+  constructor(private inventoryService: InventarioService) { }
   ngOnChanges(
     changes: SimpleChanges
   ): void {
+    if (changes['inventorySelected']) {
+      this.loadMovements();
+    }
   }
 
   nextPage(): void {
@@ -104,9 +113,7 @@ export class StockMovementHistoricalComponent implements OnChanges {
       return;
     }
 
-    this.changePage.emit(
-      this.currentPage + 1
-    );
+    this.loadMovements(this.currentPage + 1)
   }
 
   previousPage(): void {
@@ -117,9 +124,8 @@ export class StockMovementHistoricalComponent implements OnChanges {
       return;
     }
 
-    this.changePage.emit(
-      this.currentPage - 1
-    );
+    this.loadMovements(this.currentPage - 1)
+
   }
 
   getMovementConfig(
@@ -128,4 +134,27 @@ export class StockMovementHistoricalComponent implements OnChanges {
 
     return this.movementTypes[type];
   }
+
+  loadMovements(page = 0) {
+    console.log(this.inventorySelected)
+    if (this.inventorySelected?.id)
+      this.inventoryService
+        .findMovements(
+          this.inventorySelected?.id,
+          page
+        )
+        .subscribe(response => {
+
+          this.movements =
+            response.content;
+
+          this.currentPage =
+            response.number;
+
+          this.totalPages =
+            response.totalPages;
+
+        });
+  }
+
 }

@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { InventarioService } from '../../../../core/inventario/inventario.service';
 import { ToastService } from '../../../components/toast/toast.service';
 import { ToastComponent } from "../../../components/toast/toast.component";
+import { Router } from '@angular/router';
 
 declare var bootstrap: any;
 @Component({
@@ -37,7 +38,8 @@ export class StockModalComponent implements OnChanges {
   constructor(
     private fb: FormBuilder,
     private inventoryService: InventarioService,
-    private toast: ToastService
+    private toast: ToastService,
+    private router: Router
   ) {
 
     this.form =
@@ -75,12 +77,9 @@ export class StockModalComponent implements OnChanges {
   ngOnChanges(
     changes: SimpleChanges
   ): void {
-
-    if (changes['inventory']) {
-
+    if (changes['inventorySelected']) {
       this.calculatePreview();
     }
-    
   }
 
   calculatePreview(): void {
@@ -169,9 +168,15 @@ export class StockModalComponent implements OnChanges {
     this.inventoryService.movementStock(payload, this.inventorySelected?.id).subscribe({
       next: res => {
         this.save.emit();
-        this.fecharModal();
         this.toast.show('Movimentação Registrada com Sucesso!', 'success');
         this.loading = false;
+        this.router.navigate(
+          ['/inventario'],
+          {
+            replaceUrl: true
+          }
+        );
+        this.fecharModal();
       },
       error: (error) => {
         this.toast.show('Ocorreu um erro! ' + error.error.message, 'danger');
@@ -203,6 +208,6 @@ export class StockModalComponent implements OnChanges {
     });
   }
 
- 
+
 
 }

@@ -65,17 +65,15 @@
    PRIMARY
 ========================================================= */
 
-.stock-progress-bar.primary {
+.stock-progress-bar.success {
 
   background:
-    linear-gradient(
-      135deg,
-      #ff8a00,
-      #ff6a00
-    );
+    linear-gradient(135deg,
+      #0b8700,
+      #04ff00);
 
   box-shadow:
-    0 0 14px rgba(255,138,0,.35);
+    0 0 14px rgba(255, 138, 0, .35);
 }
 
 /* =========================================================
@@ -85,14 +83,12 @@
 .stock-progress-bar.warning {
 
   background:
-    linear-gradient(
-      135deg,
-      #f59e0b,
-      #d97706
-    );
+    linear-gradient(135deg,
+      #f5ce0b,
+      #d9ce06);
 
   box-shadow:
-    0 0 12px rgba(245,158,11,.35);
+    0 0 12px rgba(245, 158, 11, .35);
 }
 
 /* =========================================================
@@ -102,14 +98,12 @@
 .stock-progress-bar.danger {
 
   background:
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       #ef4444,
-      #dc2626
-    );
+      #dc2626);
 
   box-shadow:
-    0 0 12px rgba(239,68,68,.35);
+    0 0 12px rgba(239, 68, 68, .35);
 }
 
 /* =========================================================
@@ -125,12 +119,10 @@
   inset: 0;
 
   background:
-    linear-gradient(
-      90deg,
+    linear-gradient(90deg,
       transparent,
-      rgba(255,255,255,.22),
-      transparent
-    );
+      rgba(255, 255, 255, .22),
+      transparent);
 
   animation:
     shimmer 2s infinite linear;
