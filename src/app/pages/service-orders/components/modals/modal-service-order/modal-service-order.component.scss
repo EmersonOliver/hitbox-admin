@@ -219,3 +219,11 @@
     min-width: 100%;
   }
 }
+
+#inventoryModalStockError {
+  z-index: 1065;
+}
+
+#inventoryModalStockError + .modal-backdrop {
+  z-index: 1060;
+}

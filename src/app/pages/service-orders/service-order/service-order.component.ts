@@ -34,7 +34,7 @@ declare var bootstrap: any;
     ModalServiceOrderComponent,
     ModalServiceViewerComponent,
     RangeDatepickerComponent
-],
+  ],
   templateUrl: './service-order.component.html',
   styleUrls: ['./service-order.component.scss']
 })
@@ -44,7 +44,7 @@ export class ServiceOrderComponent implements OnInit {
 
   filteredOrders: ServiceOrderResponse[] = [];
 
-  selectedOrder?: ServiceOrderResponse;
+  selectedOrder?: ServiceOrderResponse | null = null;
 
   loading = false;
 
@@ -60,9 +60,11 @@ export class ServiceOrderComponent implements OnInit {
 
   selectedStatus = '';
 
-  startDate = '';
+  period = [];
 
-  endDate = '';
+  startDate?: Date;
+
+  endDate?: Date;
 
   statusOptions = [
     'OPEN',
@@ -161,11 +163,12 @@ export class ServiceOrderComponent implements OnInit {
         );
     }
 
-    if (this.startDate) {
+    this.startDate = this.period[0];
+    this.endDate = this.period[1];
 
+    if (this.startDate) {
       const start =
         new Date(this.startDate);
-
       result =
         result.filter(order =>
           new Date(order.createdAt) >= start
@@ -199,9 +202,9 @@ export class ServiceOrderComponent implements OnInit {
 
     this.selectedStatus = '';
 
-    this.startDate = '';
+    this.startDate = undefined;
 
-    this.endDate = '';
+    this.endDate = undefined;
 
     this.filteredOrders =
       [...this.orders];
@@ -298,26 +301,33 @@ export class ServiceOrderComponent implements OnInit {
     modal.show();
   }
 
-  deleteOrder(
-    orderId: number
-  ): void {
 
-    const confirmDelete =
-      confirm(
-        'Deseja remover esta ordem de serviço?'
+  openModalDeleteOrder(order: ServiceOrderResponse) {
+    this.selectedOrder = order;
+
+    const modal =
+      new bootstrap.Modal(
+        document.getElementById(
+          'orderServiceModalDelete  '
+        )
       );
 
-    if (!confirmDelete) {
-      return;
-    }
+    modal.show();
+  }
 
-    this.serviceOrderService
-      .delete(orderId)
-      .subscribe({
-        next: () => {
-          this.loadOrders();
-        }
-      });
+
+  deleteOrder(
+    order: ServiceOrderResponse
+  ): void {
+
+    if (order)
+      this.serviceOrderService
+        .delete(order.id)
+        .subscribe({
+          next: () => {
+            this.loadOrders();
+          }
+        });
   }
 
   goToKanban(

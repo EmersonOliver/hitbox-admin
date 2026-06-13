@@ -58,7 +58,7 @@ export class InventoryComponent implements OnInit {
   pageSize = 5;
   totalPages = 0;
   totalElements = 0;
-
+  paramId?: number;
   search = '';
   inventory: InventoryModel[] = [];
   categorias: CategoriaModel[] = [];
@@ -77,11 +77,22 @@ export class InventoryComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.loadInventory()
+    this.loadInventory();
+    setTimeout(() => {
+      this.cdr.detectChanges();
+      this.paramId =
+        Number(
+          this.activeRoute.snapshot.paramMap.get('id') || undefined
+        );
+      if (this.paramId) {
+        let selecionado = this.inventory.find(p => p.id === this.paramId)
+        if (selecionado) {
+          this.abrirModalStock(selecionado);
+          this.paramId = undefined;
+        }
+      }
+    }, 1000);
     this.loadCategoriasFiltro();
-
-
-
   }
 
   loadCategoriasFiltro() {
@@ -204,17 +215,6 @@ export class InventoryComponent implements OnInit {
 
           this.inventory =
             response.content;
-          this.cdr.detectChanges();
-          setTimeout(() => {
-            const id =
-              Number(
-                this.activeRoute.snapshot.paramMap.get('id')
-              );
-            let selecionado = this.inventory.find(p => p.id === id)
-            if (selecionado)
-              this.abrirModalStock(selecionado)
-          });
-
 
           this.totalPages =
             response.totalPages;
@@ -223,19 +223,24 @@ export class InventoryComponent implements OnInit {
             response.totalElements;
 
           this.loadImages();
+
+
+
         }
       });
   }
+  closeAllModals(): void {
+    console.log('tem que fechar essas modals')
+    document
+      .querySelectorAll('.modal.show')
+      .forEach(modalElement => {
 
-  // resolveImage(
-  //   path?: string
-  // ): string {
+        bootstrap.Modal
+          .getInstance(modalElement)
+          ?.hide();
 
-
-  //   return ImageUtil.resolve(
-  //     path
-  //   );
-  // }
+      });
+  }
 
   removerInventario(id?: number) {
     this.inventoryService.delete(id).subscribe({
@@ -392,6 +397,7 @@ export class InventoryComponent implements OnInit {
     modal.show();
   }
 
+  
   private loadImages(): void {
 
     this.inventory.forEach(item => {

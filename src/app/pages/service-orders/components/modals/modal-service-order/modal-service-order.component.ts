@@ -24,7 +24,7 @@ import { PricingRuleService } from '../../../../../core/pricing/services/pricing
 import { PricingRuleResponse } from '../../../../calc-pricing/models/pricing.rules.response';
 import { SuggestedPriceResult } from '../../../../calc-pricing/models/suggested.pricing.model';
 import { InventarioService } from '../../../../../core/inventario/inventario.service';
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 
 
 declare var bootstrap: any;
@@ -68,6 +68,7 @@ export class ModalServiceOrderComponent
   constructor(
     private clienteService: ClienteService,
     private fb: FormBuilder,
+    private router: Router,
     private inventarioService: InventarioService,
     private productService: ProductService,
     private ruleService: PricingRuleService
@@ -176,11 +177,12 @@ export class ModalServiceOrderComponent
     this.calculateTotals();
 
   }
-
   onProductChange(index: number): void {
+
     this.error = false;
     this.productIndex = index;
-    if (this.productIndex < 0) {
+
+    if (index < 0) {
       return;
     }
 
@@ -189,6 +191,11 @@ export class ModalServiceOrderComponent
 
     const productId =
       itemGroup.get('productId')?.value;
+
+    const quantity =
+      Number(
+        itemGroup.get('quantity')?.value || 1
+      );
 
     const product =
       this.produtos.find(
@@ -199,35 +206,117 @@ export class ModalServiceOrderComponent
       return;
     }
 
-    const quantity =
-      Number(
-        itemGroup.get('quantity')?.value || 1
-      );
-    if (quantity > 1) {
-      product.materials.forEach(mat => {
-        this.inventarioService.stockAvailable(mat.inventoryId, quantity).subscribe({
-          next: response => {
-          }, error: (error) => {
-            this.error = true;
-            this.stockMessageError.push(error.error);
-            console.log(this.stockMessageError)
-          }
-        })
+    /*
+     * ===========================
+     * VALIDAÇÃO DE ESTOQUE
+     * ===========================
+     */
+
+    const stockMap =
+      new Map<number, number>();
+
+    this.items.controls.forEach(control => {
+
+      const currentProductId =
+        control.get('productId')?.value;
+
+      const currentQuantity =
+        Number(
+          control.get('quantity')?.value || 0
+        );
+
+      if (
+        !currentProductId ||
+        currentQuantity <= 0
+      ) {
+        return;
+      }
+
+      const currentProduct =
+        this.produtos.find(
+          p => p.productId == currentProductId
+        );
+
+      if (!currentProduct) {
+        return;
+      }
+
+      currentProduct.materials.forEach(mat => {
+
+        const required =
+          mat.quantity * currentQuantity;
+
+        const current =
+          stockMap.get(mat.inventoryId) || 0;
+
+        stockMap.set(
+          mat.inventoryId,
+          current + required
+        );
+
       });
-    }
+
+    });
+
+    const payload =
+      Array.from(stockMap.entries())
+        .map(([inventoryId, quantity]) => ({
+          inventoryId,
+          quantity
+        }));
+
+    console.log(payload);
+
+    this.inventarioService
+      .stockAvailable(payload)
+      .subscribe({
+        next: () => {
+          this.error = false;
+          this.stockMessageError = [];
+        },
+
+        error: (error) => {
+          this.error = true;
+          this.stockMessageError =
+            Array.isArray(error.error)
+              ? error.error
+              : [error.error];
+
+          const errorModal =
+            new bootstrap.Modal(
+              document.getElementById(
+                'inventoryModalStockError'
+              ),
+              {
+                backdrop: 'static',
+                keyboard: false
+              }
+            );
+
+          errorModal.show();
+
+        }
+
+      });
+
+    /*
+     * ===========================
+     * CÁLCULO DE PREÇO
+     * ===========================
+     */
 
     const ruleId =
       product.pricingRuleId;
 
-    this.ruleSelected = this.rules.find(f => f.id == ruleId);
+    this.ruleSelected =
+      this.rules.find(
+        r => r.id == ruleId
+      );
 
     if (!ruleId) {
       return;
     }
 
-    /*
-      peso total dos materiais
-    */
     const filamentWeight =
       product.materials?.reduce(
         (acc, material) =>
@@ -235,10 +324,7 @@ export class ModalServiceOrderComponent
         0
       ) || 0;
 
-    /*
-      payload do motor de precificação
-    */
-    const payload = {
+    const payloadPrice = {
 
       productionCost:
         Number(
@@ -264,17 +350,18 @@ export class ModalServiceOrderComponent
 
     };
 
-    /*
-      backend calcula tudo
-    */
     this.ruleService
-      .ruleById(payload, ruleId)
+      .ruleById(
+        payloadPrice,
+        ruleId
+      )
       .subscribe({
 
         next: response => {
 
-          this.suggestedPriceResult = response;
-          console.log(this.suggestedPriceResult)
+          this.suggestedPriceResult =
+            response;
+
           const costUnit =
             Number(
               response.unitCost || 0
@@ -286,6 +373,7 @@ export class ModalServiceOrderComponent
               response.suggestedPrice ||
               0
             );
+
           const totalItemCost =
             quantity * costUnit;
 
@@ -325,6 +413,196 @@ export class ModalServiceOrderComponent
       });
 
   }
+
+  // onProductChange(index: number): void {
+  //   this.error = false;
+  //   this.productIndex = index;
+  //   if (this.productIndex < 0) {
+  //     return;
+  //   }
+
+  //   const itemGroup =
+  //     this.items.at(index);
+
+  //   const productId =
+  //     itemGroup.get('productId')?.value;
+
+  //   const product =
+  //     this.produtos.find(
+  //       p => p.productId == productId
+  //     );
+
+  //   if (!product) {
+  //     return;
+  //   }
+
+  //   const quantity =
+  //     Number(
+  //       itemGroup.get('quantity')?.value || 1
+  //     );
+  //   if (quantity >= 1) {
+
+  //     const stockMap =
+  //       new Map<number, number>();
+
+  //     product.materials.forEach(mat => {
+
+  //       const inventoryId =
+  //         mat.inventoryId;
+
+  //       const required =
+  //         mat.quantity * quantity;
+
+  //       const current =
+  //         stockMap.get(inventoryId) || 0;
+
+  //       stockMap.set(
+  //         inventoryId,
+  //         current + required
+  //       );
+
+  //       const payload =
+  //         Array.from(stockMap.entries())
+  //           .map(([inventoryId, quantity]) => ({
+  //             inventoryId,
+  //             quantity
+  //           }));
+  //       console.log(payload)
+  //       this.inventarioService.stockAvailable(mat.inventoryId, required).subscribe({
+  //         next: response => {
+
+  //         }, error: (error) => {
+  //           this.error = true;
+  //           this.stockMessageError.push(error.error);
+  //           const errorModal =
+  //             new bootstrap.Modal(
+  //               document.getElementById(
+  //                 'inventoryModalStockError'
+  //               ),
+  //               {
+  //                 backdrop: 'static',
+  //                 keyboard: false
+  //               }
+  //             );
+
+  //           errorModal.show();
+  //         }
+  //       })
+  //     });
+
+  //     if (!this.error) {
+  //       this.stockMessageError = []
+  //     }
+  //   }
+
+  //   const ruleId =
+  //     product.pricingRuleId;
+
+  //   this.ruleSelected = this.rules.find(f => f.id == ruleId);
+
+  //   if (!ruleId) {
+  //     return;
+  //   }
+
+  //   /*
+  //     peso total dos materiais
+  //   */
+  //   const filamentWeight =
+  //     product.materials?.reduce(
+  //       (acc, material) =>
+  //         acc + Number(material.quantity || 0),
+  //       0
+  //     ) || 0;
+
+  //   /*
+  //     payload do motor de precificação
+  //   */
+  //   const payload = {
+
+  //     productionCost:
+  //       Number(
+  //         product.currentCalculatedCost || 0
+  //       ),
+
+  //     filamentWeight,
+
+  //     filamentCostPerGram: 0,
+
+  //     printHours:
+  //       Number(
+  //         product.estimatedMinutes * quantity || 0
+  //       ),
+
+  //     machineHourCost: 0,
+
+  //     energyCost: 0,
+
+  //     packagingCost: 0,
+
+  //     maintenancePercentage: 0
+
+  //   };
+
+  //   /*
+  //     backend calcula tudo
+  //   */
+  //   this.ruleService
+  //     .ruleById(payload, ruleId)
+  //     .subscribe({
+
+  //       next: response => {
+
+  //         this.suggestedPriceResult = response;
+  //         const costUnit =
+  //           Number(
+  //             response.unitCost || 0
+  //           );
+
+  //         const salePriceUnit =
+  //           Number(
+  //             response.unitPrice ||
+  //             response.suggestedPrice ||
+  //             0
+  //           );
+  //         const totalItemCost =
+  //           quantity * costUnit;
+
+  //         const totalSalePrice =
+  //           quantity * salePriceUnit;
+
+  //         itemGroup.patchValue({
+
+  //           costUnit,
+
+  //           salePriceUnit,
+
+  //           totalItemCost,
+
+  //           totalSalePrice,
+
+  //           estimatedMinutes:
+  //             this.formatHoursToDuration(
+  //               product.estimatedMinutes * quantity || 0
+  //             )
+
+  //         });
+
+  //         this.calculateTotals();
+
+  //       },
+
+  //       error: error => {
+
+  //         console.error(
+  //           'Erro ao calcular preço',
+  //           error
+  //         );
+
+  //       }
+
+  //     });
+
+  // }
 
   calculateTotals(): void {
 
@@ -525,7 +803,25 @@ export class ModalServiceOrderComponent
     return parts.join('');
   }
 
+  goToInventory(id: number): void {
 
+    this.closeAllModals();
 
+    this.router.navigate(
+      ['/inventario', id]
+    );
+  }
 
+  closeAllModals(): void {
+
+    document
+      .querySelectorAll('.modal.show')
+      .forEach(modalElement => {
+
+        bootstrap.Modal
+          .getInstance(modalElement)
+          ?.hide();
+
+      });
+  }
 }

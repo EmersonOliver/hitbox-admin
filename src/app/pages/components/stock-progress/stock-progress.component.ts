@@ -28,7 +28,7 @@ export class StockProgressComponent {
   get status(): string {
 
     if (this.value >= 70) {
-      return 'primary';
+      return 'success';
     }
 
     if (this.value >= 35) {

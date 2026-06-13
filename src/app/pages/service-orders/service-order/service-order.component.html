@@ -24,9 +24,7 @@
 
         </div>
 
-        <button
-            class="btn btn-primary btn-lg"
-            (click)="openCreateModal()">
+        <button class="btn btn-primary btn-lg" (click)="openCreateModal()">
 
             <i class="bi bi-plus-circle me-2"></i>
 
@@ -56,11 +54,7 @@
 
                     <i class="bi bi-search"></i>
 
-                    <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Cliente ou código"
-                        [(ngModel)]="searchText"
+                    <input type="text" class="form-control" placeholder="Cliente ou código" [(ngModel)]="searchText"
                         (input)="applyFilters()">
 
                 </div>
@@ -75,10 +69,7 @@
                     Status
                 </label>
 
-                <select
-                    class="form-select"
-                    [(ngModel)]="selectedStatus"
-                    (change)="applyFilters()">
+                <select class="form-select" [(ngModel)]="selectedStatus" (change)="applyFilters()">
 
                     <option value="">
                         Todos
@@ -106,19 +97,16 @@
                     Datas
                 </label>
 
-                <app-range-datepicker></app-range-datepicker>
-
+                <app-range-datepicker [(ngModel)]="period" (dateChange)="applyFilters()"></app-range-datepicker>
             </div>
 
-          
+
 
             <!-- ACTION -->
 
             <div class="col-12 col-md-4 col-lg-2 d-flex align-items-end">
 
-                <button
-                    class="btn btn-outline-secondary w-100"
-                    (click)="clearFilters()">
+                <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
 
                     <i class="bi bi-x-circle me-2"></i>
 
@@ -241,9 +229,7 @@
 
                         <td>
 
-                            <span
-                                class="status-badge"
-                                [ngClass]="getStatusClass(order.status)">
+                            <span class="status-badge" [ngClass]="getStatusClass(order.status)">
 
                                 {{ order.status }}
 
@@ -303,9 +289,7 @@
 
                                 <!-- VIEW -->
 
-                                <button
-                                    class="btn-action btn-view"
-                                    (click)="openViewModal(order)">
+                                <button class="btn-action btn-view" (click)="openViewModal(order)">
 
                                     <i class="bi bi-eye"></i>
 
@@ -313,9 +297,7 @@
 
                                 <!-- EDIT -->
 
-                                <button
-                                    class="btn-action btn-edit"
-                                    (click)="editOrder(order)">
+                                <button class="btn-action btn-edit" (click)="editOrder(order)">
 
                                     <i class="bi bi-pencil"></i>
 
@@ -323,9 +305,7 @@
 
                                 <!-- KANBAN -->
 
-                                <button
-                                    class="btn-action btn-kanban"
-                                    (click)="goToKanban(order)">
+                                <button class="btn-action btn-kanban" (click)="goToKanban(order)">
 
                                     <i class="bi bi-kanban"></i>
 
@@ -333,9 +313,7 @@
 
                                 <!-- DELETE -->
 
-                                <button
-                                    class="btn-action btn-delete"
-                                    (click)="deleteOrder(order.id)">
+                                <button class="btn-action btn-delete" (click)="openModalDeleteOrder(order)">
 
                                     <i class="bi bi-trash"></i>
 
@@ -391,10 +369,7 @@
 
     <div class="pagination-container">
 
-        <button
-            class="btn btn-outline-secondary"
-            [disabled]="currentPage === 1"
-            (click)="previousPage()">
+        <button class="btn btn-outline-secondary" [disabled]="currentPage === 1" (click)="previousPage()">
 
             <i class="bi bi-chevron-left"></i>
 
@@ -409,19 +384,11 @@
 
         </span>
 
-        <button
-            class="btn btn-outline-secondary"
-            [disabled]="currentPage === totalPages"
-            (click)="nextPage()">
-
+        <button class="btn btn-outline-secondary" [disabled]="currentPage === totalPages" (click)="nextPage()">
             <i class="bi bi-chevron-right"></i>
-
         </button>
-
     </div>
-
     }
-
 </div>
 
 <!-- ==========================================
@@ -433,3 +400,26 @@
 
 <app-modal-service-viewer>
 </app-modal-service-viewer>
+
+<div class="modal fade" id="orderServiceModalDelete" aria-labelledby="orderServiceModalDelete"
+    aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Excluir</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja remover este Ordem de Serviço?
+                    <strong>"#{{selectedOrder?.id}}"</strong>
+                </p>
+                <small class="text-danger">Essa operação não poderá ser desfeita após de realizada.</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button *ngIf="selectedOrder" type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                    (click)="deleteOrder(selectedOrder)">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>

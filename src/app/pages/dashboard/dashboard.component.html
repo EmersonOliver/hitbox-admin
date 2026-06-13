@@ -101,7 +101,7 @@
                 </p>
 
               </div>
-              <table class="table table-striped align-middle">
+              <table *ngIf="dashboard?.topProducts!.length > 0 " class="table table-striped align-middle">
                 <thead>
                   <tr>
                     <th scope="col">Produto</th>
@@ -147,13 +147,14 @@
 
               </div>
 
-              <table class="table table-striped align-middle">
+              <table *ngIf="dashboard?.topInventorys!.length > 0" class="table table-striped align-middle">
                 <thead>
                   <tr>
                     <th scope="col">Produto</th>
                     <th scope="col">Nome</th>
                     <th scope="col">Qtd</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Min.</th>
+                    <th scope="col">%</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -164,9 +165,34 @@
                     </th>
                     <td>{{i.name}}</td>
                     <td>{{i.quantity}}</td>
+                    <td>{{i.minimumStock}}</td>
                     <td>
                       <app-stock-progress [value]="getStockPercentage(i)">
                       </app-stock-progress>
+                  <!-- <div class="d-flex align-items-center gap-3">
+
+                                <div class="progress flex-grow-1">
+
+                                    <div class="progress-bar" [class.bg-success]="getStockVariant(i) === 'success'"
+                                        [class.bg-warning]="getStockVariant(i) === 'warning'"
+                                        [class.bg-danger]="getStockVariant(i) === 'danger'"
+                                        [style.width.%]="getStockPercentage(i)">
+
+                                    </div>
+
+
+                                </div>
+
+                                <small>
+
+                                    {{
+                                    getStockPercentage(i)
+                                    | number:'1.0-0'
+                                    }}%
+
+                                </small>
+
+                            </div> -->
                     </td>
                   </tr>
                 </tbody>
