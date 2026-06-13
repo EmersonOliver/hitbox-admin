@@ -7,7 +7,7 @@ export interface ProfileResponse {
     email: string;
     role: string;
     active: boolean;
-
+    datetimeLastLogin:Date;
     company: {
         id: string;
         name: string;
