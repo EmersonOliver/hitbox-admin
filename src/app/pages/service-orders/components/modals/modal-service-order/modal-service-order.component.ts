@@ -35,8 +35,7 @@ declare var bootstrap: any;
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
-    RouterLink
+    ReactiveFormsModule
   ],
   templateUrl: './modal-service-order.component.html',
   styleUrls: ['./modal-service-order.component.scss']
