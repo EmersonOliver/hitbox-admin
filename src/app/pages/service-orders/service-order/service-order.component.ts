@@ -308,7 +308,7 @@ export class ServiceOrderComponent implements OnInit {
     const modal =
       new bootstrap.Modal(
         document.getElementById(
-          'orderServiceModalDelete  '
+          'orderServiceModalDelete'
         )
       );
 
