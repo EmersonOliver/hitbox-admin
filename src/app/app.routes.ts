@@ -34,10 +34,18 @@ export const routes: Routes = [
             {
                 path: 'create-company',
                 loadComponent: () =>
-                    import('./pages/create-company/create-company.component').then(
+                    import('./pages/company/create-company/create-company.component').then(
                         m => m.CreateCompanyComponent
                     ),
-            }, {
+            },
+            {
+                path: 'select-company',
+                loadComponent: () =>
+                    import('./pages/company/company-selector/company-selector.component').then(
+                        m => m.CompanySelectorComponent
+                    ),
+            },
+            {
                 path: 'workspace-setup',
                 loadComponent: () =>
                     import('./pages/workspace-setup/workspace-setup.component').then(
@@ -51,6 +59,7 @@ export const routes: Routes = [
         component: PrivateLayoutComponent,
         canActivate: [authGuard],
         children: [
+
             { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent) },
             { path: 'produtos', loadComponent: () => import('./pages/produtos/produtos.component').then(m => m.ProdutosComponent) },
             { path: 'produtos/:id', loadComponent: () => import('./pages/produtos/produtos.component').then(m => m.ProdutosComponent) },
@@ -96,6 +105,7 @@ export const routes: Routes = [
                     import('./pages/profile/team/permissions/permissions.component')
                         .then(m => m.PermissionsComponent)
             },
+
             {
                 path: 'profile/settings',
                 component: SettingsComponent,

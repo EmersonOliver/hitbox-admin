@@ -4,10 +4,13 @@ const TOKEN_KEY = 'token';
 import { BehaviorSubject } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { JwtPayload } from '../../models/jwt.model';
+import { CompanySelectionResponse } from '../../../pages/company/models/company.selection';
 @Injectable({ providedIn: 'root' })
 export class TokenService {
 
   private loggedIn$ = new BehaviorSubject<boolean>(this.hasToken());
+
+  companies: CompanySelectionResponse[] = [];
 
   private hasToken(): boolean {
     return !!localStorage.getItem(TOKEN_KEY);
@@ -20,6 +23,10 @@ export class TokenService {
   setToken(token: string): void {
     localStorage.setItem(TOKEN_KEY, token);
     this.loggedIn$.next(true);
+  }
+
+  setCompanies(companies: CompanySelectionResponse[]) {
+    localStorage.setItem('companies', JSON.stringify(companies))
   }
 
   getToken(): string | null {
@@ -45,6 +52,10 @@ export class TokenService {
     return this.getPayload()?.fullName ?? '';
   }
 
+  getSub():string{
+    return this.getPayload()?.sub ?? '';
+  }
+
   getEmail(): string {
     return this.getPayload()?.email ?? '';
   }
@@ -59,6 +70,11 @@ export class TokenService {
 
   getCompanyId(): string {
     return this.getPayload()?.['X-Company-Id'] ?? '';
+  }
+
+  getCompanies(): CompanySelectionResponse[] {
+    let loadcompanies = localStorage.getItem('companies') || '';
+    return JSON.parse(loadcompanies)
   }
 
 

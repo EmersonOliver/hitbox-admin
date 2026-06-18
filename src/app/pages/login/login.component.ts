@@ -28,10 +28,10 @@ export class LoginComponent {
   login() {
     this.authService.login(this.form.getRawValue()).subscribe({
       next: response => {
-        if (response.companyId == null) {
+        if (response.companies.length == 0) {
           this.router.navigate(['/create-company']);
         } else {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/select-company']);
         }
       },
       error: (error) => {

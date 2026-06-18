@@ -1,0 +1,53 @@
+<div class="company-selector-page">
+
+  <div class="selector-container">
+
+    <div class="selector-header">
+
+      <div class="logo-wrapper">
+        <img
+          src="assets/logo.svg"
+          alt="Hitbox ERP"
+          class="logo">
+      </div>
+
+      <h2 class="title">
+        Escolha uma workspace
+      </h2>
+
+      <p class="subtitle">
+        Selecione qual empresa deseja acessar
+      </p>
+
+    </div>
+
+    <div class="companies-list">
+
+      @for(company of companies; track company.id){
+
+      <div
+        class="company-card"
+        (click)="selectCompany(company)">
+
+        <div class="company-avatar">
+          {{ company.companyName[0] }}
+        </div>
+
+        <div class="company-content">
+          <h5>
+            {{ company.companyName }}
+          </h5>
+          <small>
+            {{ company.role }}
+          </small>
+        </div>
+
+        <div class="company-action">
+          <i class="bi bi-chevron-right"></i>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+</div>

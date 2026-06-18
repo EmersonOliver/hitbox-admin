@@ -15,5 +15,10 @@ export class UserService {
     return this.http.post<UserResponse>('api/usuario/hitbox/user/create', payload).pipe();
   }
 
+  loadUsersByRole(userRole: string): Observable<UserResponse[]> {
+    return this.http.get<UserResponse[]>('api/usuario/hitbox/user/load/users/by/role', {
+      params: { userRole: userRole }
+    });
+  }
 
 }

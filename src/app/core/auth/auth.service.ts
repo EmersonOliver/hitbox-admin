@@ -11,13 +11,16 @@ import { LoginResponse } from '../../pages/login/models/login.response';
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private tokenService:TokenService) {
+  constructor(private http: HttpClient, private tokenService: TokenService) {
 
   }
 
   login(payload: AuthRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>('api/usuario/hitbox/auth/login', payload).pipe(
-       tap(res => this.tokenService.setToken(res.token))
+      tap(res => {
+        this.tokenService.setToken(res.token);
+        this.tokenService.setCompanies(res.companies);
+      })
     );
   }
 }
