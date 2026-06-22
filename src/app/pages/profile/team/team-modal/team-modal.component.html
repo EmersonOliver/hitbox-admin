@@ -29,28 +29,29 @@
                 <!-- NOVO MEMBRO -->
 
                 <div class="card-member-add mb-4">
-
-                    <div class="row g-2">
-
-                        <div class="col-md-8">
-
-                            <input type="email" class="form-control" placeholder="Digite o e-mail do colaborador">
+                    <form [formGroup]="form" (ngSubmit)="submit()">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <input type="email" formControlName="email" class="form-control"
+                                    placeholder="Digite o e-mail do colaborador">
+                            </div>
+                            <div class="col-md-2">
+                                <select name="selectUserRole" id="selectUserRole" class="form-select">
+                                    <option [value]="null" [disabled]="">Roles</option>
+                                    <option [value]="'ADMIN'">Administrador</option>
+                                    <option [value]="'MANAGER'">Gerente</option>
+                                    <option [value]="'OPERATOR'">Operador</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary w-100" type="submit">
+                                    <i class="bi bi-person-plus me-2"></i>
+                                    Convidar
+                                </button>
+                            </div>
 
                         </div>
-
-                        <div class="col-md-4">
-
-                            <button class="btn btn-primary w-100">
-
-                                <i class="bi bi-person-plus me-2"></i>
-
-                                Convidar
-
-                            </button>
-
-                        </div>
-
-                    </div>
+                    </form>
 
                 </div>
 
@@ -81,11 +82,11 @@
                         <div class="member-role">
                             @if(member.role == 'OWNER'){
                             <span class="badge text-bg-success">
-                                {{member.role}}
+                                {{formatRole(member.role)}}
                             </span>
                             }@else {
                             <span class="badge text-bg-primary">
-                                Operador
+                                {{formatRole(member.role)}}
                             </span>
                             }
                         </div>

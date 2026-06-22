@@ -21,4 +21,8 @@ export class UserService {
     });
   }
 
+  completeRegistration(payload: any):Observable<any>{
+    return this.http.post<any>('api/usuario/hitbox/membership/complete-registration', payload).pipe();
+  }
+
 }

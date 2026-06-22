@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../core/user/user.service';
+import { passwordMatchValidator } from '../../core/utils/passwordmatch-validator';
 
 @Component({
   selector: 'app-register',
@@ -23,10 +24,9 @@ export class RegisterComponent implements OnInit {
       email: [null, Validators.required],
       password: [null, Validators.required],
       confirmPassword: [null, Validators.required]
-    })
+    }, { validators: passwordMatchValidator() })
   }
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
   }
 
   register() {

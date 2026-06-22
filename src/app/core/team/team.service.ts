@@ -21,4 +21,8 @@ export class TeamService {
       params: { page: 0, size: 10 }
     });
   }
+
+  postInvite(payload:any):Observable<any>{
+    return this.http.post<any>('api/usuario/hitbox/membership/invite', payload).pipe();
+  }
 }

@@ -51,6 +51,13 @@ export const routes: Routes = [
                     import('./pages/workspace-setup/workspace-setup.component').then(
                         m => m.WorkspaceSetupComponent
                     )
+            },
+            {
+                path: 'invite/:token',
+                loadComponent: () =>
+                    import('./pages/profile/team/onboarding-user/onboarding-user.component').then(
+                        m => m.OnboardingUserComponent
+                    )
             }
         ]
     },

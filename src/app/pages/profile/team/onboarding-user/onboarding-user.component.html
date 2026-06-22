@@ -1,0 +1,93 @@
+<div class="onboarding-container">
+
+  <div class="onboarding-card">
+
+    <div class="logo">
+      HITBOX
+    </div>
+
+    <h1>Você foi convidado</h1>
+
+    <p class="subtitle">
+      Complete seu cadastro para acessar a plataforma
+    </p>
+
+    <div class="company-info">
+      <span>Empresa:</span>
+      <strong>{{ companyName }}</strong>
+    </div>
+
+    <div class="team-info">
+      <span>Equipe:</span>
+      <strong>{{ teamName }}</strong>
+    </div>
+
+    <form [formGroup]="form">
+
+      <div class="mb-3">
+        <label>E-mail</label>
+        <input
+          class="form-control"
+          formControlName="email"
+          readonly
+        >
+      </div>
+
+      <div class="row">
+
+        <div class="col-md-6">
+          <label>Nome</label>
+          <input
+            class="form-control"
+            formControlName="name"
+          >
+        </div>
+
+        <div class="col-md-6">
+          <label>Sobrenome</label>
+          <input
+            class="form-control"
+            formControlName="lastname"
+          >
+        </div>
+
+      </div>
+
+      <div class="mt-3">
+        <label>Senha</label>
+        <input
+          type="password"
+          class="form-control"
+          formControlName="password"
+        >
+      </div>
+
+      <div class="mt-3">
+        <label>Confirmar senha</label>
+        <input
+          type="password"
+          class="form-control"
+          formControlName="confirmPassword"
+        >
+      </div>
+       <div class="text-danger mt-1" *ngIf="
+                            form.hasError('passwordMismatch')
+                            &&
+                            form.get('confirmPassword')?.touched
+                            ">
+                        As senhas não coincidem.
+                    </div>
+
+      <button
+        type="button"
+        class="btn btn-primary w-100 mt-4" [disabled]="form.invalid"
+        (click)="finishRegistration()"
+      >
+        Finalizar cadastro
+      </button>
+
+    </form>
+
+  </div>
+
+</div>

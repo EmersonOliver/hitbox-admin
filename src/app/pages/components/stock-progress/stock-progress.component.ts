@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   Input
@@ -7,6 +8,7 @@ import {
   selector: 'app-stock-progress',
 
   standalone: true,
+  imports:[CommonModule],
 
   templateUrl:
     './stock-progress.component.html',

@@ -44,6 +44,15 @@ export class TokenService {
     return jwtDecode<JwtPayload>(token);
   }
 
+  getTokenInvited(token:string): JwtPayload | null {
+
+    if (!token) {
+      return null;
+    }
+
+    return jwtDecode<JwtPayload>(token);
+  }
+
   getUserName(): string {
     return this.getPayload()?.name ?? '';
   }

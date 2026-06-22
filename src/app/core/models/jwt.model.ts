@@ -7,6 +7,7 @@ export interface JwtPayload {
   email: string;
   companyName: string;
   exp: number;
+  teamName:string;
   companies:CompanySelectionResponse[];
   'X-User-Role': string;
   'X-Company-Id': string;

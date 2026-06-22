@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TeamModel } from '../models/team.model';
 import { TeamMemberResponse } from '../models/team.member.model';
+import { TeamService } from '../../../../core/team/team.service';
 declare var bootstrap: any;
 @Component({
   selector: 'app-team-modal',
@@ -17,11 +18,36 @@ export class TeamModalComponent implements OnChanges {
   @Input()
   teamSelected?: TeamModel | null = null;
 
+  form: FormGroup;
+
   members?: TeamMemberResponse[] = []
-  constructor(private router: Router) {
+  constructor(private router: Router,
+    private teamService: TeamService,
+    private fb: FormBuilder) {
+    this.form = this.fb.group({
+      email: [null, Validators.required],
+      companyId: [null, Validators.required],
+      teamId: [null, Validators.required],
+      role: ['MANAGER']
+    })
   }
 
-  getInitials(memberFullName:string): string {
+  submit() {
+  this.form.patchValue({
+      companyId: this.teamSelected?.companyId,
+      teamId: this.teamSelected?.teamId,
+      role: 'MANAGER'
+    })
+    this.teamService.postInvite(this.form.getRawValue()).subscribe({
+      next: response => {
+        console.log(response)
+      }, error: (error) => {
+        console.error(error)
+      }
+    })
+  }
+
+  getInitials(memberFullName: string): string {
 
     if (!memberFullName) {
       return 'HS';
@@ -68,6 +94,27 @@ export class TeamModalComponent implements OnChanges {
 
     modal?.hide();
 
+  }
+
+   formatRole(role: string): string {
+
+    switch (role) {
+
+      case 'ROLE_OWNER':
+      case 'OWNER':
+        return 'Administrador';
+
+      case 'ROLE_MANAGER':
+      case 'MANAGER':
+        return 'Gerente';
+
+      case 'ROLE_USER':
+      case 'USER':
+        return 'Usuário';
+
+      default:
+        return role;
+    }
   }
 
 }
