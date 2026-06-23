@@ -36,15 +36,17 @@
                                     placeholder="Digite o e-mail do colaborador">
                             </div>
                             <div class="col-md-2">
-                                <select name="selectUserRole" id="selectUserRole" class="form-select">
+                                <select name="selectUserRole" formControlName="userRole" id="selectUserRole" class="form-select">
                                     <option [value]="null" [disabled]="">Roles</option>
+                                    <option [value]="'OWNER'">Proprietário</option>
                                     <option [value]="'ADMIN'">Administrador</option>
                                     <option [value]="'MANAGER'">Gerente</option>
-                                    <option [value]="'OPERATOR'">Operador</option>
+                                     <option [value]="'OPERATOR'">Operador</option>
+                                       <option [value]="'VIEWER'">Visitante</option>
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <button class="btn btn-primary w-100" type="submit">
+                                <button class="btn btn-primary w-100" type="submit" [disabled]="!form.get('email')?.value">
                                     <i class="bi bi-person-plus me-2"></i>
                                     Convidar
                                 </button>

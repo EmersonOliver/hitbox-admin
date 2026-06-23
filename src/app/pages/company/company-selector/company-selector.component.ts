@@ -6,6 +6,7 @@ import { Company } from '../models/company.model';
 import { CompanyService } from '../../../core/company/company.service';
 import { SelectCompanyRequest } from '../models/company.selected.request';
 import { Router } from '@angular/router';
+import { CompanySelectedResponse } from '../models/company.selected.response';
 
 @Component({
   selector: 'app-company-selector',
@@ -25,12 +26,27 @@ export class CompanySelectorComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    const companies = this.tokenService.getCompanies()
-    this.companies = companies;
+
+    this.loadCompaniesByUser();
   }
 
   createCompany() {
     throw new Error('Method not implemented.');
+  }
+
+  loadCompaniesByUser() {
+    const userId = this.tokenService.getSub();
+
+    const companies = this.tokenService.getCompanies()
+    if (!companies) {
+      this.companies = companies;
+    }
+    this.companyService.loadCompanyByUser(userId).subscribe({
+      next: (response) => {
+        this.companies = response
+      }
+    })
+
   }
   selectCompany(company: Company) {
     let payload: SelectCompanyRequest = {

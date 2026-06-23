@@ -29,7 +29,6 @@ export class TeamComponent implements OnInit {
     this.userService.loadUsersByRole('OWNER').subscribe({
       next: response => {
         this.owners = response;
-        console.log(this.owners)
       }
     });
     this.loadTeams();

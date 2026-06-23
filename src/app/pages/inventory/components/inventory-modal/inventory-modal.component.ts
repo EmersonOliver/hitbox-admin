@@ -173,6 +173,7 @@ export class InventoryModalComponent implements OnInit, OnChanges {
     this.categoriaService.loadCategoriasWithouPages().subscribe({
       next: response => {
         this.categorias = response.content;
+        this.categorias = this.categorias.filter(res=> res.tipo == 'INSUMO')
       },
       error: (msg) => {
         this.toast.show('Ocorreu um erro ' + msg.error.message, 'danger');

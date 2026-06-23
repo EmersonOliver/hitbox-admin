@@ -11,7 +11,7 @@ import { TokenService } from '../auth/guards/token.service';
 })
 export class CompanyService {
 
-  constructor(private http: HttpClient, private tokenService:TokenService) { }
+  constructor(private http: HttpClient, private tokenService: TokenService) { }
 
   createCompany(payload: CompanyRequest): Observable<OnboardingResponse> {
     let token = localStorage.getItem('token');
@@ -22,7 +22,13 @@ export class CompanyService {
     ).pipe();
   }
 
-  selectCompany(payload:any):Observable<CompanySelectedResponse> {
+  selectCompany(payload: any): Observable<CompanySelectedResponse> {
     return this.http.post<CompanySelectedResponse>('api/usuario/hitbox/company/select-company', payload)
-   }
+  }
+
+  loadCompanyByUser(userId: string): Observable<CompanySelectedResponse[]> {
+    return this.http.get<CompanySelectedResponse[]>('api/usuario/hitbox/company/user/companys', {
+      params: { userId: userId }
+    });
+  }
 }

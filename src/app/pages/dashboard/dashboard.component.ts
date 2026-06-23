@@ -132,20 +132,26 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   }
   private loadImages(): void {
-    this.dashboard?.topProducts.forEach(item => {
-      this.imageService
-        .load(item.product.imageUrl)
-        .subscribe(url => {
-          item.product.imagePreview = url;
-        });
-    });
-    this.dashboard?.topInventorys.forEach(item => {
-      this.imageService
-        .load(item.imageUrl)
-        .subscribe(url => {
-          item.imagePreview = url;
-        });
-    })
+    if (this.dashboard?.topProducts) {
+      this.dashboard?.topProducts.forEach(item => {
+        this.imageService
+          .load(item.product.imageUrl)
+          .subscribe(url => {
+            item.product.imagePreview = url;
+          });
+      });
+    }
+
+    if (this.dashboard?.topInventorys) {
+      this.dashboard?.topInventorys.forEach(item => {
+        this.imageService
+          .load(item.imageUrl)
+          .subscribe(url => {
+            item.imagePreview = url;
+          });
+      })
+
+    }
 
   }
 
