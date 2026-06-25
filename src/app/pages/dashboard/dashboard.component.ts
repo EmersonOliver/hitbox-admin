@@ -16,6 +16,7 @@ import { ProductModalViewerComponent } from "./components/product-modal-viewer/p
 import { ProductDashboardResponse } from './models/product-dashboard.model';
 import { InventoryModalViewerComponent } from "./components/inventory-modal-viewer/inventory-modal-viewer.component";
 import { InventoryDashboardResponse } from './models/inventory-dashboard.model';
+import { ToastService } from '../components/toast/toast.service';
 declare var bootstrap: any;
 @Component({
   selector: 'app-dashboard',
@@ -55,6 +56,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ];
   constructor(private title: Title,
     private router: Router,
+    private toast: ToastService,
     private tutorialService: TutorialService,
     private dashboardService: DashboardService,
     private imageService: ImageService) {
@@ -75,6 +77,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
           this.loadImages();
         }, 100);
+      }, error: (error) => {
+        this.toast.show('Ocorreu um erro!' + error.error.message, 'danger')
       }
     })
 

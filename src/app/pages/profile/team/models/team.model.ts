@@ -12,6 +12,5 @@ export interface TeamModel {
   createdAt: Date;
   updatedAt: Date;
   members: TeamMemberResponse[];
-  teamRole:string;
 
 }
