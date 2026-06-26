@@ -112,6 +112,11 @@ export const routes: Routes = [
                     import('./pages/profile/team/permissions/permissions.component')
                         .then(m => m.PermissionsComponent)
             },
+            {
+                path: 'profile/teams/permissions/:teamId', loadComponent: () =>
+                    import('./pages/profile/team/permissions/permissions.component')
+                        .then(m => m.PermissionsComponent)
+            },
 
             {
                 path: 'profile/settings',

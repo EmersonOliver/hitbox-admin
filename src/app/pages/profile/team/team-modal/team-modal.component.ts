@@ -6,6 +6,8 @@ import { TeamModel } from '../models/team.model';
 import { TeamMemberResponse } from '../models/team.member.model';
 import { TeamService } from '../../../../core/team/team.service';
 import { ToastService } from '../../../components/toast/toast.service';
+import { UserResponse } from '../../../register/models/user.response';
+import { TokenService } from '../../../../core/auth/guards/token.service';
 declare var bootstrap: any;
 @Component({
   selector: 'app-team-modal',
@@ -19,12 +21,15 @@ export class TeamModalComponent implements OnChanges {
   @Input()
   teamSelected?: TeamModel | null = null;
 
+
   form: FormGroup;
 
   members?: TeamMemberResponse[] = []
+  myRole: string = '';
 
   constructor(private router: Router,
     private teamService: TeamService,
+    private tokenService: TokenService,
     private toast: ToastService,
     private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -32,7 +37,7 @@ export class TeamModalComponent implements OnChanges {
       companyId: [null, Validators.required],
       teamId: [null, Validators.required],
       role: ['MANAGER'],
-      userRole:[null]
+      userRole: [null]
     })
   }
 
@@ -67,6 +72,9 @@ export class TeamModalComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['teamSelected']) {
       this.members = this.teamSelected?.members
+
+      this.myRole = this.tokenService.getRole();
+      console.log(this.myRole)
     }
   }
 
@@ -75,8 +83,9 @@ export class TeamModalComponent implements OnChanges {
     this.fecharModal();
 
   }
-  permissions() {
-    this.router.navigate(['profile/teams/permissions'])
+  permissions(teamSelected: TeamModel) {
+    this.router.navigate(['profile/teams/permissions', teamSelected.teamId]);
+    console.log(teamSelected)
     this.fecharModal();
 
   }

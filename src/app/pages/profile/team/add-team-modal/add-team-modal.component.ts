@@ -29,7 +29,6 @@ export class AddTeamModalComponent implements OnInit {
     this.form = this.fb.group({
       teamName: [null, Validators.required],
       description: [null],
-      teamRole: [null],
       active: [true]
     });
   }

@@ -25,4 +25,8 @@ export class TeamService {
   postInvite(payload:any):Observable<any>{
     return this.http.post<any>('api/usuario/hitbox/membership/invite', payload).pipe();
   }
+
+  listPermissionByTeam(teamId:string):Observable<TeamModel> {
+    return this.http.get<TeamModel>(`api/usuario/hitbox/team/findByTeamId/${teamId}`).pipe();
+  }
 }

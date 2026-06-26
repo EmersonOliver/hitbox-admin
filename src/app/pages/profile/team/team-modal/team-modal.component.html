@@ -17,9 +17,26 @@
 
                 </div>
 
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+                <button type="button" class="btn-close btn-close-white me-2 " data-bs-dismiss="modal">
                 </button>
+                <div class="dropdown ">
 
+                    <button class="btn btn-sm btn-outline-secondary " data-bs-toggle="dropdown">
+
+                        <i class="bi bi-three-dots"></i>
+
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li>
+                            <button class="dropdown-item" (click)="permissions(teamSelected!)" [disabled]="myRole == 'USER'">
+                                <i class="bi bi-shield-lock me-2"></i>
+                                Permissões
+                            </button>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <!-- BODY -->
@@ -36,7 +53,8 @@
                                     placeholder="Digite o e-mail do colaborador">
                             </div>
                             <div class="col-md-2">
-                                <select name="selectUserRole" formControlName="userRole" id="selectUserRole" class="form-select">
+                                <select name="selectUserRole" formControlName="userRole" id="selectUserRole"
+                                    class="form-select">
                                     <option [value]="null" [disabled]="">Roles</option>
                                     <option [value]="'OWNER'">Proprietário</option>
                                     <option [value]="'ADMIN'">Administrador</option>
@@ -44,7 +62,8 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <button class="btn btn-primary w-100" type="submit" [disabled]="!form.get('email')?.value">
+                                <button class="btn btn-primary w-100" type="submit"
+                                    [disabled]="!form.get('email')?.value">
                                     <i class="bi bi-person-plus me-2"></i>
                                     Convidar
                                 </button>
@@ -110,18 +129,13 @@
                                     </li>
                                     @if(member.role != 'OWNER'){
                                     <li>
-                                        <button class="dropdown-item" (click)="permissions()">
+                                        <button class="dropdown-item" >
                                             <i class="bi bi-person-badge me-2"></i>
                                             Alterar Cargo
                                         </button>
                                     </li>
 
-                                    <li>
-                                        <button class="dropdown-item" (click)="permissions()">
-                                            <i class="bi bi-shield-lock me-2"></i>
-                                            Permissões
-                                        </button>
-                                    </li>
+                                    
                                     <li>
                                         <button class="dropdown-item" (click)="users()">
                                             <i class="bi bi-pencil-square me-2"></i>
