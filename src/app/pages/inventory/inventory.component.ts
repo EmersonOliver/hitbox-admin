@@ -230,7 +230,6 @@ export class InventoryComponent implements OnInit {
       });
   }
   closeAllModals(): void {
-    console.log('tem que fechar essas modals')
     document
       .querySelectorAll('.modal.show')
       .forEach(modalElement => {

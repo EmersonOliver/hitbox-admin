@@ -26,7 +26,11 @@ export class TeamService {
     return this.http.post<any>('api/usuario/hitbox/membership/invite', payload).pipe();
   }
 
-  listPermissionByTeam(teamId:string):Observable<TeamModel> {
+  listByTeam(teamId:string):Observable<TeamModel> {
     return this.http.get<TeamModel>(`api/usuario/hitbox/team/findByTeamId/${teamId}`).pipe();
+  }
+
+  loadAllTeams():Observable<TeamModel[]>{
+    return this.http.get<TeamModel[]>('api/usuario/hitbox/team/load/all/teams/withoupages').pipe();
   }
 }

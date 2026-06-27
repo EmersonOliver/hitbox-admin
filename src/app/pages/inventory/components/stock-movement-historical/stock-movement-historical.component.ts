@@ -136,7 +136,6 @@ export class StockMovementHistoricalComponent implements OnChanges {
   }
 
   loadMovements(page = 0) {
-    console.log(this.inventorySelected)
     if (this.inventorySelected?.id)
       this.inventoryService
         .findMovements(

@@ -38,7 +38,6 @@ export class TeamComponent implements OnInit {
     this.teamService.listProfileTeams().subscribe({
       next: response => {
         this.teams = response.content;
-        console.log(this.teams)
       }
     })
   }

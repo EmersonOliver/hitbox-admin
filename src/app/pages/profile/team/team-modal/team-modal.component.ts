@@ -72,9 +72,7 @@ export class TeamModalComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['teamSelected']) {
       this.members = this.teamSelected?.members
-
       this.myRole = this.tokenService.getRole();
-      console.log(this.myRole)
     }
   }
 
@@ -85,9 +83,7 @@ export class TeamModalComponent implements OnChanges {
   }
   permissions(teamSelected: TeamModel) {
     this.router.navigate(['profile/teams/permissions', teamSelected.teamId]);
-    console.log(teamSelected)
     this.fecharModal();
-
   }
 
   fecharModal() {

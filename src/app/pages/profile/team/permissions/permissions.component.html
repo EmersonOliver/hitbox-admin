@@ -29,39 +29,30 @@
     <!-- ROLE -->
 
     <div class="permission-toolbar mb-4">
+        <form [formGroup]="form">
+            <div class="row">
 
-        <div class="row">
+                <div class="col-md-4">
 
-            <div class="col-md-4">
+                    <label class="form-label">
 
-                <label class="form-label">
+                        Perfil
 
-                    Perfil
+                    </label>
 
-                </label>
+                    <select formControlName="teamId" class="form-select">
+                        <option [value]="null" [disabled]="true">Selecione</option>
+                        @for(team of teams;track team.teamId) {
+                        <option [value]="team.teamId">{{team.teamName}}</option>
+                        }
+                    </select>
 
-                <select class="form-select">
-
-                    <option>Owner</option>
-
-                    <option>Manager</option>
-
-                    <option>Production</option>
-
-                    <option>Stock</option>
-
-                    <option>Financial</option>
-
-                    <option>Operator</option>
-
-                </select>
+                </div>
 
             </div>
-
-        </div>
+        </form>
 
     </div>
-
     <!-- MODULES -->
 
     <div class="row g-4">

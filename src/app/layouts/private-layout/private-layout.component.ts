@@ -3,6 +3,7 @@ import { RouterModule, RouterOutlet } from "@angular/router";
 import { SidebarComponent } from "../../sidebar/sidebar.component";
 import { HeaderComponent } from "../../header/header.component";
 import { CommonModule } from '@angular/common';
+import { PermissionService } from '../../core/permissions/permission.service';
 
 @Component({
   selector: 'app-private-layout',
@@ -12,5 +13,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './private-layout.component.scss'
 })
 export class PrivateLayoutComponent {
+
+  constructor(public permission: PermissionService) { }
+
 
 }

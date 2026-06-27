@@ -219,7 +219,6 @@ export class ProductionKanbanComponent implements OnInit {
       event.currentIndex;
 
       let status = this.columns.find(c=> c.id == targetColumn.id)?.typeColumn;
-console.log(status)
     const payload = {
       id: movedCard.id,
 
@@ -433,8 +432,6 @@ console.log(status)
   }
 
   openCard(card: any): void {
-
-    console.log(card);
   }
   updateCardOrders(
     column: KanbanColumnResponse

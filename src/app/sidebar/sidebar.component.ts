@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input,  OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { VerifyDomainService } from '../core/verify/verify-domain.service';
 import { VerifyDomainsResponse } from '../core/models/verify-domain.response';
+import { PermissionService } from '../core/permissions/permission.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -22,42 +23,38 @@ export class SidebarComponent implements OnInit {
   verifyResponse?: VerifyDomainsResponse;
 
   menus = [
-    { id:'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true },
-    { id:'catsidebar', name: 'Categorias', link: '/categorias', icon: 'bi bi-tags', visible: true },
-    { id:'clisidebar', name: 'Clientes', link: '/clientes', icon: 'bi bi-people', visible: true },
-    { id:'prdtssidebar', name: 'Produtos', link: '/produtos', icon: 'bi bi-box', visible: true },
-    { id:'calcsidebar', name: 'Cálculos', link: '/calculos', icon: 'bi bi-calculator', visible: true },
-    { id:'prodsidebar', name: 'Produção', link: '/kanban', icon: 'bi bi-lightbulb', visible: true },
-    { id:'ossidebar', name: 'Ordens de Serviço', link: '/orderService', icon: 'bi bi-journal-check', visible: true },
-    { id:'invsidebar', name: 'Inventário/Estoque', link: '/inventario', icon: 'bi bi-box-seam', visible: true },
-    { id:'relsidebar', name: 'Relatórios', link: '/relatorios', icon: 'bi bi-journal', visible: true },
+    { id: 'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true },
+    { id: 'catsidebar', name: 'Categorias', link: '/categorias', icon: 'bi bi-tags', visible: this.permission.has('CATEGORY_VIEW') },
+    { id: 'clisidebar', name: 'Clientes', link: '/clientes', icon: 'bi bi-people', visible: true },
+    { id: 'prdtssidebar', name: 'Produtos', link: '/produtos', icon: 'bi bi-box', visible: true },
+    { id: 'calcsidebar', name: 'Cálculos', link: '/calculos', icon: 'bi bi-calculator', visible: true },
+    { id: 'prodsidebar', name: 'Produção', link: '/kanban', icon: 'bi bi-lightbulb', visible: true },
+    { id: 'ossidebar', name: 'Ordens de Serviço', link: '/orderService', icon: 'bi bi-journal-check', visible: true },
+    { id: 'invsidebar', name: 'Inventário/Estoque', link: '/inventario', icon: 'bi bi-box-seam', visible: true },
+    { id: 'relsidebar', name: 'Relatórios', link: '/relatorios', icon: 'bi bi-journal', visible: true },
   ];
 
 
-  constructor(private readonly verifyDomainService: VerifyDomainService) { }
- 
+  constructor(private readonly verifyDomainService: VerifyDomainService, public permission: PermissionService) { }
+
 
   ngOnInit(): void {
-    this.verifyDomainService.verifyCRUDDomains().subscribe({
-      next: response => {
-        this.verifyResponse = response;
-        this.loadMenus();
-      }
-    })
+    this.loadMenus();
+
   }
 
   loadMenus() {
     this.menus = [
-    { id:'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true },
-    { id:'catsidebar', name: 'Categorias', link: '/categorias', icon: 'bi bi-tags', visible: true },
-    { id:'clisidebar', name: 'Clientes', link: '/clientes', icon: 'bi bi-people', visible: true },
-    { id:'prdtssidebar', name: 'Produtos', link: '/produtos', icon: 'bi bi-box', visible: true },
-    { id:'calcsidebar', name: 'Cálculos', link: '/calculos', icon: 'bi bi-calculator', visible: true },
-    { id:'prodsidebar', name: 'Produção', link: '/kanban', icon: 'bi bi-lightbulb', visible: true },
-    { id:'ossidebar', name: 'Ordens de Serviço', link: '/orderService', icon: 'bi bi-journal-check', visible: true },
-    { id:'invsidebar', name: 'Inventário/Estoque', link: '/inventario', icon: 'bi bi-box-seam', visible: true },
-    { id:'relsidebar', name: 'Relatórios', link: '/relatorios', icon: 'bi bi-journal', visible: true },
-  ];
+      { id: 'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true },
+      { id: 'catsidebar', name: 'Categorias', link: '/categorias', icon: 'bi bi-tags', visible: this.permission.has('CATEGORY_VIEW') },
+      { id: 'clisidebar', name: 'Clientes', link: '/clientes', icon: 'bi bi-people', visible: this.permission.has('CUSTOMER_VIEW') },
+      { id: 'prdtssidebar', name: 'Produtos', link: '/produtos', icon: 'bi bi-box', visible: this.permission.has('PRODUCT_VIEW') },
+      { id: 'calcsidebar', name: 'Cálculos', link: '/calculos', icon: 'bi bi-calculator', visible: this.permission.has('CALCULATION_VIEW') },
+      { id: 'prodsidebar', name: 'Produção', link: '/kanban', icon: 'bi bi-lightbulb', visible: this.permission.has('PRODUCTION_VIEW') },
+      { id: 'ossidebar', name: 'Ordens de Serviço', link: '/orderService', icon: 'bi bi-journal-check', visible: this.permission.has('SERVICE_ORDER_VIEW') },
+      { id: 'invsidebar', name: 'Inventário/Estoque', link: '/inventario', icon: 'bi bi-box-seam', visible: this.permission.has('INVENTORY_VIEW') },
+      { id: 'relsidebar', name: 'Relatórios', link: '/relatorios', icon: 'bi bi-journal', visible: this.permission.has('REPORT_VIEW') },
+    ];
   }
 
 

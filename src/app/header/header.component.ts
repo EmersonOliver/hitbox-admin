@@ -6,6 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TokenService } from '../core/auth/guards/token.service';
 import { ProfileService } from '../core/profile/profile.service';
+import { PermissionService } from '../core/permissions/permission.service';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +30,7 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private tokenService: TokenService,
     private profileService: ProfileService,
+    public permission: PermissionService,
     private title: Title) {
     this.titulo = title.getTitle()
 

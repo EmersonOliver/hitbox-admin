@@ -23,17 +23,17 @@
             <span>Dashboard</span>
         </a>
 
-        <a class="mobile-link" routerLink="/produtos" routerLinkActive="active">
+        <a class="mobile-link" *ngIf="permission.has('PRODUCT_VIEW')" routerLink="/produtos" routerLinkActive="active">
             <i class="bi bi-box"></i>
             <span>Produtos</span>
         </a>
 
-        <a class="mobile-link" routerLink="/calculos" routerLinkActive="active">
+        <a class="mobile-link" *ngIf="permission.has('CALCULATION_VIEW')" routerLink="/calculos" routerLinkActive="active">
             <i class="bi bi-calculator"></i>
             <span>Cálculos</span>
         </a>
 
-        <a class="mobile-link" routerLink="/relatorios" routerLinkActive="active">
+        <a class="mobile-link" *ngIf="permission.has('REPORT_VIEW')" routerLink="/relatorios" routerLinkActive="active">
             <i class="bi bi-journal"></i>
             <span>Relatórios</span>
         </a>

@@ -44,7 +44,9 @@ export class TokenService {
     return jwtDecode<JwtPayload>(token);
   }
 
-  getTokenInvited(token:string): JwtPayload | null {
+
+
+  getTokenInvited(token: string): JwtPayload | null {
 
     if (!token) {
       return null;
@@ -61,7 +63,7 @@ export class TokenService {
     return this.getPayload()?.fullName ?? '';
   }
 
-  getSub():string{
+  getSub(): string {
     return this.getPayload()?.sub ?? '';
   }
 
@@ -109,6 +111,35 @@ export class TokenService {
     } catch (e) {
       return true;
     }
+  }
+
+  getPermissions(): string[] {
+    return this.getPayload()?.permissions ?? []
+  }
+  hasPermission(permission: string): boolean {
+    return this.getPermissions()
+      .includes(permission);
+
+  }
+  hasAnyPermission(...permissions: string[]): boolean {
+
+    const userPermissions =
+      this.getPermissions();
+
+    return permissions.some(p =>
+      userPermissions.includes(p)
+    );
+
+  }
+  hasAllPermissions(...permissions: string[]): boolean {
+
+    const userPermissions =
+      this.getPermissions();
+
+    return permissions.every(p =>
+      userPermissions.includes(p)
+    );
+
   }
 }
 

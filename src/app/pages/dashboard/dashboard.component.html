@@ -42,14 +42,14 @@
   <!-- QUICK ACTIONS -->
   <div class="quick-actions-grid">
 
-    <div class="action-tile primary" (click)="clickRouterLink('/orderService')">
+    <div class="action-tile primary" *ngIf="permission.has('SERVICE_ORDER_VIEW')" (click)="clickRouterLink('/orderService')">
       <i class="bi bi-journal-check me-2"></i>
       <div>
         <h6>Ordem de Serviços</h6>
         <small>Gerenciar Serviços</small>
       </div>
     </div>
-    <div class="action-tile primary" (click)="clickRouterLink('/kanban')">
+    <div class="action-tile primary" *ngIf="permission.has('PRODUCTION_VIEW')" (click)="clickRouterLink('/kanban')">
       <i class="bi bi-lightbulb me-2"></i>
       <div>
         <h6>Produção</h6>
@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <div class="action-tile primary" (click)="clickRouterLink('/categorias')">
+    <div class="action-tile primary" *ngIf="permission.has('CATEGORY_VIEW')" (click)="clickRouterLink('/categorias')">
       <i class="bi bi-tags me-2"></i>
       <div>
         <h6>Categorias</h6>
@@ -65,14 +65,14 @@
       </div>
     </div>
 
-    <div class="action-tile primary" (click)="clickRouterLink('/inventario')">
+    <div class="action-tile primary" *ngIf="permission.has('INVENTORY_VIEW')" (click)="clickRouterLink('/inventario')">
       <i class="bi bi-box-seam me-2"></i>
       <div>
         <h6>Inventário/Estoque</h6>
         <small>Gerenciar base</small>
       </div>
     </div>
-    <div class="action-tile primary" (click)="clickRouterLink('/clientes')">
+    <div class="action-tile primary" *ngIf="permission.has('CUSTOMER_VIEW')" (click)="clickRouterLink('/clientes')">
       <i class="bi bi-people me-2"></i>
       <div>
         <h6>Clientes</h6>

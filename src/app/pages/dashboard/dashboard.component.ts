@@ -17,6 +17,7 @@ import { ProductDashboardResponse } from './models/product-dashboard.model';
 import { InventoryModalViewerComponent } from "./components/inventory-modal-viewer/inventory-modal-viewer.component";
 import { InventoryDashboardResponse } from './models/inventory-dashboard.model';
 import { ToastService } from '../components/toast/toast.service';
+import { PermissionService } from '../../core/permissions/permission.service';
 declare var bootstrap: any;
 @Component({
   selector: 'app-dashboard',
@@ -57,6 +58,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   constructor(private title: Title,
     private router: Router,
     private toast: ToastService,
+    public permission: PermissionService,
     private tutorialService: TutorialService,
     private dashboardService: DashboardService,
     private imageService: ImageService) {
