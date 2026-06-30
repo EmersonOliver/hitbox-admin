@@ -161,9 +161,26 @@ export class CalcPricingComponent implements OnInit, AfterViewInit {
     this.pricingRuleService.saveV2(payload).subscribe({
       next: response => {
         console.log(response);
-        this.toast.show('Salvo com sucesso', 'success')
+        this.toast.show('Salvo com sucesso', 'success');
+        this.resetWizard();
+
       }
     })
+
+  }
+  private resetWizard(): void {
+
+    this.currentStep = 0;
+
+    this.payload = {};
+
+    this.steps.forEach((step, index) => {
+
+      step.completed = false;
+
+      step.enabled = index === 0;
+
+    });
 
   }
 
