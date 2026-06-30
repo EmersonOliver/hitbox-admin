@@ -1,0 +1,474 @@
+<div class="pricing-step">
+
+    <div class="step-header">
+
+        <h4>
+
+            <i class="bi bi-clipboard-check me-2"></i>
+
+            Revisão da Regra
+
+        </h4>
+
+        <p>
+
+            Revise todas as informações antes de concluir o cadastro.
+
+        </p>
+
+    </div>
+
+    <!-- DADOS GERAIS -->
+
+    <div class="card review-card">
+
+        <div class="card-header">
+
+            <h5>
+
+                Informações Gerais
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="review-grid">
+
+                <div class="review-item">
+
+                    <label>Nome</label>
+
+                    <strong>{{ payload.name }}</strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Status</label>
+
+                    <span class="badge" [class.bg-success]="payload.active" [class.bg-danger]="!payload.active">
+
+                        {{ payload.active ? 'Ativa' : 'Inativa' }}
+
+                    </span>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Preço Mínimo</label>
+
+                    <strong>
+
+                        {{ payload.minimumPrice | currency:'BRL' }}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CUSTOS -->
+
+    <div class="card review-card">
+
+        <div class="card-header">
+
+            <h5>
+
+                Custos Operacionais
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="review-grid">
+
+                <div class="review-item">
+
+                    <label>Custo Energia/Hora</label>
+
+                    <strong>
+
+                        {{ payload.energyCostPerHour | currency:'BRL' }}
+
+                    </strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Custo Máquina/Hora</label>
+
+                    <strong>
+
+                        {{ payload.machineHourCost | currency:'BRL' }}
+
+                    </strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Mão de Obra/Hora</label>
+
+                    <strong>
+
+                        {{ payload.laborHourCost | currency:'BRL' }}
+
+                    </strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Taxa Manutenção</label>
+
+                    <strong>
+
+                        {{ payload.maintenanceRate }}%
+
+                    </strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Custos Indiretos</label>
+
+                    <strong>
+
+                        {{ payload.indirectCost }}%
+
+                    </strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Custos Administrativos</label>
+
+                    <strong>
+
+                        {{ payload.administrativeCost }}%
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MARGENS -->
+
+    <div class="card review-card">
+
+        <div class="card-header">
+
+            <h5>
+
+                Margens e Lucro
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="review-grid">
+
+                <div class="review-item">
+
+                    <label>Margem Lucro</label>
+
+                    <strong>
+
+                        {{ payload.profitMargin }}%
+
+                    </strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Margem Segurança</label>
+
+                    <strong>
+
+                        {{ payload.safetyMargin }}%
+
+                    </strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Comissão Comercial</label>
+
+                    <strong>
+
+                        {{ payload.commercialCommission }}%
+
+                    </strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Markup Mínimo</label>
+
+                    <strong>
+
+                        {{ payload.minimumMarkup }}%
+
+                    </strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Reserva Perdas</label>
+
+                    <strong>
+
+                        {{ payload.lossReserve }}%
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TAXAS -->
+
+    <div class="card review-card">
+
+        <div class="card-header">
+
+            <h5>
+
+                Taxas e Encargos
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="review-grid">
+
+                <div class="review-item">
+
+                    <label>Marketplace</label>
+
+                    <strong>{{ payload.marketplaceFee }}%</strong>
+
+                </div>
+
+                <div class="review-item">
+                    <label>Cartão</label>
+                    <strong>{{ payload.cardFee }}%</strong>
+                </div>
+
+                <div class="review-item">
+
+                    <label>PIX</label>
+
+                    <strong>{{ payload.pixFee }}%</strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Gateway</label>
+
+                    <strong>{{ payload.gatewayFee }}%</strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Impostos</label>
+
+                    <strong>{{ payload.taxFee }}%</strong>
+
+                </div>
+
+                <div class="review-item">
+
+                    <label>Outras Taxas</label>
+
+                    <strong>{{ payload.otherFee }}%</strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- VARIÁVEIS -->
+
+    <div class="card review-card">
+
+        <div class="card-header">
+
+            <h5>
+
+                Variáveis
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Nome</th>
+
+                        <th>Tipo</th>
+
+                        <th>Unidade</th>
+
+                        <th>Obrigatória</th>
+
+                        <th>Impacto</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let variable of payload.variables">
+
+                        <td>
+
+                            {{ variable.name }}
+
+                        </td>
+
+                        <td>
+
+                            {{ variable.type }}
+
+                        </td>
+
+                        <td>
+
+                            {{ variable.unit }}
+
+                        </td>
+
+                        <td>
+
+                            {{ variable.required ? 'Sim' : 'Não' }}
+
+                        </td>
+
+                        <td>
+
+                            {{ variable.impactValue }}
+
+                            ({{ variable.impactType }})
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- RESUMO -->
+
+    <div class="card summary-card">
+
+        <div class="card-body">
+
+            <h5>
+
+                Resumo Executivo
+
+            </h5>
+
+            <p>
+
+                Esta regra possui:
+
+            </p>
+
+            <ul>
+
+                <li>
+
+                    {{ payload.variables?.length || 0 }}
+
+                    variável(is)
+
+                </li>
+
+                <li>
+
+                    Margem de lucro de
+
+                    {{ payload.profitMargin }}%
+
+                </li>
+
+                <li>
+
+                    Preço mínimo de
+
+                    {{ payload.minimumPrice | currency:'BRL' }}
+
+                </li>
+
+                <li>
+
+                    Taxas totais aproximadas:
+
+                    {{
+                    payload.marketplaceFee +
+                    payload.cardFee +
+                    payload.pixFee +
+                    payload.gatewayFee +
+                    payload.taxFee +
+                    payload.otherFee
+                    }}%
+
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+    <div class="row g-4 mt-2 py-2 m-2">
+        <button class="btn btn-primary" (click)="submitPayloadEvent()">Concluir</button>
+    </div>
+</div>

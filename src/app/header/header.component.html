@@ -35,15 +35,12 @@
         <ul class="dropdown-menu dropdown-menu-end shadow-lg user-dropdown">
 
             <!-- USER HEADER -->
-
             <li class="dropdown-user">
-
                 <div class="avatar-large">
                     {{initials}}
                 </div>
 
                 <div>
-
                     <strong>
                         {{firstName}}
                     </strong>
@@ -51,7 +48,6 @@
                     <small>
                         {{role}}
                     </small>
-
                 </div>
 
             </li>
@@ -63,36 +59,24 @@
             <!-- CONTA -->
 
             <li>
-
                 <button class="dropdown-item" (click)="myProfile()">
                     <i class="bi bi-person"></i>
                     Meu Perfil
                 </button>
-
             </li>
 
             <li>
-
                 <button class="dropdown-item" (click)="changePassword()">
-
                     <i class="bi bi-key"></i>
-
                     Alterar Senha
-
                 </button>
-
             </li>
 
             <li>
-
                 <button class="dropdown-item" (click)="settings()">
-
                     <i class="bi bi-gear"></i>
-
                     Configurações
-
                 </button>
-
             </li>
 
             <li>
@@ -100,29 +84,18 @@
             </li>
 
             <!-- EMPRESA -->
-
             <li>
-
                 <button class="dropdown-item" *ngIf="permission.has('COMPANY_VIEW')" (click)="myCompany()">
-
                     <i class="bi bi-building"></i>
-
                     Minha Empresa
-
                 </button>
-
             </li>
 
             <li>
-
                 <button class="dropdown-item" *ngIf="permission.has('TEAM_VIEW')" (click)="teams()">
-
                     <i class="bi bi-people"></i>
-
                     Equipes
-
                 </button>
-
             </li>
 
             <li>

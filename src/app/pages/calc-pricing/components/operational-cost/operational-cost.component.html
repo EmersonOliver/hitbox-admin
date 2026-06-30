@@ -1,0 +1,256 @@
+<div class="pricing-step">
+
+    <div class="step-header">
+        <h4>
+            <i class="bi bi-cash-stack me-2"></i>
+            Custos Operacionais
+        </h4>
+        <p>
+            Defina os custos envolvidos no processo produtivo.
+        </p>
+    </div>
+
+    <div class="card pricing-card">
+        <div class="card-body">
+            <form [formGroup]="form" (ngSubmit)="next(2)">
+
+                <div class="row g-4">
+                    <!-- Energia -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Energia por hora
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                R$
+                            </span>
+                            <input type="number" class="form-control" formControlName="energyCostPerHour">
+                        </div>
+
+                        <small class="field-help">
+
+                            Consumo médio energético da impressora.
+
+                        </small>
+
+                    </div>
+
+                    <!-- Máquina -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Custo máquina por hora
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                R$
+                            </span>
+
+                            <input type="number" class="form-control" formControlName="machineHourCost">
+
+                        </div>
+
+                        <small class="field-help">
+
+                            Depreciação e uso do equipamento.
+
+                        </small>
+
+                    </div>
+
+                    <!-- Mão de obra -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Mão de obra por hora
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                R$
+                            </span>
+
+                            <input type="number" class="form-control" formControlName="laborHourCost">
+
+                        </div>
+
+                    </div>
+
+                    <!-- Manutenção -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Taxa de manutenção
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <input type="number" class="form-control" formControlName="maintenanceRate">
+
+                            <span class="input-group-text">
+
+                                %
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Custos indiretos -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Custos indiretos
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+
+                                R$
+
+                            </span>
+
+                            <input type="number" class="form-control" formControlName="indirectCost">
+
+                        </div>
+
+                        <small class="field-help">
+
+                            Internet, limpeza, ferramentas, aluguel.
+
+                        </small>
+
+                    </div>
+
+                    <!-- Administrativos -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Custos administrativos
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+
+                                R$
+
+                            </span>
+
+                            <input type="number" class="form-control" formControlName="administrativeCost">
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row g-4 mt-2 py-2 m-2">
+                    <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Próximo</button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- RESUMO -->
+
+    <div class="card cost-summary">
+
+        <div class="card-body">
+
+            <div class="summary-header">
+
+                <h6>
+
+                    Resumo Operacional
+
+                </h6>
+
+            </div>
+
+            <div class="summary-values">
+
+                <div class="summary-item">
+
+                    <span>
+
+                        Energia
+
+                    </span>
+
+                    <strong>
+
+                        {{
+                        form.get('energyCostPerHour')?.value
+                        | currency:'BRL'
+                        }}
+
+                    </strong>
+
+                </div>
+
+                <div class="summary-item">
+
+                    <span>
+
+                        Máquina
+
+                    </span>
+
+                    <strong>
+
+                        {{
+                        form.get('machineHourCost')?.value
+                        | currency:'BRL'
+                        }}
+
+                    </strong>
+
+                </div>
+
+                <div class="summary-item">
+
+                    <span>
+
+                        Mão de obra
+
+                    </span>
+
+                    <strong>
+
+                        {{
+                        form.get('laborHourCost')?.value
+                        | currency:'BRL'
+                        }}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

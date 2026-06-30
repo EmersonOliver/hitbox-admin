@@ -39,6 +39,16 @@ export class PricingRuleService {
         );
     }
 
+     saveV2(payload: any): Observable<PricingRule> {
+        let token = localStorage.getItem('token');
+        return this.http.post<PricingRule>(
+            `api/hitbox/pricing-rule/save`,
+            payload, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        }
+        );
+    }
+
     edit(id: number, payload: PricingRule): Observable<PricingRule> {
         let token = localStorage.getItem('token');
         return this.http.put<PricingRule>(
@@ -102,6 +112,24 @@ export class PricingRuleService {
             `api/hitbox/pricing-rule/ruleById/${ruleId}`, productionCost,
             { headers: { 'Authorization': `Bearer ${token}` } }
         );
+    }
+
+    saveDraft(currentStep: number, payload: any): Observable<any> {
+        return this.http.post<any>(
+            '/api/hitbox/pricing-rule/draft',
+            {
+                currentStep: currentStep,
+                payload: payload
+            }
+        ).pipe();
+    }
+
+    loadDraft(): Observable<any> {
+     return   this.http
+            .get<any>(
+                '/api/hitbox/pricing-rule/draft'
+            ).pipe()
+           ;
     }
 
 
