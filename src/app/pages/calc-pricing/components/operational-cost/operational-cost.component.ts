@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -9,14 +9,20 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
   templateUrl: './operational-cost.component.html',
   styleUrl: './operational-cost.component.scss'
 })
-export class OperationalCostComponent {
+export class OperationalCostComponent implements OnChanges {
 
 
 
   form: FormGroup;
 
+  @Input()
+  payload: any;
+
   @Output()
   nextStep = new EventEmitter();
+
+  @Output()
+  backStep = new EventEmitter();
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -29,6 +35,17 @@ export class OperationalCostComponent {
       nextStep: [1]
     })
   }
+  ngOnChanges(changes: SimpleChanges): void {
+   this.form.patchValue({
+     energyCostPerHour: this.payload.energyCostPerHour,
+      machineHourCost: this.payload.machineHourCost,
+      laborHourCost: this.payload.laborHourCost,
+      maintenanceRate: this.payload.maintenanceRate,
+      indirectCost: this.payload.indirectCost,
+      administrativeCost: this.payload.administrativeCost,
+      nextStep: [1]
+   })
+  }
 
   next(step: number) {
     if (this.form.invalid) {
@@ -38,6 +55,13 @@ export class OperationalCostComponent {
       nextStep: step
     });
     this.nextStep.emit(this.form.getRawValue())
+  }
+
+  back(step: number) {
+    this.form.patchValue({
+      nextStep: step
+    });
+    this.backStep.emit(this.form.getRawValue())
   }
 
 }

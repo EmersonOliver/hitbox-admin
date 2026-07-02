@@ -157,6 +157,27 @@ export class CalcPricingComponent implements OnInit, AfterViewInit {
 
   }
 
+  backStep(event: any): void {
+    const current = this.currentStep;
+    // marca o step atual como edição
+    this.steps[current].completed = false;
+
+    // habilita o próximo
+    if (this.steps[current]) {
+      this.steps[current].enabled = false;
+    }
+
+    // troca a etapa
+    this.currentStep = event.nextStep;
+
+    // salva os dados recebidos
+    this.payload = {
+      ...this.payload,
+      ...event
+    };
+    this.saveDraft();
+  }
+
   saveRule(payload: any) {
     this.pricingRuleService.saveV2(payload).subscribe({
       next: response => {

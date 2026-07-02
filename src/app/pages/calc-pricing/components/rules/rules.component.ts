@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -9,13 +9,15 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
   templateUrl: './rules.component.html',
   styleUrl: './rules.component.scss'
 })
-export class RulesComponent {
+export class RulesComponent implements OnInit, OnChanges {
 
   form: FormGroup;
 
+  @Input()
+  payload: any;
+
   @Output()
   nextStep = new EventEmitter();
-
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -25,6 +27,21 @@ export class RulesComponent {
       description: [null],
       nextStep: [0]
     });
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.payload) {
+      this.form.patchValue({
+        name: this.payload.name,
+        active: this.payload.active,
+        minimumPrice: this.payload.minimumPrice,
+        description: this.payload.description,
+        nextStep: [0]
+      })
+    }
+  }
+
+  ngOnInit(): void {
+    
   }
 
   next(step: number) {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -9,9 +9,12 @@ import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Va
   templateUrl: './pricing-variables.component.html',
   styleUrl: './pricing-variables.component.scss'
 })
-export class PricingVariablesComponent {
+export class PricingVariablesComponent implements OnChanges {
 
   form: FormGroup;
+
+  @Input()
+  payload: any;
 
   @Output()
   nextStep = new EventEmitter();
@@ -23,6 +26,32 @@ export class PricingVariablesComponent {
     });
 
   }
+  ngOnChanges(changes: SimpleChanges): void {
+
+    const payload = this.payload?.variables;
+    if (!payload?.length) {
+      return;
+    }
+
+    this.variables.clear();
+
+    payload.forEach((variable: any) => {
+
+      const formVariable = this.createVariable();
+
+      formVariable.patchValue({
+        name: variable.name,
+        type: variable.type,
+        unit: variable.unit,
+        required: variable.required,
+        impactValue: variable.impactValue,
+        impactType: variable.impactType
+      });
+
+      this.variables.push(formVariable);
+    });
+
+  }
 
   createVariable(): FormGroup {
     return this.fb.group({
@@ -30,9 +59,9 @@ export class PricingVariablesComponent {
       type: [null, Validators.required],
       unit: [null, Validators.required],
       required: [true],
-      impactValue: [null, Validators.required],
+      impactValue: [null],
       impactType: [null, Validators.required]
-    })
+    });
   }
 
   get variables(): FormArray {
@@ -45,7 +74,7 @@ export class PricingVariablesComponent {
   removeVariable(index: number) {
     this.variables.removeAt(index)
   }
-  
+
   next(step: number) {
     if (this.form.invalid) {
       return;
@@ -54,5 +83,15 @@ export class PricingVariablesComponent {
       nextStep: step
     })
     this.nextStep.emit(this.form.getRawValue());
+  }
+
+  @Output()
+  backStep = new EventEmitter();
+
+  back(step: number) {
+    this.form.patchValue({
+      nextStep: step
+    });
+    this.backStep.emit(this.form.getRawValue())
   }
 }

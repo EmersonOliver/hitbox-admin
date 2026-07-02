@@ -37,22 +37,32 @@
 
         <ng-container [ngSwitch]="currentStep">
 
-            <app-rules (nextStep)="onNextStep($event)" *ngSwitchCase="0">
+            <app-rules (nextStep)="onNextStep($event)" [payload]="payload" *ngSwitchCase="0">
             </app-rules>
 
-            <app-operational-cost (nextStep)="onNextStep($event)" *ngSwitchCase="1">
+            <app-operational-cost (nextStep)="onNextStep($event)" 
+            (backStep)="backStep($event)" [payload]="payload"
+                *ngSwitchCase="1">
             </app-operational-cost>
 
-            <app-pricing-margin (nextStep)="onNextStep($event)" *ngSwitchCase="2">
+            <app-pricing-margin (nextStep)="onNextStep($event)"
+             (backStep)="backStep($event)" [payload]="payload"
+                *ngSwitchCase="2">
             </app-pricing-margin>
 
-            <app-pricing-fees (nextStep)="onNextStep($event)" *ngSwitchCase="3">
+            <app-pricing-fees (nextStep)="onNextStep($event)"
+             (backStep)="backStep($event)"
+             [payload]="payload" *ngSwitchCase="3">
             </app-pricing-fees>
 
-            <app-pricing-variables (nextStep)="onNextStep($event)" *ngSwitchCase="4">
+            <app-pricing-variables (nextStep)="onNextStep($event)"
+             (backStep)="backStep($event)"
+             [payload]="payload" *ngSwitchCase="4">
             </app-pricing-variables>
 
-            <app-pricing-review [payload]="payload"  (savePayload)="saveRule($event)" *ngSwitchCase="5">
+            <app-pricing-review [payload]="payload" 
+            (backStep)="backStep($event)"
+            (savePayload)="saveRule($event)" *ngSwitchCase="5">
             </app-pricing-review>
             <!-- 
             <app-pricing-simulation
