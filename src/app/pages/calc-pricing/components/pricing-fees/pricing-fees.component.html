@@ -1,0 +1,283 @@
+<div class="pricing-step">
+
+    <div class="step-header">
+
+        <h4>
+
+            <i class="bi bi-percent me-2"></i>
+
+            Taxas e Encargos
+
+        </h4>
+
+        <p>
+
+            Configure as taxas aplicadas sobre a venda dos seus produtos.
+
+        </p>
+
+    </div>
+
+    <div class="card pricing-card">
+
+        <div class="card-body">
+            <form [formGroup]="form" (ngSubmit)="next(4)">
+
+                <div class="row g-4">
+
+                    <!-- Marketplace -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Taxa Marketplace
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <input type="number" class="form-control" formControlName="marketplaceFee">
+
+                            <span class="input-group-text">
+
+                                %
+
+                            </span>
+
+                        </div>
+
+                        <small class="field-help">
+
+                            Shopee, Mercado Livre, Amazon etc.
+
+                        </small>
+
+                    </div>
+
+                    <!-- Cartão -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Taxa Cartão
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <input type="number" class="form-control" formControlName="cardFee">
+
+                            <span class="input-group-text">
+
+                                %
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Pix -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Taxa Pix
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <input type="number" class="form-control" formControlName="pixFee">
+
+                            <span class="input-group-text">
+
+                                %
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Gateway -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Gateway Pagamento
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <input type="number" class="form-control" formControlName="gatewayFee">
+
+                            <span class="input-group-text">
+
+                                %
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Impostos -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Impostos
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <input type="number" class="form-control" formControlName="taxFee">
+
+                            <span class="input-group-text">
+
+                                %
+
+                            </span>
+
+                        </div>
+
+                        <small class="field-help">
+
+                            Simples Nacional, Lucro Presumido etc.
+
+                        </small>
+
+                    </div>
+
+                    <!-- Outras Taxas -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Outras Taxas
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <input type="number" class="form-control" formControlName="otherFee">
+
+                            <span class="input-group-text">
+
+                                %
+
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4 mt-2 py-2 m-2">
+                    <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Próximo</button>
+                </div>
+                  <div class="row g-4 mt-2 py-2 m-2">
+                    <button class="btn btn-secondary" type="button" (click)="back(2)">Voltar</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- RESUMO -->
+
+    <div class="card fee-summary">
+
+        <div class="card-body">
+
+            <div class="summary-header">
+
+                <h6>
+
+                    Resumo de Encargos
+
+                </h6>
+
+            </div>
+
+            <div class="summary-grid">
+
+                <div class="summary-item">
+
+                    <span>
+
+                        Marketplace
+
+                    </span>
+
+                    <strong>
+
+                        {{
+                        form.get('marketplaceFee')?.value || 0
+                        }}%
+
+                    </strong>
+
+                </div>
+
+                <div class="summary-item">
+
+                    <span>
+
+                        Cartão
+
+                    </span>
+
+                    <strong>
+
+                        {{
+                        form.get('cardFee')?.value || 0
+                        }}%
+
+                    </strong>
+
+                </div>
+
+                <div class="summary-item">
+
+                    <span>
+
+                        Impostos
+
+                    </span>
+
+                    <strong>
+
+                        {{
+                        form.get('taxFee')?.value || 0
+                        }}%
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ALERTA -->
+
+    <div class="alert alert-warning">
+
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+        Taxas mal configuradas podem comprometer sua margem de lucro.
+        Sempre considere taxas de marketplace e impostos antes de definir o preço final.
+
+    </div>
+
+</div>

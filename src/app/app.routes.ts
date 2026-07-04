@@ -72,7 +72,28 @@ export const routes: Routes = [
             { path: 'produtos/:id', loadComponent: () => import('./pages/produtos/produtos.component').then(m => m.ProdutosComponent) },
             { path: 'clientes', loadComponent: () => import('./pages/clientes/clientes.component').then(m => m.ClientesComponent) },
             { path: 'categorias', loadComponent: () => import('./pages/categorias/categorias.component').then(m => m.CategoriasComponent) },
-            { path: 'calculos', loadComponent: () => import('./pages/calc-pricing/calc-pricing.component').then(m => m.CalcPricingComponent) },
+            {
+                path: 'calculos',
+                loadComponent: () => import('./pages/calc-pricing/calc-page/calc-page.component').then(m => m.CalcPageComponent)
+                ,
+                children: [
+                    {
+                        path: '',
+                        redirectTo: '',
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: '',
+                        loadComponent: () =>
+                            import('./pages/calc-pricing/dashboard-calc/dashboard-calc.component').then(m => m.DashboardCalcComponent)
+                    },
+                    {
+                        path: 'pricing/new',
+                        loadComponent: () =>
+                            import('./pages/calc-pricing/calc-pricing.component').then(m => m.CalcPricingComponent)
+                    }
+                ]
+            },
             { path: 'catalogo', loadComponent: () => import('./pages/pricing-catalog/pricing-catalog.component').then(m => m.PricingCatalogComponent) },
             { path: 'inventario', loadComponent: () => import('./pages/inventory/inventory.component').then(m => m.InventoryComponent) },
             { path: 'inventario/:id', loadComponent: () => import('./pages/inventory/inventory.component').then(m => m.InventoryComponent) },

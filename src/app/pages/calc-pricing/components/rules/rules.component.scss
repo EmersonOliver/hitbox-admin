@@ -1,0 +1,82 @@
+.pricing-step {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1.5rem;
+}
+
+.step-header {
+
+    h4 {
+
+        font-weight: 700;
+
+        margin-bottom: .5rem;
+    }
+
+    p {
+
+        color: var(--bs-secondary-color);
+
+        margin-bottom: 0;
+    }
+}
+
+.pricing-card {
+
+    border-radius: 18px;
+
+    border: 1px solid var(--bs-border-color);
+
+    background: var(--bs-body-bg);
+}
+
+.pricing-preview {
+
+    border-radius: 18px;
+
+    border: 1px solid var(--bs-border-color);
+
+    background: rgba(var(--bs-primary-rgb), .05);
+}
+
+.preview-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 1rem;
+}
+
+.preview-item {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: .4rem;
+}
+
+.preview-item .label {
+
+    font-size: .85rem;
+
+    color: var(--bs-secondary-color);
+}
+
+textarea.form-control {
+
+    resize: none;
+}
+
+@media (max-width: 992px) {
+
+    .preview-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+}

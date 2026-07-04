@@ -1,0 +1,159 @@
+<div class="pricing-step">
+
+    <div class="step-header">
+
+        <h4>
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Informações Gerais
+        </h4>
+
+        <p>
+            Defina os dados básicos da sua regra de precificação.
+        </p>
+
+    </div>
+
+    <div class="card pricing-card">
+
+        <div class="card-body">
+
+            <form [formGroup]="form" (ngSubmit)="next(1)">
+                <div class="row g-4">
+                    <!-- Nome -->
+                    <div class="col-md-8">
+
+                        <label class="form-label">
+                            Nome da Regra *
+                        </label>
+
+                        <input type="text" class="form-control" formControlName="name"
+                            placeholder="Ex: Impressão PLA Premium">
+
+                    </div>
+
+                    <!-- Status -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            Status
+                        </label>
+
+                        <div class="form-check form-switch mt-2">
+
+                            <input class="form-check-input" type="checkbox" formControlName="active">
+
+                            <label class="form-check-label">
+
+                                Regra ativa
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Preço mínimo -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            Preço mínimo
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                R$
+                            </span>
+
+                            <input type="number" class="form-control" formControlName="minimumPrice" placeholder="0,00">
+
+                        </div>
+
+                    </div>
+
+                    <!-- Descrição -->
+
+                    <div class="col-md-8">
+
+                        <label class="form-label">
+
+                            Descrição
+
+                        </label>
+
+                        <textarea rows="4" class="form-control" formControlName="description"
+                            placeholder="Descreva quando esta regra deve ser utilizada">
+                    </textarea>
+
+                    </div>
+                </div>
+                <div class="row g-4 mt-2 py-2 m-2">
+                        <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Próximo</button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Resumo -->
+
+    <div class="card pricing-preview">
+
+        <div class="card-body">
+
+            <h6>
+                Resumo da Regra
+            </h6>
+
+            <div class="preview-grid">
+
+                <div class="preview-item">
+
+                    <span class="label">
+                        Nome
+                    </span>
+
+                    <strong>
+                        {{ form.get('name')?.value || 'Não informado' }}
+                    </strong>
+
+                </div>
+
+                <div class="preview-item">
+
+                    <span class="label">
+                        Status
+                    </span>
+                    <span class="badge" [class.bg-success]="form.get('active')?.value"
+                        [class.bg-secondary]="!form.get('active')?.value">
+                        {{ form.get('active')?.value ? 'Ativa' : 'Inativa' }}
+                    </span>
+                </div>
+
+                <div class="preview-item">
+
+                    <span class="label">
+                        Preço mínimo
+                    </span>
+
+                    <strong>
+
+                        {{
+                        form.get('minimumPrice')?.value
+                        | currency:'BRL'
+                        }}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,221 @@
+<div class="pricing-dashboard">
+
+    <div class="dashboard-header">
+
+        <div>
+            <h2>
+                <i class="bi bi-calculator-fill me-2"></i>
+                Cálculos e Precificação
+            </h2>
+            <p>
+                Gerencie regras de precificação e simule preços dos seus produtos.
+            </p>
+        </div>
+
+        <button class="btn btn-primary" routerLink="/calculos/pricing/new">
+            <i class="bi bi-plus-circle me-2"></i>
+            Criar Regra
+        </button>
+
+    </div>
+
+    <!-- KPIs -->
+
+    <div class="dashboard-cards">
+
+        <div class="metric-card">
+
+            <div class="metric-icon">
+                <i class="bi bi-diagram-3"></i>
+            </div>
+
+            <div class="metric-content">
+                <span>Total de Regras</span>
+                <h3>{{ pricingRules.length }}</h3>
+            </div>
+
+        </div>
+
+        <div class="metric-card">
+
+            <div class="metric-icon success">
+                <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div class="metric-content">
+                <span>Regras Ativas</span>
+                <h3>{{ activeRules }}</h3>
+            </div>
+
+        </div>
+
+        <div class="metric-card">
+
+            <div class="metric-icon warning">
+                <i class="bi bi-percent"></i>
+            </div>
+
+            <div class="metric-content">
+                <span>Margem Média</span>
+                <h3>{{ averageMargin | number:'1.0-0' }}%</h3>
+            </div>
+
+        </div>
+
+        <div class="metric-card">
+
+            <div class="metric-icon info">
+                <i class="bi bi-clock-history"></i>
+            </div>
+
+            <div class="metric-content">
+                <span>Última Atualização</span>
+                <h3>{{ lastUpdate }}</h3>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- LISTA -->
+
+    <div class="rules-card">
+
+        <div class="rules-header">
+
+            <h4>
+                Regras de Precificação
+            </h4>
+
+            <div class="search-wrapper">
+
+                <i class="bi bi-search"></i>
+
+                <input type="text" class="form-control" placeholder="Pesquisar regra...">
+
+            </div>
+
+        </div>
+
+        <div class="empty-state" *ngIf="pricingRules.length === 0">
+
+            <i class="bi bi-calculator"></i>
+
+            <h5>
+                Nenhuma regra cadastrada
+            </h5>
+
+            <p>
+                Crie sua primeira regra de precificação para começar.
+            </p>
+
+            <button class="btn btn-primary" routerLink="/calculos/pricing/new">
+
+                Criar Regra
+
+            </button>
+
+        </div>
+
+        <div class="table-responsive" *ngIf="pricingRules.length > 0">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Nome</th>
+
+                        <th>Status</th>
+
+                        <th>Margem</th>
+
+                        <th>Preço Mínimo</th>
+
+                        <th></th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let rule of pricingRules">
+
+                        <td>
+
+                            <strong>
+                                {{ rule.name }}
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge" [ngClass]="rule.active
+              ? 'bg-success'
+              : 'bg-secondary'">
+
+                                {{ rule.active ? 'Ativa' : 'Inativa' }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {{ rule.profitMargin }}%
+
+                        </td>
+
+                        <td>
+
+                            {{ rule.minimumPrice | currency:'BRL' }}
+
+                        </td>
+
+                        <td class="text-end">
+
+                            <button class="btn btn-outline-primary btn-sm">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+            <div class="pagination-container" *ngIf="totalPages > 0">
+
+                <button class="btn btn-outline-secondary" [disabled]="currentPage === 0" (click)="previousPage()">
+
+                    <i class="bi bi-chevron-left"></i>
+
+                </button>
+
+                <button *ngFor="let page of pages" class="btn" [ngClass]="page === currentPage
+                    ? 'btn-primary'
+                    : 'btn-outline-secondary'" (click)="goToPage(page)">
+
+                    {{ page + 1 }}
+
+                </button>
+
+                <button class="btn btn-outline-secondary" [disabled]="currentPage === totalPages - 1"
+                    (click)="nextPage()">
+
+                    <i class="bi bi-chevron-right"></i>
+
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

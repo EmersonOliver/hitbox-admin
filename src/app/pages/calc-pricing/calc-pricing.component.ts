@@ -48,6 +48,13 @@ import {
 import {
   ProductExtraCost
 } from './models/product-extra-cost.model';
+import { ActivatedRoute, RouterModule } from "@angular/router";
+import { RulesComponent } from "./components/rules/rules.component";
+import { OperationalCostComponent } from "./components/operational-cost/operational-cost.component";
+import { PricingMarginComponent } from './components/pricing-margin/pricing-margin.component';
+import { PricingFeesComponent } from "./components/pricing-fees/pricing-fees.component";
+import { PricingVariablesComponent } from './components/pricing-variables/pricing-variables.component';
+import { PricingReviewComponent } from './components/pricing-review/pricing-review.component';
 
 declare var bootstrap: any;
 
@@ -60,6 +67,13 @@ declare var bootstrap: any;
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
+    RulesComponent,
+    OperationalCostComponent,
+    PricingMarginComponent,
+    PricingFeesComponent,
+    PricingVariablesComponent,
+    PricingReviewComponent,
     ToastComponent
   ],
 
@@ -70,495 +84,164 @@ declare var bootstrap: any;
     './calc-pricing.component.scss'
 })
 export class CalcPricingComponent implements OnInit, AfterViewInit {
-  resetSimulationForm() {
-    this.simulationResults = []
-    this.simulationForm.reset({
-      quantity: 1,
-      productionCost: 0,
-      filamentWeight: 0,
-      filamentCostPerGram: 0,
-      printHours: null,
-      machineHourCost: 0,
-      energyCost: 0,
-      packagingCost: 0,
-      maintenancePercentage: 1,
-      extras: []
-    });
-  }
+  steps = [
 
-  activeTab = 'rules';
+    {
+      title: 'Informações Gerais',
+      description: 'Nome da regra',
+      enabled: true,
+      completed: false
+    },
 
-  loading = false;
+    {
+      title: 'Custos Operacionais',
+      description: 'Custos base',
+      enabled: false,
+      completed: false
+    },
 
-  currentPage = 1;
+    {
+      title: 'Margens',
+      description: 'Lucro desejado',
+      enabled: false,
+      completed: false
+    },
 
-  pageSize = 5;
+    {
+      title: 'Taxas',
+      description: 'Marketplace e cartão',
+      enabled: false,
+      completed: false
+    },
 
-  search = '';
+    {
+      title: 'Variáveis',
+      description: 'Customizações',
+      enabled: false,
+      completed: false
+    },
 
-  selectedStatus = 'ALL';
+    {
+      title: 'Revisão',
+      description: 'Conferência',
+      enabled: false,
+      completed: false
+    }
+  ];
 
-  rules: PricingRuleResponse[] = [];
+  currentStep = 0;
+  payload: any;
 
-  simulationResults: SuggestedPriceResult[] = [];
+  constructor(private pricingRuleService: PricingRuleService, private toast: ToastService) { }
 
-  editar: boolean = false;
-  ruleSelected?: PricingRuleResponse;
-  ngAfterViewInit(): void {
+  onNextStep(event: any): void {
+    const current = this.currentStep;
+    // marca o step atual como concluído
+    this.steps[current].completed = true;
 
-    this.initializeTooltips();
-  }
+    // habilita o próximo
+    if (this.steps[event.nextStep]) {
+      this.steps[event.nextStep].enabled = true;
+    }
 
+    // troca a etapa
+    this.currentStep = event.nextStep;
 
-initializeTooltips(): void {
-
-  setTimeout(() => {
-
-    const tooltipList =
-      document.querySelectorAll(
-        '[data-bs-toggle="tooltip"]'
-      );
-
-    tooltipList.forEach((el: any) => {
-
-      bootstrap.Tooltip.getOrCreateInstance(el);
-
-    });
-
-  });
-}
-  
-  private loadTooltips(): void {
-
-    setTimeout(() => {
-
-      const tooltipTriggerList =
-        document.querySelectorAll(
-          '[data-bs-toggle="tooltip"]'
-        );
-
-      tooltipTriggerList.forEach(
-        (el: any) => {
-
-          bootstrap.Tooltip
-            .getOrCreateInstance(el);
-        }
-      );
-
-    });
-  }
-  form: FormGroup = this.fb.group({
-    name: [null, Validators.required],
-    salesChannel: [null, Validators.required],
-    profitMargin: [
-      0,
-      Validators.required
-    ],
-
-    marketplaceFee: [
-      0
-    ],
-
-    cardFee: [
-      0
-    ],
-
-    operationalCost: [
-      0
-    ],
-
-    commercialCost: [
-      0
-    ],
-
-    minimumPrice: [
-      0
-    ],
-
-    active: [
-      true
-    ]
-  });
-
-  simulationForm = this.fb.group({
-
-    quantity: [
-      1,
-      Validators.required
-    ],
-
-    productionCost: [
-      0,
-      Validators.required
-    ],
-
-    filamentWeight: [
-      0
-    ],
-
-    filamentCostPerGram: [
-      0
-    ],
-
-    printHours: [
-      null, [Validators.pattern(
-        /^(\d+d)?(\d+h)?(\d+m)?(\d+s)?$/
-      )]
-    ],
-
-    machineHourCost: [
-      0
-    ],
-
-    energyCost: [
-      0
-    ],
-    packagingCost: [
-      0
-    ],
-    maintenancePercentage: [
-      1
-    ],
-    extras: this.fb.array([])
-  });
-
-  constructor(
-    private title: Title,
-    private fb: FormBuilder,
-    private pricingRuleService: PricingRuleService,
-    private toast: ToastService
-  ) {
-
-    this.title.setTitle(
-      'Hitbox - Cálculos'
-    );
-
-    this.simulationForm
-      .valueChanges
-      .pipe(
-        debounceTime(300)
-      )
-      .subscribe(() => {
-
-        if (
-          this.simulationForm.valid
-        ) {
-
-          this.simulate();
-        }
-
-      });
-  }
-
-  ngOnInit(): void {
-    this.loadRules();
-  }
-
-  loadRules(): void {
-
-    this.pricingRuleService
-      .getPage(
-        this.currentPage - 1,
-        this.pageSize
-      )
-      .subscribe({
-
-        next: response => {
-
-          this.rules =
-            response.content;
-          console.log(response)
-        },
-
-        error: error => {
-
-          this.toast.show(
-            'Erro ao carregar regras',
-            'danger'
-          );
-        }
-      });
-  }
-
-  simulate(): void {
-    const formValue =
-      this.simulationForm.getRawValue();
-
-    const payload = {
-
-      ...formValue,
-
-      printHours:
-        this.parseDurationToHours(
-          formValue.printHours
-        )
+    // salva os dados recebidos
+    this.payload = {
+      ...this.payload,
+      ...event
     };
 
-    this.pricingRuleService
-      .simulate(payload)
-      .subscribe({
+    this.saveDraft();
 
-        next: response => {
-
-          this.simulationResults =
-            response;
-        },
-
-        error: () => {
-
-          this.simulationResults = [];
-        }
-      });
   }
 
-  submit(): void {
+  backStep(event: any): void {
+    const current = this.currentStep;
+    // marca o step atual como edição
+    this.steps[current].completed = false;
 
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
+    // habilita o próximo
+    if (this.steps[current]) {
+      this.steps[current].enabled = false;
     }
 
-    this.loading = true;
+    // troca a etapa
+    this.currentStep = event.nextStep;
 
-    const request = this.editar ?
-      this.pricingRuleService.edit(
-        this.ruleSelected!.id!,
-        this.form.getRawValue()
-      ) : this.pricingRuleService
-        .save(this.form.getRawValue());
-
-    request
-      .subscribe({
-        next: () => {
-          this.loading = false;
-          this.toast.show(
-            'Regra salva com sucesso',
-            'success'
-          );
-          this.form.reset({
-
-            profitMargin: 0,
-            marketplaceFee: 0,
-            cardFee: 0,
-            operationalCost: 0,
-            commercialCost: 0,
-            minimumPrice: 0,
-            active: true
-          });
-          this.editar = false;
-          this.ruleSelected = {} as PricingRuleResponse;
-          this.loadRules();
-        },
-
-        error: () => {
-          this.loading = false;
-          this.toast.show(
-            'Erro ao salvar regra',
-            'danger'
-          );
-        }
-      });
+    // salva os dados recebidos
+    this.payload = {
+      ...this.payload,
+      ...event
+    };
+    this.saveDraft();
   }
 
-  get filteredRules() {
+  saveRule(payload: any) {
+    this.pricingRuleService.saveV2(payload).subscribe({
+      next: response => {
+        console.log(response);
+        this.toast.show('Salvo com sucesso', 'success');
+        this.resetWizard();
 
-    return this.rules.filter(rule => {
-
-      const matchesSearch =
-        rule.name
-          .toLowerCase()
-          .includes(
-            this.search.toLowerCase()
-          );
-
-      const matchesStatus =
-        this.selectedStatus === 'ALL'
-        ||
-        (
-          this.selectedStatus === 'ACTIVE'
-          &&
-          rule.active
-        )
-        ||
-        (
-          this.selectedStatus === 'INACTIVE'
-          &&
-          !rule.active
-        );
-
-      return (
-        matchesSearch
-        &&
-        matchesStatus
-      );
-    });
-  }
-
-  get paginatedRules() {
-
-    const start =
-      (
-        this.currentPage - 1
-      ) * this.pageSize;
-
-    return this.filteredRules.slice(
-      start,
-      start + this.pageSize
-    );
-  }
-
-  get totalPages(): number {
-
-    return Math.ceil(
-      this.filteredRules.length /
-      this.pageSize
-    );
-  }
-
-  changePage(page: number): void {
-
-    if (
-      page < 1
-      ||
-      page > this.totalPages
-    ) {
-      return;
-    }
-
-    this.currentPage = page;
-  }
-  removeRule(id: number | undefined) {
-    this.pricingRuleService.deleteRule(id).subscribe({
-      next: res => {
-        this.toast.show('Regra removida com sucesso!', 'success');
-        this.loadRules();
-      }, error: (error) => {
-        this.toast.show('Ocorreu um erro ao excluir a regra!' + error.error.message, 'danger');
       }
     })
-  }
-
-  selectRule(item: PricingRuleResponse) {
-    this.ruleSelected = item;
-
-    const element =
-      document.getElementById('ruleExclusaoModal');
-
-    if (!element) {
-      return;
-    }
-
-    const modal =
-      new bootstrap.Modal(element);
-
-    modal.show();
 
   }
+  private resetWizard(): void {
 
-  editRule(item: PricingRuleResponse) {
-    this.fillForm(item);
-    this.ruleSelected = item;
-  }
+    this.currentStep = 0;
 
-  private fillForm(rule: PricingRuleResponse): void {
-    if (rule.id)
-      this.form.patchValue({
-        id: rule.id,
-        name: rule.name,
-        salesChannel: rule.salesChannel,
-        profitMargin: rule.profitMargin,
-        marketplaceFee: rule.marketplaceFee,
-        cardFee: rule.cardFee,
-        operationalCost: rule.operationalCost,
-        commercialCost: rule.commercialCost,
-        minimumPrice: rule.minimumPrice,
-        active: rule.active
-      });
+    this.payload = {};
 
-    this.editar = true;
-  }
-  descartarAlteracoes() {
-    this.form.reset({
-      id: null,
-      profitMargin: 0,
-      marketplaceFee: 0,
-      cardFee: 0,
-      operationalCost: 0,
-      commercialCost: 0,
-      minimumPrice: 0,
-      active: true
+    this.steps.forEach((step, index) => {
+
+      step.completed = false;
+
+      step.enabled = index === 0;
+
     });
-    this.editar = false
+
   }
 
-  get extras(): FormArray {
+  ngAfterViewInit(): void {
 
-    return this.simulationForm.get(
-      'extras'
-    ) as FormArray;
+  }
+  ngOnInit(): void {
+    this.loadDraft();
   }
 
-  addExtra(): void {
+  private saveDraft(): void {
+    this.pricingRuleService.saveDraft(this.currentStep, this.payload).subscribe({
+      next: response => {
 
-    this.extras.push(
-
-      this.fb.group({
-
-        name: [''],
-
-        value: [0],
-
-        multiplyByQuantity: [true]
-
-      })
-
-    );
-  }
-  removeExtra(index: number): void {
-
-    this.extras.removeAt(index);
-
-    this.simulate();
-  }
-  private parseDurationToHours(value: string | null): number {
-
-    if (!value) {
-      return 0;
-    }
-
-    const normalized =
-      value.toLowerCase().trim();
-
-    const days =
-      this.extract(normalized, /(\d+)d/);
-
-    const hours =
-      this.extract(normalized, /(\d+)h/);
-
-    const minutes =
-      this.extract(normalized, /(\d+)m/);
-
-    const seconds =
-      this.extract(normalized, /(\d+)s/);
-
-    return (
-      (days * 24)
-      + hours
-      + (minutes / 60)
-      + (seconds / 3600)
-    );
+      },
+      error: (error) => {
+        console.error(error.error.message)
+      }
+    });
   }
 
-  private extract(
-    value: string,
-    regex: RegExp
-  ): number {
+  private loadDraft(): void {
 
-    const match =
-      value.match(regex);
+    this.pricingRuleService.loadDraft()
+      .subscribe(draft => {
 
-    return match
-      ? Number(match[1])
-      : 0;
+        if (!draft) {
+          return;
+        }
+
+        this.currentStep = draft.currentStep;
+
+        this.payload = draft.payload;
+
+        this.steps.forEach((step, index) => {
+          step.completed = index < this.currentStep;
+
+          step.enabled = index <= this.currentStep;
+        });
+      });
   }
+
 }
