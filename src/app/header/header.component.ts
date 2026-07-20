@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { TokenService } from '../core/auth/guards/token.service';
 import { ProfileService } from '../core/profile/profile.service';
 import { PermissionService } from '../core/permissions/permission.service';
+import { NotificationService } from '../core/user/notification/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -18,18 +19,25 @@ import { PermissionService } from '../core/permissions/permission.service';
 export class HeaderComponent implements OnInit {
 
 
+
+
+
+  private pageSize = 5;
   userName = '';
   firstName = '';
   companyName = '';
   role = '';
 
   titulo = "";
+  visibleNotifications: any[] = [];
+  notifications: any[] = [];
 
 
   constructor(private readonly themeService: ThemeService,
     private router: Router,
     private tokenService: TokenService,
     private profileService: ProfileService,
+    private notificationService: NotificationService,
     public permission: PermissionService,
     private title: Title) {
     this.titulo = title.getTitle()
@@ -44,6 +52,7 @@ export class HeaderComponent implements OnInit {
       this.tokenService.getCompanyName();
 
 
+
     this.profileService.loadProfile().subscribe({
       next: profile => {
 
@@ -52,12 +61,78 @@ export class HeaderComponent implements OnInit {
 
         this.role =
           this.formatRole(profile.role);
-
         this.profileService.profileResponse = profile;
+      }
+    });
+    this.loadNotifications();
+
+    this.notificationService.connect((data) => {
+      this.notifications = data;
+      this.loadNotifications();
+    })
+  }
+
+  readMessage(notification: any) {
+    const payload = {
+      notificationId: notification.notificationId,
+      companyId: notification.companyId,
+      userId: this.tokenService.getSub(),
+      read: true
+    }
+    this.notificationService.readNotification(payload).subscribe({
+      next: response => {
+        this.loadNotifications();
       }
     })
   }
 
+  get unreadCount(): number {
+    return this.notifications
+      .filter(n => !n.read)
+      .length;
+  }
+
+  loadNotifications() {
+    // this.notificationService.listAllNotifications(0, 10).subscribe({
+    //   next: response => {
+    //     this.notifications = response.content
+    //     this.visibleNotifications =
+    //       this.notifications.slice(
+    //         0,
+    //         this.pageSize
+    //       );
+    //   }
+    // });
+
+    this.notificationService.listAllNotificationsV2().subscribe({
+      next: response => {
+        
+        const ordenadas = [...response].sort((a, b) => Number(a.read) - Number(b.read));
+        this.notifications = ordenadas
+        this.visibleNotifications =
+          this.notifications.slice(
+            0,
+            this.pageSize
+          );
+      }
+    });
+  }
+
+  openNotificationsPage() {
+    throw new Error('Method not implemented.');
+  }
+
+  loadMore() {
+    const nextSize =
+      this.visibleNotifications.length +
+      this.pageSize;
+
+    this.visibleNotifications =
+      this.notifications.slice(
+        0,
+        nextSize
+      );
+  }
 
   private formatRole(role: string): string {
 
