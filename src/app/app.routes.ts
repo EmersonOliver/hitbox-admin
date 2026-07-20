@@ -91,6 +91,12 @@ export const routes: Routes = [
                         path: 'pricing/new',
                         loadComponent: () =>
                             import('./pages/calc-pricing/calc-pricing.component').then(m => m.CalcPricingComponent)
+                    },
+                    {
+                        path: 'simulation',
+                        loadComponent: () =>
+                            import('./pages/calc-pricing/components/simulation/simulation.component')
+                        .then(m => m.SimulationComponent)
                     }
                 ]
             },
