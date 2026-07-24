@@ -13,6 +13,7 @@ import {
   Chart,
   registerables
 } from 'chart.js';
+import { Title } from '@angular/platform-browser';
 
 Chart.register(...registerables);
 
@@ -90,6 +91,10 @@ implements AfterViewInit {
       minimum: 40
     }
   ];
+
+  constructor(public title:Title) {
+     this.title.setTitle('ERSO ERP - Relatórios');
+  }
 
   ngAfterViewInit(): void {
 

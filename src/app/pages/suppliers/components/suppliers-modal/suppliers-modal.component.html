@@ -1,0 +1,227 @@
+<div class="modal fade" id="supplierModal" tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+
+        <div class="modal-content app-modal">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-truck me-2"></i>
+                    {{ editing ? 'Editar Fornecedor' : 'Novo Fornecedor' }}
+                </h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="form">
+                    <!-- DADOS GERAIS -->
+
+                    <div class="form-section">
+
+                        <h6 class="section-title">
+                            Dados do Fornecedor
+                        </h6>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-8">
+
+                                <label class="form-label">
+
+                                    Nome / Razão Social
+
+                                </label>
+
+                                <input type="text" formControlName="name" class="form-control"
+                                    placeholder="Nome do fornecedor">
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <label class="form-label">
+
+                                    Categoria
+
+                                </label>
+
+                                <select class="form-select" formControlName="supplierCategoryId">
+
+                                    <option [value]="null">
+                                        Selecione
+                                    </option>
+
+                                    <option *ngFor="let c of suppliersCategory" [value]="c.id">
+                                        {{c.name}}
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+
+                                    CPF / CNPJ
+
+                                </label>
+
+                                <input formControlName="document" type="text" class="form-control"
+                                    placeholder="000.000.000-00">
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Telefone
+                                </label>
+                                <input formControlName="phone" type="text" class="form-control"
+                                    placeholder="(11) 99999-9999">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input" formControlName="active">
+                                    <label class="form-check-label">
+                                        Item ativo
+                                    </label>
+                                </div>
+                                 <label class="form-label">
+                                    E-mail
+                                </label>
+                                <input formControlName="email" type="text" class="form-control"
+                                    placeholder="contato@fornecedor.com.br">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ENDEREÇO -->
+
+                    <div formArrayName="addressRequests" class="form-section mt-4">
+                        <h6 class="section-title">
+                            Endereço Comercial
+                        </h6>
+                        <button class="btn btn-primary mb-5" type="button"
+                            (click)="adicionarEndereco()">Adicionar</button>
+
+                        <div class="row g-3 mb-3" *ngFor="let address of addressRequests.controls; let i = index"
+                            [formGroupName]="i">
+                            <div class="col-md-4">
+                                <label class="form-label">
+                                    CEP
+                                </label>
+                                <input type="text" formControlName="cep" class="form-control" placeholder="00000-000">
+                            </div>
+
+                            <div class="col-md-8">
+
+                                <label class="form-label">
+
+                                    Endereço
+
+                                </label>
+
+                                <input type="text" formControlName="endereco" class="form-control"
+                                    placeholder="Rua, Avenida...">
+                            </div>
+
+                            <div class="col-md-2">
+
+                                <label class="form-label">
+
+                                    Nº
+
+                                </label>
+
+                                <input type="number" class="form-control">
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <label class="form-label">
+
+                                    Bairro
+
+                                </label>
+
+                                <input formControlName="bairro" type="text" class="form-control">
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <label class="form-label">
+
+                                    Cidade
+
+                                </label>
+
+                                <input formControlName="cidade" type="text" class="form-control">
+                            </div>
+
+                            <div class="col-md-2">
+
+                                <label class="form-label">
+
+                                    Tipo
+
+                                </label>
+
+                                <select formControlName="tipo" class="form-select">
+
+                                    <option>
+                                        Comercial
+                                    </option>
+
+                                    <option>
+                                        Residencial
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+
+                                    Complemento
+
+                                </label>
+
+                                <input formControlName="complemento" type="text" class="form-control"
+                                    placeholder="Sala, Bloco...">
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+
+                                    Observações
+
+                                </label>
+
+                                <input formControlName="observacoes" type="text" class="form-control">
+                            </div>
+                            <button class="btn btn-danger" type="button" (click)="removerEndereco(i)">Remover</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+                <button type="button" class="btn btn-primary" (click)="salvarSuppliers()">
+                    <i class="bi bi-check-circle me-2"></i>
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

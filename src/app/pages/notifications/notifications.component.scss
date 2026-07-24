@@ -1,0 +1,180 @@
+.notifications-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 1.5rem;
+
+  flex-wrap: wrap;
+
+  gap: 1rem;
+}
+
+.notifications-card {
+
+  background:
+    rgba(var(--bs-body-bg-rgb), 1);
+
+  border:
+    1px solid rgba(var(--bs-border-color-rgb), .35);
+
+  border-radius: 1.5rem;
+
+  padding: 1.25rem;
+}
+
+.notification-filters {
+
+  display: flex;
+
+  gap: .75rem;
+
+  flex-wrap: wrap;
+}
+
+.btn-filter {
+
+  border-radius: 999px;
+
+  border:
+    1px solid rgba(var(--bs-border-color-rgb), .4);
+
+  background:
+    transparent;
+
+  color:
+    var(--bs-body-color);
+
+  padding: .5rem 1rem;
+}
+
+.btn-filter.active {
+
+  background:
+    var(--bs-primary);
+
+  color:
+    white;
+
+  border-color:
+    var(--bs-primary);
+}
+
+.notification-item {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 1rem;
+
+  padding: 1rem;
+
+  border-radius: 1rem;
+
+  transition: .2s ease;
+
+  border-bottom:
+    1px solid rgba(var(--bs-border-color-rgb), .2);
+
+  &:hover {
+
+    background:
+      rgba(var(--bs-primary-rgb), .04);
+  }
+}
+
+.notification-item.unread {
+
+  border-left:
+    4px solid var(--bs-primary);
+
+  background:
+    rgba(var(--bs-primary-rgb), .05);
+}
+
+.notification-icon {
+
+  width: 52px;
+
+  height: 52px;
+
+  min-width: 52px;
+
+  border-radius: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 1.2rem;
+}
+
+.notification-content {
+
+  flex: 1;
+}
+
+.notification-title {
+
+  font-weight: 600;
+
+  margin-bottom: .35rem;
+}
+
+.notification-message {
+
+  color:
+    var(--bs-secondary-color);
+
+  margin-bottom: .4rem;
+}
+
+.notification-date {
+
+  font-size: .85rem;
+
+  color:
+    var(--bs-secondary-color);
+}
+
+.notification-actions {
+
+  display: flex;
+
+  align-items: center;
+}
+
+.notification-pagination {
+
+  display: flex;
+
+  justify-content: center;
+
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+
+  .notifications-header {
+
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .notification-item {
+
+    flex-direction: column;
+  }
+
+  .notification-actions {
+
+    width: 100%;
+  }
+}

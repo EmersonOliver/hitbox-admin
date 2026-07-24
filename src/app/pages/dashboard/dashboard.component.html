@@ -69,13 +69,20 @@
       <i class="bi bi-box-seam me-2"></i>
       <div>
         <h6>Inventário/Estoque</h6>
-        <small>Gerenciar base</small>
+        <small>Gerenciar IO</small>
       </div>
     </div>
     <div class="action-tile primary" *ngIf="permission.has('CUSTOMER_VIEW')" (click)="clickRouterLink('/clientes')">
       <i class="bi bi-people me-2"></i>
       <div>
         <h6>Clientes</h6>
+        <small>Gerenciar base</small>
+      </div>
+    </div>
+      <div class="action-tile primary" *ngIf="permission.has('SUPPLIERS_VIEW')" (click)="clickRouterLink('/fornecedores')">
+      <i class="bi bi-building-gear me-2"></i>
+      <div>
+        <h6>Fornecedores</h6>
         <small>Gerenciar base</small>
       </div>
     </div>

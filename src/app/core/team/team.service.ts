@@ -33,4 +33,6 @@ export class TeamService {
   loadAllTeams():Observable<TeamModel[]>{
     return this.http.get<TeamModel[]>('api/usuario/hitbox/team/load/all/teams/withoupages').pipe();
   }
+
+  
 }

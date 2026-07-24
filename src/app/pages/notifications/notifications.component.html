@@ -1,0 +1,136 @@
+<div class="container-fluid py-4">
+
+    <!-- HEADER -->
+
+    <div class="notifications-header">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+
+                Notificações
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Gerencie alertas, eventos e atividades do sistema
+
+            </p>
+
+        </div>
+
+        <div class="d-flex gap-2">
+
+            <button class="btn btn-outline-primary">
+
+                <i class="bi bi-check2-all me-2"></i>
+
+                Marcar todas como lidas
+
+            </button>
+
+            <button class="btn btn-outline-danger">
+
+                <i class="bi bi-trash me-2"></i>
+
+                Limpar lidas
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- FILTROS -->
+
+    <div class="notifications-card mb-4">
+
+        <div class="notification-filters">
+
+            <button class="btn btn-filter active">
+
+                Todas
+
+            </button>
+
+            <button class="btn btn-filter">
+
+                Não Lidas
+
+            </button>
+
+            <button class="btn btn-filter">
+
+                Estoque
+
+            </button>
+
+            <button class="btn btn-filter">
+
+                Produção
+
+            </button>
+
+            <button class="btn btn-filter">
+
+                Compras
+
+            </button>
+
+            <button class="btn btn-filter">
+
+                Sistema
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- LISTA -->
+
+    <div class="notifications-card">
+
+        <div *ngFor="let n of notifications" [class]="!n.read ? 'notification-item unread mb-2':'notification-item mb-2'">
+
+            <div class="notification-icon bg-danger-subtle">
+
+                <i class="bi bi-exclamation-triangle"></i>
+
+            </div>
+
+            <div class="notification-content">
+
+                <div class="notification-title">
+
+                    {{n.title}}
+
+                </div>
+
+                <div class="notification-message">
+                    {{n.message}}
+                </div>
+
+                <div class="notification-date">
+                   {{n.createAt | date:'dd/MM/yyyy HH:mm:ss'}}
+                </div>
+            </div>
+
+            <div *ngIf="!n.read" class="notification-actions">
+                <button class="btn btn-link" (click)="readMessage(n)">
+                    Marcar como lida
+                </button>
+            </div>
+        </div>
+
+
+        <!-- PAGINAÇÃO -->
+        <div class="notification-pagination">
+            <button class="btn btn-outline-primary">
+                Carregar mais
+            </button>
+        </div>
+    </div>
+
+</div>

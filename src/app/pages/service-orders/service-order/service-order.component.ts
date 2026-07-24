@@ -21,6 +21,7 @@ import { ModalServiceViewerComponent } from '../components/modals/modal-service-
 import { ServiceOrderRequest } from '../models/request/service-order-request.model';
 import { ToastService } from '../../components/toast/toast.service';
 import { RangeDatepickerComponent } from "../../components/datepicker/range-datepicker.component";
+import { Title } from '@angular/platform-browser';
 
 
 declare var bootstrap: any;
@@ -78,8 +79,12 @@ export class ServiceOrderComponent implements OnInit {
   constructor(
     private serviceOrderService: ServiceOrderService,
     private router: Router,
-    private toast: ToastService
-  ) { }
+    private toast: ToastService,
+    public title: Title
+  ) {
+
+    this.title.setTitle('ERSO ERP - Ordens de Serviço');
+  }
 
 
   ngOnInit(): void {

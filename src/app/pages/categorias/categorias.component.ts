@@ -68,7 +68,7 @@ export class CategoriasComponent implements OnInit {
     public title: Title,
     private fb: FormBuilder
   ) {
-    title.setTitle('Hitbox - Categorias')
+    title.setTitle('ERSO ERP - Categorias')
     this.form = this.fb.group({
       nome: [null, Validators.required],
       tipo: [null, Validators.required],

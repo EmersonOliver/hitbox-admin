@@ -50,7 +50,7 @@ export class ProdutosComponent implements OnInit {
     private router: Router,
     private activedRouter: ActivatedRoute
   ) {
-    title.setTitle('Hitbox - Produtos')
+    title.setTitle('ERSO ERP - Produtos')
   }
 
 

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../core/user/user.service';
 import { passwordMatchValidator } from '../../core/utils/passwordmatch-validator';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,8 @@ export class RegisterComponent implements OnInit {
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(private fb: FormBuilder, private userService: UserService, public title:Title) {
+     this.title.setTitle('ERSO ERP - Registrar');
     this.form = fb.group({
       name: [null, Validators.required],
       lastname: [null, Validators.required],

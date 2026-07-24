@@ -132,7 +132,9 @@ export class CalcPricingComponent implements OnInit, AfterViewInit {
   currentStep = 0;
   payload: any;
 
-  constructor(private pricingRuleService: PricingRuleService, private toast: ToastService) { }
+  constructor(private pricingRuleService: PricingRuleService, private toast: ToastService, public title:Title) { 
+     this.title.setTitle('ERSO ERP - Regras de Preços');
+  }
 
   onNextStep(event: any): void {
     const current = this.currentStep;

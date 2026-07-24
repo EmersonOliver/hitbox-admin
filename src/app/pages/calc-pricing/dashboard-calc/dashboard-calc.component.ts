@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PricingRuleService } from '../../../core/pricing/services/pricing-rule.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dashboard-calc',
@@ -23,7 +24,9 @@ export class DashboardCalcComponent implements OnInit {
   totalPages = 0;
   pages: number[] = [];
 
-  constructor(private pricingRuleService: PricingRuleService) { }
+  constructor(private pricingRuleService: PricingRuleService, public title:Title) {
+     this.title.setTitle('ERSO ERP - Cálculos');
+   }
   ngOnInit(): void {
     this.loadPricingRules();
   }

@@ -24,6 +24,7 @@ import { StockModalComponent } from "./components/stock-modal/stock-modal.compon
 import { StockMovementHistoricalComponent } from "./components/stock-movement-historical/stock-movement-historical.component";
 import { ImageService } from '../../core/image/image.service';
 import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 declare var bootstrap: any;
 
@@ -69,11 +70,15 @@ export class InventoryComponent implements OnInit {
 
   constructor(
     private inventoryService: InventarioService,
+    public title: Title,
     private toast: ToastService,
     private cdr: ChangeDetectorRef,
     private imageService: ImageService,
     private activeRoute: ActivatedRoute,
-    private categoriaService: CategoriaService) { }
+    private categoriaService: CategoriaService) {
+    this.title.setTitle('ERSO ERP - Inventário/Estoque');
+
+  }
 
 
   ngOnInit(): void {
@@ -396,7 +401,7 @@ export class InventoryComponent implements OnInit {
     modal.show();
   }
 
-  
+
   private loadImages(): void {
 
     this.inventory.forEach(item => {

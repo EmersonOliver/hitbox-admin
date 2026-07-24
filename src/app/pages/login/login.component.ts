@@ -5,6 +5,7 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { ToastService } from '../components/toast/toast.service';
 import { ToastComponent } from "../components/toast/toast.component";
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -17,8 +18,11 @@ export class LoginComponent {
 
   form: FormGroup;
   constructor(private fb: FormBuilder,
+    public title: Title,
     private toast: ToastService,
     private router: Router, private authService: AuthService) {
+    this.title.setTitle('ERSO ERP - Login');
+
     this.form = fb.group({
       email: [null, Validators.required],
       password: [null, Validators.required]

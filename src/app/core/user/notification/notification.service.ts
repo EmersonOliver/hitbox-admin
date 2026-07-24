@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { ApiPage } from '../../api/api.response.model';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client'
@@ -9,7 +9,13 @@ import SockJS from 'sockjs-client'
   providedIn: 'root'
 })
 export class NotificationService {
+
   private client!: Client;
+
+  private notificationsSubject = new BehaviorSubject<any[]>([]);
+  notifications$ = this.notificationsSubject.asObservable();
+
+ 
 
   constructor(private http: HttpClient) { }
 
@@ -19,6 +25,27 @@ export class NotificationService {
     }).pipe();
   }
 
+   loadAllNotifications(): Observable<any[]> {
+    return this.listAllNotificationsV2().pipe(
+      tap((response: any[]) => {
+        const ordenadas = [...response].sort((a, b) => Number(a.read) - Number(b.read));
+        this.notificationsSubject.next(ordenadas);
+      })
+    );
+  }
+
+  readNotificationV2(payload: any): Observable<any> {
+    return this.http.post('api/usuario/hitbox/notifications/read', payload).pipe(
+      tap(() => {
+        // Pega a lista atual, atualiza o item correspondente e emite de novo
+        const currentList = this.notificationsSubject.value;
+        const updatedList = currentList.map(n => 
+          n.notificationId === payload.notificationId ? { ...n, read: true } : n
+        );
+        this.notificationsSubject.next(updatedList);
+      })
+    );
+  }
   connect(callback: (msg: any) => void) {
     let token = localStorage.getItem('token');
     this.client = new Client({
