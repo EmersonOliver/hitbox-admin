@@ -37,7 +37,8 @@ export class SidebarComponent implements OnInit {
 
   loadMenus() {
     this.menus = [
-      { id: 'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true },
+      { id: 'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: !this.permission.hasRole('SELLER')   },
+      { id: 'sellserbar', name: !this.permission.hasRole('SELLER') ? 'Vendas' : 'Dashboard', link: '/seller', icon: !this.permission.hasRole('SELLER') ? 'bi bi-cart-check' : 'bi bi-grid', visible: this.permission.has('CUSTOMER_VIEW') },
       { id: 'catsidebar', name: 'Categorias', link: '/categorias', icon: 'bi bi-tags', visible: this.permission.has('CATEGORY_VIEW') },
       { id: 'clisidebar', name: 'Clientes', link: '/clientes', icon: 'bi bi-people', visible: this.permission.has('CUSTOMER_VIEW') },
       { id: 'fornesidebar', name: 'Fornecedores', link: '/fornecedores', icon: 'bi bi-building-gear', visible: this.permission.has('SUPPLIERS_VIEW') },

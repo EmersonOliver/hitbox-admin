@@ -1,0 +1,387 @@
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 *ngIf="tokenService.hasRole('SELLER')" class="fw-bold mb-1">
+                Dashboard
+            </h2>
+
+             <h2 *ngIf="!tokenService.hasRole('SELLER')" class="fw-bold mb-1">
+                Vendas
+            </h2>
+
+            <p class="text-muted mb-0">
+                Bem-vindo ao painel de vendas.
+            </p>
+
+        </div>
+
+        <button class="btn btn-primary">
+
+            <i class="bi bi-plus-circle me-2"></i>
+
+            Novo Pedido
+
+        </button>
+
+    </div>
+
+    <!-- KPIs -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon bg-primary-subtle">
+
+                    <i class="bi bi-cart-check"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted">
+
+                        Pedidos Hoje
+
+                    </small>
+
+                    <h3>18</h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon bg-success-subtle">
+
+                    <i class="bi bi-currency-dollar"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted">
+
+                        Faturamento
+
+                    </small>
+
+                    <h3>R$ 8.250</h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon bg-warning-subtle">
+
+                    <i class="bi bi-clock-history"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted">
+
+                        Pendentes
+
+                    </small>
+
+                    <h3>6</h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon bg-info-subtle">
+
+                    <i class="bi bi-people"></i>
+
+                </div>
+
+                <div>
+
+                    <small class="text-muted">
+
+                        Clientes Ativos
+
+                    </small>
+
+                    <h3>132</h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Ações -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-xl-3 col-md-6">
+
+            <button class="action-card">
+
+                <i class="bi bi-bag-plus"></i>
+
+                <span>Novo Pedido</span>
+
+            </button>
+
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+
+            <button class="action-card">
+
+                <i class="bi bi-person-plus"></i>
+
+                <span>Novo Cliente</span>
+
+            </button>
+
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+
+            <button class="action-card">
+
+                <i class="bi bi-search"></i>
+
+                <span>Consultar Produtos</span>
+
+            </button>
+
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+
+            <button class="action-card">
+
+                <i class="bi bi-calendar-week"></i>
+
+                <span>Agenda</span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Pedidos -->
+
+        <div class="col-xl-8">
+
+            <div class="dashboard-panel">
+
+                <div class="panel-header">
+
+                    <h5>
+
+                        Últimos Pedidos
+
+                    </h5>
+
+                    <button class="btn btn-sm btn-outline-primary">
+
+                        Ver Todos
+
+                    </button>
+
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="table align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>#</th>
+
+                                <th>Cliente</th>
+
+                                <th>Status</th>
+
+                                <th>Total</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>#1054</td>
+
+                                <td>Restaurante Central</td>
+
+                                <td>
+
+                                    <span class="badge bg-warning">
+
+                                        Produção
+
+                                    </span>
+
+                                </td>
+
+                                <td>R$ 950,00</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>#1053</td>
+
+                                <td>Bar do João</td>
+
+                                <td>
+
+                                    <span class="badge bg-success">
+
+                                        Finalizado
+
+                                    </span>
+
+                                </td>
+
+                                <td>R$ 320,00</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>#1052</td>
+
+                                <td>Cliente Particular</td>
+
+                                <td>
+
+                                    <span class="badge bg-primary">
+
+                                        Entregue
+
+                                    </span>
+
+                                </td>
+
+                                <td>R$ 180,00</td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Lateral -->
+
+        <div class="col-xl-4">
+
+            <div class="dashboard-panel mb-4">
+
+                <h5>
+
+                    Agenda de Hoje
+
+                </h5>
+
+                <ul class="timeline">
+
+                    <li>
+
+                        <strong>09:00</strong>
+
+                        <span>Entrega Restaurante Central</span>
+
+                    </li>
+
+                    <li>
+
+                        <strong>14:00</strong>
+
+                        <span>Reunião Cliente Premium</span>
+
+                    </li>
+
+                    <li>
+
+                        <strong>17:00</strong>
+
+                        <span>Fechamento Diário</span>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div class="dashboard-panel">
+
+                <h5>
+
+                    Notificações
+
+                </h5>
+
+                <div class="notification-item">
+
+                    Pedido #1054 entrou em produção.
+
+                </div>
+
+                <div class="notification-item">
+
+                    Cliente aguardando orçamento.
+
+                </div>
+
+                <div class="notification-item">
+
+                    2 pagamentos confirmados.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

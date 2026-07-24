@@ -56,9 +56,25 @@ export class HeaderComponent implements OnInit {
         this.firstName =
           profile.name;
 
-        this.role =
-          this.formatRole(profile.role);
+        this.role = this.formatRole(profile.role);
         this.profileService.profileResponse = profile;
+
+        switch (profile.role) {
+          case 'ADMIN':
+            this.router.navigate(['/dashboard']);
+            break;
+
+          case 'SELLER':
+            this.router.navigate(['/seller/dashboard']);
+            break;
+
+          case 'MANAGER':
+            this.router.navigate(['/dashboard']);
+            break;
+
+          default:
+            this.router.navigate(['/login']);
+        }
       }
     });
 
@@ -73,7 +89,7 @@ export class HeaderComponent implements OnInit {
     this.notificationService.connect((data) => {
       this.notifications = data;
       this.loadNotifications();
-     
+
     })
   }
 
@@ -159,7 +175,9 @@ export class HeaderComponent implements OnInit {
       case 'ROLE_USER':
       case 'USER':
         return 'Usuário';
-
+      case 'ROLE_SELLER':
+      case 'SELLER':
+        return 'Vendedor(ª)';
       default:
         return role;
     }

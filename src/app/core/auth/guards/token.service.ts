@@ -121,6 +121,10 @@ export class TokenService {
       .includes(permission);
 
   }
+
+  hasRole(role:string):boolean {
+    return this.getRole().includes(role)
+  }
   hasAnyPermission(...permissions: string[]): boolean {
 
     const userPermissions =

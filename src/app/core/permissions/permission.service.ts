@@ -16,6 +16,10 @@ export class PermissionService {
       .hasPermission(permission);
   }
 
+  hasRole(role:string):boolean {
+    return this.tokenService.hasRole(role);
+  }
+
   hasAny(...permissions: string[]): boolean {
 
     return this.tokenService

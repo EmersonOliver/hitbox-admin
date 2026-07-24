@@ -5,6 +5,8 @@ import { PrivateLayoutComponent } from './layouts/private-layout/private-layout.
 import { SettingsComponent } from './pages/profile/settings/settings.component';
 import { authGuard } from './core/auth/guards/auth.guard';
 import { guestGuard } from './core/auth/guards/guest.guard';
+import { SellerLayoutComponent } from './layouts/seller-layout/seller-layout.component';
+import { SellerDashboardComponent } from './pages/seller/seller-dashboard/seller-dashboard.component';
 
 export const routes: Routes = [
     {
@@ -61,6 +63,7 @@ export const routes: Routes = [
             }
         ]
     },
+
     {
         path: '',
         component: PrivateLayoutComponent,
@@ -73,6 +76,20 @@ export const routes: Routes = [
             { path: 'clientes', loadComponent: () => import('./pages/clientes/clientes.component').then(m => m.ClientesComponent) },
             { path: 'categorias', loadComponent: () => import('./pages/categorias/categorias.component').then(m => m.CategoriasComponent) },
             {
+                path: 'seller',
+                component: SellerLayoutComponent,
+                canActivate: [authGuard],
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'dashboard',
+                        pathMatch: 'full'
+                    },
+                    { path: 'dashboard', component: SellerDashboardComponent },
+                ]
+            },
+            {
+
                 path: 'calculos',
                 loadComponent: () => import('./pages/calc-pricing/calc-page/calc-page.component').then(m => m.CalcPageComponent)
                 ,

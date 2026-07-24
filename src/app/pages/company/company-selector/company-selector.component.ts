@@ -34,7 +34,7 @@ export class CompanySelectorComponent implements OnInit {
   }
 
   createCompany() {
-    
+
   }
 
   loadCompaniesByUser() {
@@ -58,7 +58,7 @@ export class CompanySelectorComponent implements OnInit {
     }
     this.companyService.selectCompany(payload).subscribe({
       next: response => {
-        this.tokenService.setToken(response.token); 
+        this.tokenService.setToken(response.token);
         this.router.navigate(['/dashboard'])
       }
     });
