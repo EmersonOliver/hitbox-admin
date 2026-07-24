@@ -1,0 +1,205 @@
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Pedidos de Compra
+            </h2>
+
+            <p class="text-muted mb-0">
+                Controle pedidos, entregas e recebimentos.
+            </p>
+
+        </div>
+        <div>
+            <button class="btn btn-outline-secondary me-2" title="Voltar" routerLink="/fornecedores"><i
+                    class="bi bi-arrow-left"></i></button>
+            <button class="btn btn-primary">
+
+                <i class="bi bi-cart-plus me-2"></i>
+
+                Novo Pedido
+
+            </button>
+        </div>
+
+
+    </div>
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-3">
+
+            <div class="order-stat-card">
+
+                <span class="label">
+
+                    Pedidos Abertos
+
+                </span>
+
+                <h3>
+
+                    12
+
+                </h3>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="order-stat-card">
+
+                <span class="label">
+
+                    Entregues
+
+                </span>
+
+                <h3>
+
+                    87
+
+                </h3>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="order-stat-card">
+
+                <span class="label">
+
+                    Pendentes
+
+                </span>
+
+                <h3>
+
+                    4
+
+                </h3>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="order-stat-card">
+
+                <span class="label">
+
+                    Em Atraso
+
+                </span>
+
+                <h3 class="text-danger">
+
+                    2
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="orders-card">
+
+        <div class="table-responsive">
+
+            <table class="table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Número</th>
+
+                        <th>Fornecedor</th>
+
+                        <th>Data</th>
+
+                        <th>Valor</th>
+
+                        <th>Status</th>
+
+                        <th width="180">Ações</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+
+                            #00001
+
+                        </td>
+
+                        <td>
+
+                            Casa das Carnes
+
+                        </td>
+
+                        <td>
+
+                            21/07/2026
+
+                        </td>
+
+                        <td>
+
+                            R$ 1.250,00
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-warning">
+
+                                Aguardando Entrega
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button class="btn btn-outline-primary btn-sm me-2">
+
+                                <i class="bi bi-eye"></i>
+
+                            </button>
+
+                            <button class="btn btn-outline-success btn-sm">
+
+                                <i class="bi bi-check2-circle"></i>
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

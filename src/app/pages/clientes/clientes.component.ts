@@ -7,6 +7,7 @@ import { ToastComponent } from "../components/toast/toast.component";
 import { ToastService } from '../components/toast/toast.service';
 import { ClienteModalComponent } from "./components/cliente-modal/cliente-modal.component";
 import { EnderecosClienteModalViewComponent } from "./components/enderecos-cliente-modal-view/enderecos-cliente-modal-view.component";
+import { Title } from '@angular/platform-browser';
 declare var bootstrap: any;
 @Component({
   selector: 'app-clientes',
@@ -41,8 +42,11 @@ export class ClientesComponent {
 
   constructor(
     private readonly clienteService: ClienteService,
-    private toast: ToastService
-  ) { }
+    private toast: ToastService,
+    public title:Title
+  ) { 
+    this.title.setTitle('ERSO ERP - Clientes');
+  }
 
   ngOnInit(): void {
     this.loadClientes();

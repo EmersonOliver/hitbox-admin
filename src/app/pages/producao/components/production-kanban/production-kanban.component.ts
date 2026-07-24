@@ -29,6 +29,7 @@ import { ServiceOrderResponse } from '../../../service-orders/models/response/se
 import { FormatProductionTime } from '../../../../core/utils/production.time.utils';
 import { KanbanCardRequest } from './models/request/kanban.card.request';
 import { forkJoin } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 declare var bootstrap: any;
 @Component({
   selector: 'app-production-kanban',
@@ -79,6 +80,7 @@ export class ProductionKanbanComponent implements OnInit {
 
   serviceOrderSelected?: ServiceOrderResponse;
   constructor(private columnService: KanbanColumnService,
+    public title: Title,
     private cardService: KanbanCardService,
     private movementService: KanbanCardMovementService,
     private clienteService: ClienteService,
@@ -86,6 +88,8 @@ export class ProductionKanbanComponent implements OnInit {
     private orderService: ServiceOrderService,
     private fb: FormBuilder,
     private toast: ToastService) {
+
+    this.title.setTitle('ERSO ERP - Produção');
 
     this.formCard = this.fb.group({
       serviceOrderId: [null, Validators.required],
@@ -218,7 +222,7 @@ export class ProductionKanbanComponent implements OnInit {
     movedCard.cardOrder =
       event.currentIndex;
 
-      let status = this.columns.find(c=> c.id == targetColumn.id)?.typeColumn;
+    let status = this.columns.find(c => c.id == targetColumn.id)?.typeColumn;
     const payload = {
       id: movedCard.id,
 

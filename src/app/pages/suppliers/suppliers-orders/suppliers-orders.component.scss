@@ -1,0 +1,52 @@
+.order-stat-card {
+
+  background: rgba(var(--bs-body-bg-rgb), 1);
+
+  border: 1px solid rgba(var(--bs-border-color-rgb), .35);
+
+  border-radius: 1.25rem;
+
+  padding: 1.25rem;
+
+  text-align: center;
+
+  .label {
+
+    display: block;
+
+    color: var(--bs-secondary-color);
+
+    margin-bottom: .5rem;
+  }
+
+  h3 {
+
+    margin: 0;
+
+    font-weight: 700;
+  }
+}
+
+.orders-card {
+
+  background: rgba(var(--bs-body-bg-rgb), 1);
+
+  border: 1px solid rgba(var(--bs-border-color-rgb), .35);
+
+  border-radius: 1.5rem;
+
+  padding: 1.5rem;
+}
+
+.table {
+
+  margin-bottom: 0;
+}
+
+.table td,
+.table th {
+
+  vertical-align: middle;
+
+  border-color: rgba(var(--bs-border-color-rgb), .25);
+}

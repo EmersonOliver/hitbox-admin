@@ -10,6 +10,7 @@ import {
 import {
   Router
 } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-workspace-setup',
@@ -32,8 +33,12 @@ export class WorkspaceSetupComponent
   ];
 
   constructor(
-    private router: Router
-  ) { }
+    private router: Router,
+    public title:Title
+  ) { 
+
+     this.title.setTitle('ERSO ERP - Inicializando');
+  }
 
   ngOnInit(): void {
 

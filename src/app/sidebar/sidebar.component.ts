@@ -23,15 +23,7 @@ export class SidebarComponent implements OnInit {
   verifyResponse?: VerifyDomainsResponse;
 
   menus = [
-    { id: 'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true },
-    { id: 'catsidebar', name: 'Categorias', link: '/categorias', icon: 'bi bi-tags', visible: this.permission.has('CATEGORY_VIEW') },
-    { id: 'clisidebar', name: 'Clientes', link: '/clientes', icon: 'bi bi-people', visible: true },
-    { id: 'prdtssidebar', name: 'Produtos', link: '/produtos', icon: 'bi bi-box', visible: true },
-    { id: 'calcsidebar', name: 'Cálculos', link: '/calculos', icon: 'bi bi-calculator', visible: true },
-    { id: 'prodsidebar', name: 'Produção', link: '/kanban', icon: 'bi bi-lightbulb', visible: true },
-    { id: 'ossidebar', name: 'Ordens de Serviço', link: '/orderService', icon: 'bi bi-journal-check', visible: true },
-    { id: 'invsidebar', name: 'Inventário/Estoque', link: '/inventario', icon: 'bi bi-box-seam', visible: true },
-    { id: 'relsidebar', name: 'Relatórios', link: '/relatorios', icon: 'bi bi-journal', visible: true },
+    { id: 'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true }
   ];
 
 
@@ -48,12 +40,14 @@ export class SidebarComponent implements OnInit {
       { id: 'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true },
       { id: 'catsidebar', name: 'Categorias', link: '/categorias', icon: 'bi bi-tags', visible: this.permission.has('CATEGORY_VIEW') },
       { id: 'clisidebar', name: 'Clientes', link: '/clientes', icon: 'bi bi-people', visible: this.permission.has('CUSTOMER_VIEW') },
+      { id: 'fornesidebar', name: 'Fornecedores', link: '/fornecedores', icon: 'bi bi-building-gear', visible: this.permission.has('SUPPLIERS_VIEW') },
       { id: 'prdtssidebar', name: 'Produtos', link: '/produtos', icon: 'bi bi-box', visible: this.permission.has('PRODUCT_VIEW') },
       { id: 'calcsidebar', name: 'Cálculos', link: '/calculos', icon: 'bi bi-calculator', visible: this.permission.has('CALCULATION_VIEW') },
       { id: 'prodsidebar', name: 'Produção', link: '/kanban', icon: 'bi bi-lightbulb', visible: this.permission.has('PRODUCTION_VIEW') },
       { id: 'ossidebar', name: 'Ordens de Serviço', link: '/orderService', icon: 'bi bi-journal-check', visible: this.permission.has('SERVICE_ORDER_VIEW') },
       { id: 'invsidebar', name: 'Inventário/Estoque', link: '/inventario', icon: 'bi bi-box-seam', visible: this.permission.has('INVENTORY_VIEW') },
       { id: 'relsidebar', name: 'Relatórios', link: '/relatorios', icon: 'bi bi-journal', visible: this.permission.has('REPORT_VIEW') },
+
     ];
   }
 

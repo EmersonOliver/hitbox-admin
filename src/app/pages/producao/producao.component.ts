@@ -115,7 +115,7 @@ export class ProducaoComponent {
         return 'Iniciar produção';
 
       case 'PRODUZINDO':
-        return 'Finalizar impressão';
+        return 'Finalizar Produção';
 
       case 'MONTAGEM':
         return 'Concluir produção';
@@ -136,7 +136,7 @@ export class ProducaoComponent {
         return 'Iniciar produção';
 
       case 'PRODUZINDO':
-        return 'Finalizar impressão';
+        return 'Finalizar produção';
 
       case 'MONTAGEM':
         return 'Concluir produção';

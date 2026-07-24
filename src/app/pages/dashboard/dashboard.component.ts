@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private tutorialService: TutorialService,
     private dashboardService: DashboardService,
     private imageService: ImageService) {
-    title.setTitle('Hitbox - Dashboard')
+    title.setTitle('ERSO ERP - Dashboard')
   }
   ngAfterViewInit(): void {
     if (!localStorage.getItem('tour_completed_relsidebar')) {

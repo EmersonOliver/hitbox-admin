@@ -7,6 +7,7 @@ import { CompanyService } from '../../../core/company/company.service';
 import { SelectCompanyRequest } from '../models/company.selected.request';
 import { Router } from '@angular/router';
 import { CompanySelectedResponse } from '../models/company.selected.response';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-company-selector',
@@ -22,7 +23,9 @@ export class CompanySelectorComponent implements OnInit {
   constructor(
     private tokenService: TokenService,
     private companyService: CompanyService,
+    public title: Title,
     private router: Router) {
+    this.title.setTitle('ERSO ERP - Selecionar Empresa');
 
   }
   ngOnInit(): void {

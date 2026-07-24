@@ -96,7 +96,7 @@ export const routes: Routes = [
                         path: 'simulation',
                         loadComponent: () =>
                             import('./pages/calc-pricing/components/simulation/simulation.component')
-                        .then(m => m.SimulationComponent)
+                                .then(m => m.SimulationComponent)
                     }
                 ]
             },
@@ -145,6 +145,31 @@ export const routes: Routes = [
                         .then(m => m.PermissionsComponent)
             },
 
+            {
+                path: 'fornecedores', loadComponent: () =>
+                    import('./pages/suppliers/suppliers.component')
+                        .then(m => m.SuppliersComponent)
+            },
+            {
+                path: 'fornecedores/gestao', loadComponent: () =>
+                    import('./pages/suppliers/suppliers-management/suppliers-management.component')
+                        .then(m => m.SuppliersManagementComponent)
+            },
+            {
+                path: 'fornecedores/categorias', loadComponent: () =>
+                    import('./pages/suppliers/suppliers-category/suppliers-category.component')
+                        .then(m => m.SuppliersCategoryComponent)
+            },
+            {
+                path: 'fornecedores/orders', loadComponent: () =>
+                    import('./pages/suppliers/suppliers-orders/suppliers-orders.component')
+                        .then(m => m.SuppliersOrdersComponent)
+            },
+            {
+                path: 'notificacoes', loadComponent: () =>
+                    import('./pages/notifications/notifications.component')
+                        .then(m => m.NotificationsComponent)
+            },
             {
                 path: 'profile/settings',
                 component: SettingsComponent,

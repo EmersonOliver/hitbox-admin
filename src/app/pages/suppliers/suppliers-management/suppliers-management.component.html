@@ -1,0 +1,328 @@
+<div class="container-fluid py-4">
+
+    <app-toast></app-toast>
+
+    <!-- HEADER -->
+
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                Fornecedores
+            </h2>
+            <p class="text-muted mb-0">
+                Gerencie fornecedores e parceiros comerciais
+            </p>
+        </div>
+        <div>
+            <button class="btn btn-outline-secondary me-2" title="Voltar" routerLink="/fornecedores"><i
+                    class="bi bi-arrow-left"></i></button>
+            <button class="btn btn-primary me-2" (click)="openSupplierModal()">
+                <i class="bi bi-file-earmark-arrow-down me-2"></i>
+                Importar
+            </button>
+            <button class="btn btn-primary" (click)="openSupplierModal()">
+                <i class="bi bi-plus-circle me-2"></i>
+                Novo fornecedor
+            </button>
+        </div>
+
+    </div>
+
+    <!-- FILTROS -->
+    <div class="supplier-card mb-4">
+
+        <div class="row g-3">
+
+            <div class="col-12 col-lg-8">
+
+                <input type="text" class="form-control" placeholder="Buscar por nome, documento ou contato..."
+                    [(ngModel)]="search" (keyup)="loadSuppliers()">
+
+            </div>
+
+            <div class="col-12 col-lg-4">
+
+                <select class="form-select" [(ngModel)]="statusFilter" (change)="loadSuppliers()">
+
+                    <option value="">
+                        Todos os fornecedores
+                    </option>
+
+                    <option value="ACTIVE">
+                        Ativos
+                    </option>
+
+                    <option value="INACTIVE">
+                        Inativos
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TABELA -->
+
+    <div class="supplier-card">
+
+        <div class="table-responsive">
+
+            <table class="table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+
+                            Fornecedor
+
+                        </th>
+
+                        <th>
+
+                            Documento
+
+                        </th>
+
+                        <th>
+
+                            Contato
+
+                        </th>
+
+                        <th>
+
+                            Cidade
+
+                        </th>
+
+                        <th>
+
+                            Categoria
+
+                        </th>
+
+                        <th>
+
+                            Status
+
+                        </th>
+
+                        <th class="text-center">
+
+                            Ações
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @for(
+                    supplier of suppliers;
+                    track supplier.id
+                    ){
+
+                    <tr>
+
+                        <td>
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <div class="supplier-avatar">
+
+                                    {{ getInitials(supplier.name) }}
+
+                                </div>
+
+                                <div>
+
+                                    <h6 class="mb-1">
+
+                                        {{ supplier.name }}
+
+                                    </h6>
+
+                                    <small class="text-muted">
+
+                                        {{ supplier.email || 'Sem e-mail' }}
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="fw-semibold">
+
+                                {{ supplier.document || '-' }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+
+                                {{ supplier.phone || '-' }}
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+                            <span class="badge" [class.bg-success-subtle]=" supplier.addressRequests?.length"
+                                [class.text-success]=" supplier.addressRequests?.length"
+                                [class.bg-secondary-subtle]="! supplier.addressRequests?.length"
+                                [class.text-secondary]="! supplier.addressRequests?.length">
+
+                                {{  supplier.addressRequests?.length || 0 }}
+                                endereço(s)
+
+                            </span>
+                            </td>
+
+                        <td>
+
+                            <span class="badge bg-primary-subtle text-primary">
+                                {{ supplier.category.name || 'Geral' }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge" [class.bg-success-subtle]="supplier.active"
+                                [class.text-success]="supplier.active" [class.bg-danger-subtle]="!supplier.active"
+                                [class.text-danger]="!supplier.active">
+
+                                {{ supplier.active ? 'Ativo' : 'Inativo' }}
+
+                            </span>
+
+                        </td>
+
+                        <td class="text-end">
+
+                            <div class="d-flex justify-content-end gap-2">
+
+                                <button class="btn btn-sm btn-outline-primary" title="Editar fornecedor"
+                                    (click)="editSupplier(supplier)">
+
+                                    <i class="bi bi-pencil"></i>
+
+                                </button>
+
+                                <button class="btn btn-sm btn-outline-info" title="Visualizar fornecedor"
+                                    (click)="viewSupplier(supplier)">
+
+                                    <i class="bi bi-eye"></i>
+
+                                </button>
+
+                                <button class="btn btn-sm btn-outline-danger" title="Excluir fornecedor"
+                                    (click)="openDeleteModal(supplier)">
+
+                                    <i class="bi bi-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- EMPTY -->
+
+        @if(suppliers.length === 0){
+
+        <div class="empty-state">
+
+            <i class="bi bi-truck"></i>
+
+            <h5>
+
+                Nenhum fornecedor encontrado
+
+            </h5>
+
+            <p>
+
+                Cadastre fornecedores para iniciar suas compras
+
+            </p>
+
+        </div>
+
+        }
+
+        <!-- PAGINAÇÃO -->
+
+        <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
+
+            <small class="text-muted">
+
+                Exibindo
+
+                {{ suppliers.length }}
+
+                de
+
+                {{ totalElements }}
+
+                registros
+
+            </small>
+
+            <div class="d-flex gap-2">
+
+                <button class="btn btn-outline-primary btn-sm" [disabled]="currentPage === 1"
+                    (click)="changePage(currentPage - 1)">
+
+                    <i class="bi bi-chevron-left"></i>
+
+                </button>
+
+                <button *ngFor="let page of pages" class="btn btn-sm" [class.btn-primary]="page === currentPage"
+                    [class.btn-outline-primary]="page !== currentPage" (click)="changePage(page)">
+
+                    {{ page }}
+
+                </button>
+
+                <button class="btn btn-outline-primary btn-sm" [disabled]="currentPage === totalPages"
+                    (click)="changePage(currentPage + 1)">
+
+                    <i class="bi bi-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<app-suppliers-modal (save)="saveSuppliers($event)" [supplierSelecionado]="supplierSelecionado"></app-suppliers-modal>

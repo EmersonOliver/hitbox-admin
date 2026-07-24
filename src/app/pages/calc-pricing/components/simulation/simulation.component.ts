@@ -6,6 +6,7 @@ import { SuggestedPriceResult } from '../../models/suggested.pricing.model';
 import { PricingRuleService } from '../../../../core/pricing/services/pricing-rule.service';
 import { debounceTime } from 'rxjs';
 import { RouterLink } from "@angular/router";
+import { Title } from '@angular/platform-browser';
 declare var bootstrap: any;
 @Component({
   selector: 'app-simulation',
@@ -24,7 +25,8 @@ export class SimulationComponent implements OnInit, AfterViewInit {
   editar: boolean = false;
   ruleSelected?: PricingRuleResponse;
 
-  constructor(private fb: FormBuilder, private pricingRuleService: PricingRuleService) {
+  constructor(private fb: FormBuilder, private pricingRuleService: PricingRuleService, public title:Title) {
+     this.title.setTitle('ERSO ERP - Cálculo Simulação');
     this.simulationForm
       .valueChanges
       .pipe(

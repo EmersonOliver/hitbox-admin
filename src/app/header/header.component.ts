@@ -28,7 +28,6 @@ export class HeaderComponent implements OnInit {
   companyName = '';
   role = '';
 
-  titulo = "";
   visibleNotifications: any[] = [];
   notifications: any[] = [];
 
@@ -38,9 +37,7 @@ export class HeaderComponent implements OnInit {
     private tokenService: TokenService,
     private profileService: ProfileService,
     private notificationService: NotificationService,
-    public permission: PermissionService,
-    private title: Title) {
-    this.titulo = title.getTitle()
+    public permission: PermissionService) {
 
   }
   ngOnInit(): void {
@@ -64,11 +61,19 @@ export class HeaderComponent implements OnInit {
         this.profileService.profileResponse = profile;
       }
     });
-    this.loadNotifications();
+
+    this.notificationService.notifications$.subscribe(list => {
+      this.notifications = list;
+      this.visibleNotifications = this.notifications.slice(0, this.pageSize);
+    });
+
+    this.notificationService.loadAllNotifications().subscribe();
+    // this.loadNotifications();
 
     this.notificationService.connect((data) => {
       this.notifications = data;
       this.loadNotifications();
+     
     })
   }
 
@@ -79,13 +84,27 @@ export class HeaderComponent implements OnInit {
       userId: this.tokenService.getSub(),
       read: true
     }
-    this.notificationService.readNotification(payload).subscribe({
+    this.notificationService.readNotificationV2(payload).subscribe({
       next: response => {
-        this.loadNotifications();
+        const item = this.notifications.find(n => n.notificationId === payload.notificationId);
+
+        if (item) {
+          item.read = true;
+        }
       }
     })
   }
+  readMessageV2(notification: any) {
+    const payload = {
+      notificationId: notification.notificationId,
+      companyId: notification.companyId,
+      userId: this.tokenService.getSub(),
+      read: true
+    };
 
+    // Apenas envia a requisição — a atualização do estado local é tratada pelo tap do Service
+    this.notificationService.readNotificationV2(payload).subscribe();
+  }
   get unreadCount(): number {
     return this.notifications
       .filter(n => !n.read)
@@ -93,20 +112,9 @@ export class HeaderComponent implements OnInit {
   }
 
   loadNotifications() {
-    // this.notificationService.listAllNotifications(0, 10).subscribe({
-    //   next: response => {
-    //     this.notifications = response.content
-    //     this.visibleNotifications =
-    //       this.notifications.slice(
-    //         0,
-    //         this.pageSize
-    //       );
-    //   }
-    // });
-
-    this.notificationService.listAllNotificationsV2().subscribe({
+    this.notificationService.loadAllNotifications().subscribe({
       next: response => {
-        
+
         const ordenadas = [...response].sort((a, b) => Number(a.read) - Number(b.read));
         this.notifications = ordenadas
         this.visibleNotifications =
@@ -119,7 +127,8 @@ export class HeaderComponent implements OnInit {
   }
 
   openNotificationsPage() {
-    throw new Error('Method not implemented.');
+    this.router.navigate(['/notificacoes'])
+
   }
 
   loadMore() {
@@ -132,6 +141,7 @@ export class HeaderComponent implements OnInit {
         0,
         nextSize
       );
+
   }
 
   private formatRole(role: string): string {

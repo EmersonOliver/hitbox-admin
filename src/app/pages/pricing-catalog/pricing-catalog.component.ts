@@ -12,6 +12,7 @@ import {
   FormBuilder,
   Validators
 } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pricing-catalog',
@@ -103,8 +104,12 @@ export class PricingCatalogComponent {
   });
 
   constructor(
-    private fb: FormBuilder
-  ) { }
+    private fb: FormBuilder,
+    public title: Title
+  ) {
+    this.title.setTitle('ERSO ERP - Catálogo');
+
+  }
 
   get filteredCatalogs() {
 

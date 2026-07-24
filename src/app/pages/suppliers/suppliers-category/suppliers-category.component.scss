@@ -1,0 +1,30 @@
+.category-card {
+
+  background: rgba(var(--bs-body-bg-rgb), 1);
+
+  border: 1px solid rgba(var(--bs-border-color-rgb), .35);
+
+  border-radius: 1.5rem;
+
+  padding: 1.5rem;
+}
+
+.table {
+
+  margin-bottom: 0;
+}
+
+.table td,
+.table th {
+
+  vertical-align: middle;
+
+  border-color: rgba(var(--bs-border-color-rgb), .25);
+}
+
+.form-control {
+
+  height: 48px;
+
+  border-radius: 14px;
+}

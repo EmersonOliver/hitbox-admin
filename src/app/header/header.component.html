@@ -26,7 +26,7 @@
             <div class="notification-list">
 
                 <div *ngFor="let notification of visibleNotifications" class="notification-item"
-                    [class.unread]="!notification.read" (click)="readMessage(notification); $event.stopPropagation()">
+                    [class.unread]="!notification.read" (click)="readMessageV2(notification); $event.stopPropagation()">
 
                     <div class="notification-content">
 

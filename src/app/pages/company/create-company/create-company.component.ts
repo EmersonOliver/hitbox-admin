@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { CompanyService } from '../../../core/company/company.service';
 import { TokenService } from '../../../core/auth/guards/token.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-create-company',
@@ -16,8 +17,11 @@ export class CreateCompanyComponent {
 
   form: FormGroup;
   constructor(private fb: FormBuilder, private companyService: CompanyService,
+    public title: Title,
     private router: Router,
     private tokenService: TokenService) {
+
+    this.title.setTitle('ERSO ERP - Criar Empresa');
     this.form = this.fb.group({
       companyName: ['', Validators.required],
       tradeName: [''],
@@ -35,7 +39,7 @@ export class CreateCompanyComponent {
       next: response => {
 
         this.tokenService.setToken(response.token);
-      this.router.navigate(['/workspace-setup']);
+        this.router.navigate(['/workspace-setup']);
 
       }
     })

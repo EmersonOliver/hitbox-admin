@@ -3,6 +3,7 @@ import { TokenService } from '../../core/auth/guards/token.service';
 import { ProfileService } from '../../core/profile/profile.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -16,8 +17,10 @@ export class ProfileComponent implements OnInit {
   form: FormGroup;
   constructor(private tokenService: TokenService,
     private fb: FormBuilder,
+    public title: Title,
     public profileService: ProfileService
   ) {
+    this.title.setTitle('ERSO ERP - Profile')
     let profile = profileService?.profileResponse;
     this.form = fb.group({
       id: [profile?.id],
