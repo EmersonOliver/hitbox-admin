@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { VerifyDomainService } from '../core/verify/verify-domain.service';
 import { VerifyDomainsResponse } from '../core/models/verify-domain.response';
 import { PermissionService } from '../core/permissions/permission.service';
+import { SidebarMenu } from './model/sidebar.menu';
 
 @Component({
   selector: 'app-sidebar',
@@ -22,9 +23,7 @@ export class SidebarComponent implements OnInit {
 
   verifyResponse?: VerifyDomainsResponse;
 
-  menus = [
-    { id: 'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: true }
-  ];
+  menus?: SidebarMenu[];
 
 
   constructor(private readonly verifyDomainService: VerifyDomainService, public permission: PermissionService) { }
@@ -32,12 +31,11 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMenus();
-
   }
 
   loadMenus() {
     this.menus = [
-      { id: 'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: !this.permission.hasRole('SELLER')   },
+      { id: 'dashsidebar', name: 'Dashboard', link: '/dashboard', icon: 'bi bi-grid', visible: !this.permission.hasRole('SELLER') },
       { id: 'sellserbar', name: !this.permission.hasRole('SELLER') ? 'Vendas' : 'Dashboard', link: '/seller', icon: !this.permission.hasRole('SELLER') ? 'bi bi-cart-check' : 'bi bi-grid', visible: this.permission.has('CUSTOMER_VIEW') },
       { id: 'catsidebar', name: 'Categorias', link: '/categorias', icon: 'bi bi-tags', visible: this.permission.has('CATEGORY_VIEW') },
       { id: 'clisidebar', name: 'Clientes', link: '/clientes', icon: 'bi bi-people', visible: this.permission.has('CUSTOMER_VIEW') },
@@ -48,7 +46,6 @@ export class SidebarComponent implements OnInit {
       { id: 'ossidebar', name: 'Ordens de Serviço', link: '/orderService', icon: 'bi bi-journal-check', visible: this.permission.has('SERVICE_ORDER_VIEW') },
       { id: 'invsidebar', name: 'Inventário/Estoque', link: '/inventario', icon: 'bi bi-box-seam', visible: this.permission.has('INVENTORY_VIEW') },
       { id: 'relsidebar', name: 'Relatórios', link: '/relatorios', icon: 'bi bi-journal', visible: this.permission.has('REPORT_VIEW') },
-
     ];
   }
 

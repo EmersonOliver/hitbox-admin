@@ -146,11 +146,11 @@
 
         <div class="col-xl-3 col-md-6">
 
-            <button class="action-card">
+            <button class="action-card" (click)="openModal('attendanceModal')">
 
                 <i class="bi bi-bag-plus"></i>
 
-                <span>Novo Pedido</span>
+                <span>Novo Atendimento</span>
 
             </button>
 
@@ -385,3 +385,4 @@
     </div>
 
 </div>
+<app-attendance-modal></app-attendance-modal>

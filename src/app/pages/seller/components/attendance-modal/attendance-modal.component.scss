@@ -1,0 +1,157 @@
+.attendance-modal {
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(var(--bs-border-color-rgb), .4);
+
+  background: var(--bs-body-bg);
+
+}
+
+.modal-header {
+
+  border-bottom: 1px solid rgba(var(--bs-border-color-rgb), .25);
+
+}
+
+.modal-footer {
+
+  border-top: 1px solid rgba(var(--bs-border-color-rgb), .25);
+
+}
+
+.origin-card {
+
+  cursor: pointer;
+
+  height: 170px;
+
+  border-radius: 18px;
+
+  border: 2px solid rgba(var(--bs-border-color-rgb), .3);
+
+  background: rgba(var(--bs-body-bg-rgb), 1);
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  transition: .25s;
+
+  text-align: center;
+
+  padding: 1rem;
+
+}
+
+.origin-card:hover {
+
+  transform: translateY(-4px);
+
+  border-color: rgba(var(--bs-primary-rgb), .5);
+
+}
+
+.origin-card.active {
+
+  border-color: var(--bs-primary);
+
+  background: rgba(var(--bs-primary-rgb), .08);
+
+}
+
+.origin-card i {
+
+  font-size: 2.5rem;
+
+  color: var(--bs-primary);
+
+  margin-bottom: .8rem;
+
+}
+
+.origin-card h6 {
+
+  margin-bottom: .3rem;
+
+  font-weight: 600;
+
+}
+
+.origin-card small {
+
+  color: var(--bs-secondary-color);
+
+}
+
+.form-control {
+
+  height: 50px;
+
+  border-radius: 14px;
+
+}
+
+.scan-area {
+
+  border-radius: 18px;
+
+  border: 2px dashed rgba(var(--bs-primary-rgb), .35);
+
+  padding: 3rem;
+
+  text-align: center;
+
+  background: rgba(var(--bs-primary-rgb), .05);
+
+}
+
+.scan-area i {
+
+  font-size: 4rem;
+
+  color: var(--bs-primary);
+
+  margin-bottom: 1rem;
+
+}
+
+.scan-area h5 {
+
+  font-weight: 600;
+
+}
+
+@media(max-width:768px){
+
+  .origin-card{
+
+      height:150px;
+
+  }
+
+  .scan-area{
+
+      padding:2rem;
+
+  }
+
+}
+
+.camera-preview {
+
+    width: 100%;
+
+    max-height: 420px;
+
+    border-radius: 16px;
+
+    object-fit: cover;
+
+    background: #000;
+
+}

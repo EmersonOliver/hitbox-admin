@@ -7,6 +7,7 @@ import { authGuard } from './core/auth/guards/auth.guard';
 import { guestGuard } from './core/auth/guards/guest.guard';
 import { SellerLayoutComponent } from './layouts/seller-layout/seller-layout.component';
 import { SellerDashboardComponent } from './pages/seller/seller-dashboard/seller-dashboard.component';
+import { SellerPedidosComponent } from './pages/seller/seller-pedidos/seller-pedidos.component';
 
 export const routes: Routes = [
     {
@@ -85,7 +86,8 @@ export const routes: Routes = [
                         redirectTo: 'dashboard',
                         pathMatch: 'full'
                     },
-                    { path: 'dashboard', component: SellerDashboardComponent },
+                    { path: 'dashboard', loadComponent: () => import('./pages/seller/seller-dashboard/seller-dashboard.component').then(m => m.SellerDashboardComponent) },
+                    { path: 'pedidos', loadComponent: () => import('./pages/seller/seller-pedidos/seller-pedidos.component').then(m => m.SellerPedidosComponent) }
                 ]
             },
             {

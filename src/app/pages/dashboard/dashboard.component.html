@@ -42,7 +42,8 @@
   <!-- QUICK ACTIONS -->
   <div class="quick-actions-grid">
 
-    <div class="action-tile primary" *ngIf="permission.has('SERVICE_ORDER_VIEW')" (click)="clickRouterLink('/orderService')">
+    <div class="action-tile primary" *ngIf="permission.has('SERVICE_ORDER_VIEW')"
+      (click)="clickRouterLink('/orderService')">
       <i class="bi bi-journal-check me-2"></i>
       <div>
         <h6>Ordem de Serviços</h6>
@@ -79,11 +80,20 @@
         <small>Gerenciar base</small>
       </div>
     </div>
-      <div class="action-tile primary" *ngIf="permission.has('SUPPLIERS_VIEW')" (click)="clickRouterLink('/fornecedores')">
+    <div class="action-tile primary" *ngIf="permission.has('SUPPLIERS_VIEW')"
+      (click)="clickRouterLink('/fornecedores')">
       <i class="bi bi-building-gear me-2"></i>
       <div>
         <h6>Fornecedores</h6>
         <small>Gerenciar base</small>
+      </div>
+    </div>
+     <div class="action-tile primary" *ngIf="permission.has('SUPPLIERS_VIEW')"
+      (click)="clickRouterLink('/seller')">
+      <i class="bi bi bi-cart-check me-2"></i>
+      <div>
+        <h6>Vendas</h6>
+        <small>Fornecer Atendinento</small>
       </div>
     </div>
   </div>
@@ -176,7 +186,7 @@
                     <td>
                       <app-stock-progress [value]="getStockPercentage(i)">
                       </app-stock-progress>
-                  <!-- <div class="d-flex align-items-center gap-3">
+                      <!-- <div class="d-flex align-items-center gap-3">
 
                                 <div class="progress flex-grow-1">
 

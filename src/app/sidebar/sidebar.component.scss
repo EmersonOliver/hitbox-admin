@@ -87,3 +87,30 @@
   background-position: center center;
   background-size: cover;
 }
+
+.sidebar-parent {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  width: 100%;
+}
+
+.sidebar-child {
+
+  padding-left: 3rem;
+
+  font-size: .93rem;
+
+  opacity: .85;
+}
+
+.sidebar-child.active {
+
+  opacity: 1;
+
+  font-weight: 600;
+}

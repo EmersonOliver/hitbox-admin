@@ -1,0 +1,259 @@
+<div class="modal fade" id="attendanceModal" tabindex="-1">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content attendance-modal">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h4 class="fw-bold mb-0">
+
+                        Novo Atendimento
+
+                    </h4>
+
+                    <small class="text-muted">
+
+                        Escolha como deseja iniciar o atendimento
+
+                    </small>
+
+                </div>
+
+                <button class="btn-close" data-bs-dismiss="modal">
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <label class="form-label fw-semibold mb-3">
+
+                    Forma de identificação
+
+                </label>
+
+                <div class="row g-3">
+
+                    <div class="col-md-3">
+
+                        <div class="origin-card" [class.active]="origin==='TABLE'" (click)="selectOrigin('TABLE')">
+
+                            <i class="bi bi-grid-3x3-gap-fill"></i>
+
+                            <h6>Mesa</h6>
+
+                            <small>
+
+                                Atendimento por mesa
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <div class="origin-card" [class.active]="origin==='CODE'" (click)="selectOrigin('CODE')">
+
+                            <i class="bi bi-upc-scan"></i>
+
+                            <h6>Código</h6>
+
+                            <small>
+
+                                Bip Scanner
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <div class="origin-card" [class.active]="origin==='QR'" (click)="selectOrigin('QR')">
+
+                            <i class="bi bi-qr-code-scan"></i>
+
+                            <h6>QR Code</h6>
+
+                            <small>
+
+                                Escanear
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <div class="origin-card" [class.active]="origin==='FAST'" (click)="selectOrigin('FAST')">
+
+                            <i class="bi bi-lightning-charge"></i>
+
+                            <h6>Rápido</h6>
+
+                            <small>
+
+                                Sem identificação
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                <!-- MESA -->
+
+                <div *ngIf="origin==='TABLE'">
+
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Número da Mesa
+
+                            </label>
+
+                            <input class="form-control" type="number" [(ngModel)]="tableNumber" placeholder="Ex.: 15">
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Pessoas
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <button class="btn btn-outline-secondary" type="button" (click)="decreasePeople()">
+
+                                    -
+
+                                </button>
+
+                                <input class="form-control text-center" [value]="people" readonly>
+
+                                <button class="btn btn-outline-secondary" type="button" (click)="increasePeople()">
+
+                                    +
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- CODIGO -->
+
+                <div *ngIf="origin==='CODE'">
+
+                    <label class="form-label">
+
+                        Código da Comanda
+
+                    </label>
+
+                    <input #codeInput class="form-control form-control-lg" [(ngModel)]="code"
+                        placeholder="Passe o Bip Scanner ou digite o código">
+
+                </div>
+
+                <!-- QR -->
+
+                <div *ngIf="origin==='QR'">
+
+                    <ng-container *ngIf="isMobile(); else desktop">
+
+                        <div class="scan-area">
+
+                            <video #video autoplay playsinline muted class="camera-preview">
+                            </video>
+
+                            <div class="mt-3">
+
+                                <button class="btn btn-primary" (click)="openCamera()">
+
+                                    <i class="bi bi-camera me-2"></i>
+
+                                    Abrir câmera
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </ng-container>
+
+                    <ng-template #desktop>
+
+                        <div class="alert alert-info">
+
+                            Utilize o Bip Scanner ou informe o código manualmente.
+
+                        </div>
+
+                    </ng-template>
+
+                </div>
+
+                <!-- RAPIDO -->
+
+                <div *ngIf="origin==='FAST'">
+
+                    <div class="alert alert-warning mb-0">
+
+                        <i class="bi bi-lightning-charge-fill me-2"></i>
+
+                        Será criado um atendimento temporário sem identificação de mesa ou comanda.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+                <button class="btn btn-primary" (click)="startAttendance()">
+
+                    <i class="bi bi-play-fill me-2"></i>
+
+                    Iniciar Atendimento
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
